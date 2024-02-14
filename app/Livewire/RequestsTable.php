@@ -71,6 +71,16 @@ class RequestsTable extends Component
         //dd('test');
         $this->redirect('/addrequest');
     }
+    public function goToLink2($item){
+        //dd('test');
+
+        //win rah l item ?ama? ok ok
+        $temp = $this->findRequestById($item);
+        session()->put('dataToPass', $temp);
+
+                $this->redirect('/editrequest');
+    }
+
 
 
 
@@ -82,5 +92,13 @@ class RequestsTable extends Component
             'currentPage' => $this->currentPage,
             'totalPages' => $this->totalPages,
         ]);
+    }
+    public function findRequestById($id)
+    {
+        foreach ($this->requests as $request) {
+            if ($request['id'] == $id) {
+                return $request;
+            }
+        }
     }
 }

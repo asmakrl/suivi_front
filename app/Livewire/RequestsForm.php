@@ -16,7 +16,6 @@ class RequestsForm extends Component
     public $state;
 
 
-
     public function store()
     {
         // Replace the API endpoint with your actual endpoint for creating a resource
@@ -31,14 +30,14 @@ class RequestsForm extends Component
                 'sender_id' => $this->sender,
                 'state_id' => $this->state,
             ];
-            dd($requestData);
+
             // Make a POST request to create a new resource
            $http = new Client();
            $response= $http->post($apiUrl, [
                 'headers' => ['Content-Type' => 'application/json'],
                 'json' => $requestData,
             ]);
-        if ($response->getStatusCode()== 200) {
+        if ($response->getStatusCode()== 201) {
             // Resource created successfully
             session()->flash('success', 'Resource created successfully');
             $this->resetFormFields(); // Reset form fields after successful submission

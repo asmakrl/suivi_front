@@ -18,6 +18,10 @@ Route::get('/', function () {
 });
 
 Route::get('/addrequest', function () {
-    return view('livewire.requests-form');
+    return view('form');
 });
 
+
+Route::get('/editrequest', function () {
+    return view('edit');
+});

@@ -60,6 +60,7 @@
                                     </td>
                                     <td class="px-4 py-3">updated_at</td>
                                     <td class="px-4 py-3 flex items-center justify-end">
+                                        <button  wire:click="goToLink2({{$item['id']}})" class="px-3 py-1 bg-red-500 text-white rounded">X</button>
                                         <button onclick="confirm('Are you sure you want to delete this request?')" wire:click="delete({{$item['id']}})" class="px-3 py-1 bg-red-500 text-white rounded">X</button>
                                     </td>
                                 </tr>
