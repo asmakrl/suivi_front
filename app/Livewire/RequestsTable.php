@@ -67,6 +67,11 @@ class RequestsTable extends Component
 
     }
 
+    public function goToLink(){
+        //dd('test');
+        $this->redirect('/addrequest');
+    }
+
 
 
     public function render()

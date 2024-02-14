@@ -1,26 +1,3 @@
-<style>
-    .container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-        background-color: #f0f0f0;
-    }
-
-    .add-request-button {
-        background-color: #007bff;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    /* Optional styles for button hover effect */
-    .add-request-button:hover {
-        background-color: #0056b3;
-    }
-</style>
 <div>
     <div>
         <section class="mt-10">
@@ -104,8 +81,8 @@
                                     <option value="50">50</option>
                                     <option value="100">100</option>
                                 </select>
-                                <div class="container">
-                                    <button wire:click="" class="add-request-button">Add Request</button>
+                                <div class="px-4 py-3 flex items-center justify-end">
+                                    <button wire:click="goToLink()" class="px-3 py-1 bg-blue-500 text-white rounded">Add Request</button>
                                 </div>
                             </div>
                         </div>
@@ -122,9 +99,7 @@
                     </li>
                     @endfor
                 </ul>
-
             </nav>
         </section>
-
     </div>
 </div>
