@@ -40,7 +40,8 @@ class RequestsForm extends Component
         if ($response->getStatusCode()== 201) {
             // Resource created successfully
             session()->flash('success', 'Resource created successfully');
-            $this->resetFormFields(); // Reset form fields after successful submission
+            $this->resetFormFields();// Reset form fields after successful submission
+            $this->redirect('/');
         } else {
             // Handle other status codes or scenarios
             session()->flash('error', 'Failed to create resource');

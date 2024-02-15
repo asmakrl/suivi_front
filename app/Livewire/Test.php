@@ -44,23 +44,22 @@ public $receivedData;
             'sender_id' => $this->sender,
             'state_id' => $this->state,
         ];
-
+       // dd($requestData);
         // Create a GuzzleHttp client instance
         $client = new Client();
 
         // Send the form data to the API endpoint using GuzzleHttp
         $response = $client->put('http://localhost:8000/api/requests/' . $this->id, [
+            'headers' => ['Content-Type' => 'application/json'],
             'json' => $requestData,
-            'headers' => [
-                'Content-Type' => 'application/json',
-            ],
+
         ]);
 
         // Check if the request was successful
         if ($response->getStatusCode() == 200) {
             // Resource edited successfully
             session()->flash('success', 'Resource edited successfully');
-            return redirect()->route('requests');
+            $this->redirect('/');
         } else {
             // Handle other status codes or scenarios
             session()->flash('error', 'Failed to edit resource');

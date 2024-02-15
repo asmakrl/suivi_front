@@ -5,23 +5,23 @@
         <input type="hidden" name="id" value="{{ $id }}">
         <div class="form-group">
             <label for="title">Title:</label>
-            <input type="text" id="title" name="title" value="{{ $title}}" required >
+            <input wire:model="title" type="text" id="title" name="title" value="{{ $title}}" required >
         </div>
         <div class="form-group">
             <label for="description">Description:</label>
-            <textarea id="description" name="description" rows="4"  required>  "{{ $description}}" </textarea>
+            <textarea wire:model="description" id="description" name="description" rows="4"  required>  "{{ $description}}" </textarea>
         </div>
         <div class="form-group">
             <label for="received_at">Received At (Date):</label>
-            <input type="date" id="received_at" name="received_at" value="{{ $received_at}}" required>
+            <input wire:model="received_at" type="date" id="received_at" name="received_at" value="{{ $received_at}}" required>
         </div>
         <div class="form-group">
             <label for="sender">Sender:</label>
-            <input type="text" id="sender" name="sender" value="{{ $sender}}" required>
+            <input wire:model="sender" type="text" id="sender" name="sender" value="{{ $sender}}" required>
         </div>
         <div class="form-group">
             <label for="state">State:</label>
-            <input id="state" name="state" value="{{ $state}}" required>
+            <input wire:model="state" id="state" name="state" value="{{ $state}}" required>
         </div>
 
         <div class="form-group">
