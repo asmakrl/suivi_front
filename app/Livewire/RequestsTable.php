@@ -78,8 +78,19 @@ class RequestsTable extends Component
         $temp = $this->findRequestById($item);
         session()->put('dataToPass', $temp);
 
-                $this->redirect('/editrequest');
+        $this->redirect('/editrequest');
     }
+
+    public function goToLink3($item){
+        //dd('test');
+
+        //win rah l item ?ama? ok ok
+        $temp = $this->findRequestById($item);
+        session()->put('dataToPass', $temp);
+
+        $this->redirect('/addactions');
+    }
+
 
 
 

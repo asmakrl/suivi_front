@@ -34,7 +34,7 @@
                                 <th scope="col" class="px-4 py-3">Description</th>
                                 <th scope="col" class="px-4 py-3">Received At</th>
                                 <th scope="col" class="px-4 py-3">Action</th>
-                                <th scope="col" class="px-4 py-3">Last update</th>
+                                <th scope="col" class="px-4 py-3">Show Request</th>
                                 <th scope="col" class="px-4 py-3">
                                     <span class="sr-only">Actions</span>
                                 </th>
@@ -58,9 +58,11 @@
 
                                         </ul>
                                     </td>
-                                    <td class="px-4 py-3">updated_at</td>
                                     <td class="px-4 py-3 flex items-center justify-end">
-                                        <button  wire:click="goToLink2({{$item['id']}})" class="px-3 py-1 bg-red-500 text-white rounded">X</button>
+                                        <button  wire:click="goToLink3({{$item['id']}})" class="px-3 py-1 bg-red-500 text-white rounded">Add Action</button>
+                                    </td>
+                                    <td class="px-4 py-3 flex items-center justify-end">
+                                        <button  wire:click="goToLink2({{$item['id']}})" class="px-3 py-1 bg-red-500 text-white rounded">E</button>
                                         <button onclick="confirm('Are you sure you want to delete this request?')" wire:click="delete({{$item['id']}})" class="px-3 py-1 bg-red-500 text-white rounded">X</button>
                                     </td>
                                 </tr>

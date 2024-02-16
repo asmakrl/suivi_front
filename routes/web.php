@@ -25,3 +25,7 @@ Route::get('/addrequest', function () {
 Route::get('/editrequest', function () {
     return view('edit');
 });
+
+Route::get('/addactions', function () {
+    return view('addaction');
+});

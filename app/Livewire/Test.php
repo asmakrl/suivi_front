@@ -14,7 +14,7 @@ class Test extends Component
     public $received_at;
     public $sender;
     public $state;
-public $receivedData;
+    public $receivedData;
     public function mount()
     {
 
