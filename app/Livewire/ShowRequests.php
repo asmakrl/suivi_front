@@ -12,14 +12,13 @@ class ShowRequests extends Component
     public $received_at;
     public $sender;
     public $state;
-    public $action;
-    public $date;
-    public $type;
+    public $actionName;
+    public $actionTime;
+    public $actionType;
     public $receivedData;
     public function mount()
     {
-
-//         Fetch data for the request being edited
+        // Fetch data for the request being edited
         $this->receivedData = session()->get('dataToPass');
         //dd($this->receivedData = session()->get('dataToPass'));
         $this->id = $this->receivedData['id'];
@@ -28,14 +27,20 @@ class ShowRequests extends Component
         $this->received_at = $this->receivedData['received_at'];
         $this->sender = $this->receivedData['sender_id'];
         $this->state = $this->receivedData['state_id'];
-        $this->action = $this->receivedData['action'];
-       // $this->action = $this->receivedData['action']['name'];
-       // $this->date = $this->receivedData['action']['action_time'];
-        //$this->type = $this->receivedData['action']['type'];
+
+        foreach ($this->receivedData['action'] as $action) {
+
+            $this->actionName = $action['name'];
+            $this->actionTime = $action['action_time'];
+            $this->actionType = $action['type']['action_type'];
 
 
-//        dd($this->receivedData);
+
+
+            //dd($this->receivedData);
+        }
     }
+
     public function show(){
         dd('test');
     }

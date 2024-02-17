@@ -15,7 +15,6 @@
             <label for="received_at">Received At (Date):</label>
             <input wire:model="received_at" type="date" id="received_at" name="received_at" value="{{ $received_at}}" required>
         </div>
-
         <div class="form-group">
             <label for="sender">Sender:</label>
             <input wire:model="sender" type="text" id="sender" name="sender" value="{{ $sender}}" required>
@@ -24,7 +23,18 @@
             <label for="state">State:</label>
             <input wire:model="state" id="state" name="state" value="{{ $state}}" required>
         </div>
-
+        <div class="form-group">
+            <label for="notes">Notes:</label>
+            <textarea wire:model="actionName" id="action" name="name" rows="4"  required>  "{{ $actionName}}" </textarea>
+        </div>
+        <div class="form-group">
+            <label for="action-time">Action Date (Date):</label>
+            <input wire:model="actionTime" type="date" id="date" name="date" value="{{ $actionTime}}" required>
+        </div>
+        <div class="form-group">
+            <label for="action_type">Action Type:</label>
+            <input wire:model="actionType" type="text" id="date" name="texte" value="{{ $actionType}}" required>
+        </div>
 
 
     </form>
