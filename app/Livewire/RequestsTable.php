@@ -13,6 +13,7 @@ class RequestsTable extends Component
     public $currentPage = 1;
     public $totalPages = 1;
     public $requests = [];
+    public $typeData = [];
 
     public function mount()
     {
@@ -91,6 +92,15 @@ class RequestsTable extends Component
         $this->redirect('/addactions');
     }
 
+    public function goToLink4($item){
+        //dd('test');
+
+        //win rah l item ?ama? ok ok
+        $temp = $this->findRequestById($item);
+        session()->put('dataToPass', $temp);
+
+        $this->redirect('/showrequests');
+    }
 
 
 

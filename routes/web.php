@@ -29,3 +29,7 @@ Route::get('/editrequest', function () {
 Route::get('/addactions', function () {
     return view('addaction');
 });
+
+Route::get('/showrequests', function () {
+    return view('show');
+});

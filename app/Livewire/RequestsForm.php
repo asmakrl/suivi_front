@@ -14,7 +14,13 @@ class RequestsForm extends Component
     public $received_at;
     public $sender;
     public $state;
+    public $senderData=[];
+    public $stateData=[];
+    public function mount(){
 
+        $this->getSender();
+        $this->getState();
+    }
 
     public function store()
     {
@@ -30,7 +36,7 @@ class RequestsForm extends Component
                 'sender_id' => $this->sender,
                 'state_id' => $this->state,
             ];
-
+            //dd($requestData);
             // Make a POST request to create a new resource
            $http = new Client();
            $response= $http->post($apiUrl, [
@@ -58,11 +64,47 @@ class RequestsForm extends Component
         $this->state = '';
     }
 
+    public function getSender()
+    {
+
+        $http = new Client();
+
+        $response = $http->get('http://localhost:8000/api/senders');
+
+        // Check if the request was successful (status code 2xx)
+
+        // Get the response body as an array
+        $data = json_decode($response->getBody(), true);
+
+        // Check if the decoding was successful
+
+        $this->senderData = $data;
+
+    }
+
+    public function getState()
+    {
+
+        $http = new Client();
+
+        $response = $http->get('http://localhost:8000/api/states');
+
+        // Check if the request was successful (status code 2xx)
+
+        // Get the response body as an array
+        $data = json_decode($response->getBody(), true);
+
+        // Check if the decoding was successful
+
+        $this->stateData = $data;
+
+    }
 
 
 
     public function render()
     {
-        return view('livewire.requests-form');
+        return view('livewire.requests-form',[
+            'sender' => $this->senderData]);
     }
 }

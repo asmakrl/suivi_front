@@ -13,6 +13,8 @@ class AddActions extends Component
     public $received_at;
     public $sender;
     public $state;
+    public $name;
+    public $date;
     public $action;
     public $receivedData;
     public $actionData = [];
@@ -31,7 +33,7 @@ class AddActions extends Component
 
 //         Fetch data for the request being edited
 
-        $this->getAction() ;
+         $this->getAction()  ;
 //        dd($this->receivedData);
     }
 
@@ -56,8 +58,38 @@ class AddActions extends Component
 
     }
     public function save(){
-        dd('test');
+        //:dd('test');
+        //localhost:8000/api/requests/29/actions/4
+        // win rahi l'action ?hadi li telfetli lol ah ok ok
+        // hna dok ndirou notre json
+        $http = new Client();
+        $actionData = [
+            //name et action time mazal ma dernahoumch fel front apres nbedlouhoum okkk
+            'name' => $this->name,
+            'action_time' =>'2024-12-12',//$this->date,
+            'request_id' => $this->id,
+            'type_id' => $this->action,
+
+        ];
+ //       dd($actionData);
+//        $response = $http->post('http://localhost:8000/api/actions');
+        $response= $http->post('http://localhost:8000/api/actions', [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => $actionData,
+        ]);
+        if ($response->getStatusCode()== 201) {
+            // Resource created successfully
+            session()->flash('success', 'Resource created successfully');
+            // Reset form fields after successful submission
+            $this->redirect('/');
+        } else {
+            // Handle other status codes or scenarios
+            session()->flash('error', 'Failed to create resource');
+        }
+
     }
+
+
     public function render()
     {
         return view('livewire.add-actions',[

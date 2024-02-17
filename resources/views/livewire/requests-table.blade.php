@@ -48,16 +48,17 @@
                                     </th>
                                     <td class="px-4 py-3">{{$item['description']}}</td>
                                     <td class="px-4 py-3">{{$item['received_at']}}</td>
-                                    <td class="px-4 py-3 text-green-500">
+                                    <td class="px-4 py-3 text-green-500" >
                                         <ul>
                                             @forelse($item['action'] as $action)
-                                                <li>{{ $action['name']}}</li>
+                                                <li>{{ $action['type']['action_type'] }}</li>
                                             @empty
                                                 <li>No actions available.</li>
                                             @endforelse
-
                                         </ul>
                                     </td>
+                                    <td class="px-4 py-3 flex items-center justify-end">
+                                        <button  wire:click="goToLink4({{$item['id']}})" class="px-3 py-1 bg-red-500 text-white rounded">Show Request</button>
                                     <td class="px-4 py-3 flex items-center justify-end">
                                         <button  wire:click="goToLink3({{$item['id']}})" class="px-3 py-1 bg-red-500 text-white rounded">Add Action</button>
                                     </td>
