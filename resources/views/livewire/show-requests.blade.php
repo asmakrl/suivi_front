@@ -23,18 +23,20 @@
             <label for="state">State:</label>
             <input wire:model="state" id="state" name="state" value="{{ $state}}" required>
         </div>
-        <div class="form-group">
-            <label for="notes">Notes:</label>
-            <textarea wire:model="actionName" id="action" name="name" rows="4"  required>  "{{ $actionName}}" </textarea>
+        <div>
+            <h2>List of Actions</h2>
+            @foreach ($action as $act)
+                <div class="action-container bg-gray-100 rounded-md p-4 mb-4">
+                    <ul class="list-none p-0">
+                        <li class="mb-2"><strong>Notes:</strong> {{ $act['name'] }}</li>
+                        <li class="mb-2"><strong>Action Time:</strong> {{ $act['action_time'] }}</li>
+                        <li class="mb-2"><strong>Action Type:</strong> {{ $act['type']['action_type'] }}</li>
+                    </ul>
+                </div>
+            @endforeach
         </div>
-        <div class="form-group">
-            <label for="action-time">Action Date (Date):</label>
-            <input wire:model="actionTime" type="date" id="date" name="date" value="{{ $actionTime}}" required>
-        </div>
-        <div class="form-group">
-            <label for="action_type">Action Type:</label>
-            <input wire:model="actionType" type="text" id="date" name="texte" value="{{ $actionType}}" required>
-        </div>
+
+
 
 
     </form>

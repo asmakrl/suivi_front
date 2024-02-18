@@ -12,7 +12,7 @@ class ShowRequests extends Component
     public $received_at;
     public $sender;
     public $state;
-    public $actionName;
+    public $action;
     public $actionTime;
     public $actionType;
     public $receivedData;
@@ -28,17 +28,17 @@ class ShowRequests extends Component
         $this->sender = $this->receivedData['sender_id'];
         $this->state = $this->receivedData['state_id'];
 
-        foreach ($this->receivedData['action'] as $action) {
+        $this->action = $this->receivedData['action'];
 
-            $this->actionName = $action['name'];
-            $this->actionTime = $action['action_time'];
-            $this->actionType = $action['type']['action_type'];
+            //$this->actionName = $action['name'];
+            //$this->actionTime = $action['action_time'];
+        //$this->actionType = $this->action['type'];
 
 
 
 
             //dd($this->receivedData);
-        }
+
     }
 
     public function show(){
