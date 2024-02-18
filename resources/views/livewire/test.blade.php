@@ -17,11 +17,25 @@
         </div>
         <div class="form-group">
             <label for="sender">Sender:</label>
-            <input wire:model="sender" type="text" id="sender" name="sender" value="{{ $sender}}" required>
+            <select name="sender_id" wire:model="sender">
+                <option value="">{{$sender}}</option>
+                @forelse($senderData as $item)
+                    <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+                @empty
+                    <option value="" disabled>No senders available</option>
+                @endforelse
+            </select>
         </div>
         <div class="form-group">
-            <label for="state">State:</label>
-            <input wire:model="state" id="state" name="state" value="{{ $state}}" required>
+            <label for="sender">State:</label>
+            <select name="state_id" wire:model="state">
+                <option value="">{{$state}}</option>
+                @forelse($stateData as $item)
+                    <option value="{{ $item['id'] }}">{{ $item['nomAr'] }}</option>
+                @empty
+                    <option value="" disabled>No senders available</option>
+                @endforelse
+            </select>
         </div>
         <div>
             <h2>List of Actions</h2>

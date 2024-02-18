@@ -13,9 +13,13 @@ class Test extends Component
     public $description;
     public $received_at;
     public $sender;
+
+
     public $state;
     public $action;
     public $receivedData;
+    public $senderData;
+    public $stateData;
     public function mount()
     {
 
@@ -26,9 +30,12 @@ class Test extends Component
         $this->title = $this->receivedData['title'];
         $this->description = $this->receivedData['description'];
         $this->received_at = $this->receivedData['received_at'];
-        $this->sender = $this->receivedData['sender_id'];
-        $this->state = $this->receivedData['state_id'];
+        $this->sender = $this->receivedData['sender']['name'];
+        $this->state = $this->receivedData['state']['nomAr'];
+
         $this->action = $this->receivedData['action'];
+        $this->getSender();
+        $this->getState();
 
 
 //        dd($this->receivedData);
@@ -47,7 +54,7 @@ class Test extends Component
             'state_id' => $this->state,
             'action'
         ];
-       // dd($requestData);
+        // dd($requestData);
         // Create a GuzzleHttp client instance
         $client = new Client();
 
@@ -69,6 +76,41 @@ class Test extends Component
             return redirect()->back();
         }
     }
+    public function getSender()
+    {
+
+        $http = new Client();
+
+        $response = $http->get('http://localhost:8000/api/senders');
+
+        // Check if the request was successful (status code 2xx)
+
+        // Get the response body as an array
+        $data = json_decode($response->getBody(), true);
+
+        // Check if the decoding was successful
+
+        $this->senderData = $data;
+
+    }
+    public function getState()
+    {
+
+        $http = new Client();
+
+        $response = $http->get('http://localhost:8000/api/states');
+
+        // Check if the request was successful (status code 2xx)
+
+        // Get the response body as an array
+        $data = json_decode($response->getBody(), true);
+
+        // Check if the decoding was successful
+
+        $this->stateData = $data;
+
+    }
+
     public function render()
     {
         return view('livewire.test');
