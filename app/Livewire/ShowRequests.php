@@ -10,8 +10,8 @@ class ShowRequests extends Component
     public $title;
     public $description;
     public $received_at;
-    public $sender;
-    public $state;
+    public $sender=[];
+    public $state=[];
     public $action;
     public $actionTime;
     public $actionType;
@@ -25,8 +25,8 @@ class ShowRequests extends Component
         $this->title = $this->receivedData['title'];
         $this->description = $this->receivedData['description'];
         $this->received_at = $this->receivedData['received_at'];
-        $this->sender = $this->receivedData['sender_id'];
-        $this->state = $this->receivedData['state_id'];
+        $this->sender = $this->receivedData['sender']['name'];
+        $this->state = $this->receivedData['state']['nomAr'];
 
         $this->action = $this->receivedData['action'];
 

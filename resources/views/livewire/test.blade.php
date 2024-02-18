@@ -23,6 +23,18 @@
             <label for="state">State:</label>
             <input wire:model="state" id="state" name="state" value="{{ $state}}" required>
         </div>
+        <div>
+            <h2>List of Actions</h2>
+            @foreach ($action as $act)
+                <div class="action-container bg-gray-100 rounded-md p-4 mb-4">
+                    <ul class="list-none p-0">
+                        <li class="mb-2"><strong>Notes:</strong> {{ $act['name'] }}</li>
+                        <li class="mb-2"><strong>Action Time:</strong> {{ $act['action_time'] }}</li>
+                        <li class="mb-2"><strong>Action Type:</strong> {{ $act['type']['action_type'] }}</li>
+                    </ul>
+                </div>
+            @endforeach
+        </div>
 
         <div class="form-group">
             <button type="submit">Update Request</button>

@@ -14,6 +14,7 @@ class Test extends Component
     public $received_at;
     public $sender;
     public $state;
+    public $action;
     public $receivedData;
     public function mount()
     {
@@ -27,6 +28,7 @@ class Test extends Component
         $this->received_at = $this->receivedData['received_at'];
         $this->sender = $this->receivedData['sender_id'];
         $this->state = $this->receivedData['state_id'];
+        $this->action = $this->receivedData['action'];
 
 
 //        dd($this->receivedData);
@@ -43,6 +45,7 @@ class Test extends Component
             'received_at' => $this->received_at,
             'sender_id' => $this->sender,
             'state_id' => $this->state,
+            'action'
         ];
        // dd($requestData);
         // Create a GuzzleHttp client instance
