@@ -52,7 +52,8 @@ class Test extends Component
             'received_at' => $this->received_at,
             'sender_id' => $this->sender,
             'state_id' => $this->state,
-            'action'
+            'action'=> $this->action,
+
         ];
         // dd($requestData);
         // Create a GuzzleHttp client instance
@@ -109,6 +110,27 @@ class Test extends Component
 
         $this->stateData = $data;
 
+    }
+    public function delete($item){
+        dd('test');
+    }
+    public function goToLink($item){
+        //dd('test');
+
+        //win rah l item ?ama? ok ok
+        $temp = $this->findActionById($item);
+        dd($temp);
+        session()->put('dataToPass', $temp);
+
+        $this->redirect('/editactions');
+    }
+    public function findActionById($id)
+    {
+        foreach ($this->action as $act) {
+            if ($act['id'] == $id) {
+                return $act;
+            }
+        }
     }
 
     public function render()

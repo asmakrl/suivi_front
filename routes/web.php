@@ -33,3 +33,7 @@ Route::get('/addactions', function () {
 Route::get('/showrequests', function () {
     return view('show');
 });
+
+Route::get('/editactions', function () {
+    return view('editact');
+});

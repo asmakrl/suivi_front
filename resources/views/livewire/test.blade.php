@@ -45,6 +45,10 @@
                         <li class="mb-2"><strong>Notes:</strong> {{ $act['name'] }}</li>
                         <li class="mb-2"><strong>Action Time:</strong> {{ $act['action_time'] }}</li>
                         <li class="mb-2"><strong>Action Type:</strong> {{ $act['type']['action_type'] }}</li>
+                        <td class="px-4 py-3 flex items-center justify-end">
+                            <button  wire:click="goToLink({{$act['id']}})" class="px-3 py-1 bg-red-500 text-white rounded">E</button>
+                            <button onclick="confirm('Are you sure you want to delete this request?')" wire:click="delete({{$act['id']}})" class="px-3 py-1 bg-red-500 text-white rounded">X</button>
+                        </td>
                     </ul>
                 </div>
             @endforeach
