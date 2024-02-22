@@ -57,7 +57,7 @@ class RequestsTable extends Component
     {
 
         $apiUrl = 'http://localhost:8000/api/requests/' . $id;
-        //dd($apiUrl);
+        dd($apiUrl);
 
         $http= New Client();
 

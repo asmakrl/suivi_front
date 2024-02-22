@@ -28,8 +28,8 @@ class AddActions extends Component
         $this->title = $this->receivedData['title'];
         $this->description = $this->receivedData['description'];
         $this->received_at = $this->receivedData['received_at'];
-        $this->sender = $this->receivedData['sender_id'];
-        $this->state = $this->receivedData['state_id'];
+        $this->sender = $this->receivedData['sender']['name'];
+        $this->state = $this->receivedData['state']['nomAr'];
 
 //         Fetch data for the request being edited
 
@@ -64,7 +64,6 @@ class AddActions extends Component
         // hna dok ndirou notre json
         $http = new Client();
         $actionData = [
-            //name et action time mazal ma dernahoumch fel front apres nbedlouhoum okkk
             'name' => $this->name,
             'action_time' =>'2024-12-12',//$this->date,
             'request_id' => $this->id,

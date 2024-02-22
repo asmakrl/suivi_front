@@ -17,8 +17,8 @@
         </div>
         <div class="form-group">
             <label for="sender">Sender:</label>
-            <select name="sender_id" wire:model="sender">
-                <option value="">{{$sender}}</option>
+            <select name="sender_id" wire:model="sender_id">
+                <option value="">{{$sender['name']}}</option>
                 @forelse($senderData as $item)
                     <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
                 @empty
@@ -27,9 +27,9 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="sender">State:</label>
-            <select name="state_id" wire:model="state">
-                <option value="">{{$state}}</option>
+            <label for="state">State:</label>
+            <select name="state_id" wire:model="state_id">
+                <option value="">{{$state['nomAr']}}</option>
                 @forelse($stateData as $item)
                     <option value="{{ $item['id'] }}">{{ $item['nomAr'] }}</option>
                 @empty
@@ -37,25 +37,25 @@
                 @endforelse
             </select>
         </div>
-        <div>
-            <h2>List of Actions</h2>
-            @foreach ($action as $act)
-                <div class="action-container bg-gray-100 rounded-md p-4 mb-4">
-                    <ul class="list-none p-0">
-                        <li class="mb-2"><strong>Notes:</strong> {{ $act['name'] }}</li>
-                        <li class="mb-2"><strong>Action Time:</strong> {{ $act['action_time'] }}</li>
-                        <li class="mb-2"><strong>Action Type:</strong> {{ $act['type']['action_type'] }}</li>
-                        <td class="px-4 py-3 flex items-center justify-end">
-                            <button  wire:click="goToLink({{$act['id']}})" class="px-3 py-1 bg-red-500 text-white rounded">E</button>
-                            <button onclick="confirm('Are you sure you want to delete this request?')" wire:click="delete({{$act['id']}})" class="px-3 py-1 bg-red-500 text-white rounded">X</button>
-                        </td>
-                    </ul>
-                </div>
-            @endforeach
-        </div>
 
         <div class="form-group">
             <button type="submit">Update Request</button>
         </div>
     </form>
+    <div>
+        <h2>List of Actions</h2>
+        @foreach ($action as $act)
+            <div class="action-container bg-gray-100 rounded-md p-4 mb-4">
+                <ul class="list-none p-0">
+                    <li class="mb-2"><strong>Notes:</strong> {{ $act['name'] }}</li>
+                    <li class="mb-2"><strong>Action Time:</strong> {{ $act['action_time'] }}</li>
+                    <li class="mb-2"><strong>Action Type:</strong> {{ $act['type']['action_type'] }}</li>
+                    <td class="px-4 py-3 flex items-center justify-end">
+                        <button  wire:click="goToEditAction({{$act['id']}})" class="px-3 py-1 bg-red-500 text-white rounded">E</button>
+                        <button onclick="confirm('Are you sure you want to delete this action?')" wire:click="delete({{$act['id']}})" class="px-3 py-1 bg-red-500 text-white rounded">X</button>
+                    </td>
+                </ul>
+            </div>
+        @endforeach
+    </div>
 </div>

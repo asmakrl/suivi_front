@@ -12,10 +12,13 @@ class Test extends Component
     public $title;
     public $description;
     public $received_at;
+
     public $sender;
+    public $sender_id;
 
 
     public $state;
+    public $state_id;
     public $action;
     public $receivedData;
     public $senderData;
@@ -30,15 +33,18 @@ class Test extends Component
         $this->title = $this->receivedData['title'];
         $this->description = $this->receivedData['description'];
         $this->received_at = $this->receivedData['received_at'];
-        $this->sender = $this->receivedData['sender']['name'];
-        $this->state = $this->receivedData['state']['nomAr'];
+        $this->sender = $this->receivedData['sender'];
+       // $this->sender2 = $this->receivedData['sender']['id'];
+        $this->state = $this->receivedData['state'];
+        //$this->state2 = $this->receivedData['state']['id'];
 
         $this->action = $this->receivedData['action'];
+
         $this->getSender();
         $this->getState();
 
 
-//        dd($this->receivedData);
+       // dd($this->receivedData);
     }
 
 
@@ -46,16 +52,17 @@ class Test extends Component
     public function sendEdit()
     {
         // Prepare the request data
+
         $requestData = [
             'title' => $this->title,
             'description' => $this->description,
             'received_at' => $this->received_at,
-            'sender_id' => $this->sender,
-            'state_id' => $this->state,
-            'action'=> $this->action,
+            'sender_id' => $this->sender_id,
+            'state_id' => $this->state_id,
+             //'action'=> $this->action,
 
         ];
-        // dd($requestData);
+
         // Create a GuzzleHttp client instance
         $client = new Client();
 
@@ -111,15 +118,28 @@ class Test extends Component
         $this->stateData = $data;
 
     }
-    public function delete($item){
-        dd('test');
+    public function delete($id)
+    {
+        $client = new Client();
+
+        try {
+            $response = $client->delete('http://localhost:8000/api/actions/' . $id);
+
+            if ($response->getStatusCode() == 200) {
+                session()->flash('message', 'Action Deleted.');
+                $this->redirect('/showrequest'); // Redirect to desired page after deletion
+            } else {
+                session()->flash('error', 'Failed to delete action.');
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'An error occurred: ' . $e->getMessage());
+        }
     }
-    public function goToLink($item){
+    public function goToEditAction($item){
         //dd('test');
 
-        //win rah l item ?ama? ok ok
         $temp = $this->findActionById($item);
-        dd($temp);
+        //dd($temp);
         session()->put('dataToPass', $temp);
 
         $this->redirect('/editactions');
@@ -132,6 +152,9 @@ class Test extends Component
             }
         }
     }
+
+
+
 
     public function render()
     {
