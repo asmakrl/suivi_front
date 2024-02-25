@@ -23,10 +23,10 @@ class Test extends Component
     public $receivedData;
     public $senderData;
     public $stateData;
+    public $requestData;
     public function mount()
     {
 
-//         Fetch data for the request being edited
         $this->receivedData = session()->get('dataToPass');
 
         $this->id = $this->receivedData['id'];
@@ -43,7 +43,7 @@ class Test extends Component
         $this->getSender();
         $this->getState();
 
-
+       // $this->delete($this->action['id']);
        // dd($this->receivedData);
     }
 
@@ -73,7 +73,8 @@ class Test extends Component
 
         ]);
 
-        // Check if the request was successful
+        // Check if the request was successful  pour afficher les erreur chabin koul wahda son message / coleur / crtique ou pas ....okkkk ida kan erreur me serveur return l home sinn y3awed yeb3ath sinn ...:p je vois dailleurs lyoumaweritlou w kali zidi afayess =Dhhhhhhh ma3lich apres nchofouhoum nebdaw fi hadi ?
+        /// makhalitekch meme pas takray  lol mdrrr okkk nkhalik testé wela ?? rak tssakssi? nn ok lol aya nokhrej 3la jal les data okkkk
         if ($response->getStatusCode() == 200) {
             // Resource edited successfully
             session()->flash('success', 'Resource edited successfully');
@@ -118,29 +119,27 @@ class Test extends Component
         $this->stateData = $data;
 
     }
-    public function delete($id)
-    {
-        $client = new Client();
+    public function delete($id){
 
-        try {
-            $response = $client->delete('http://localhost:8000/api/actions/' . $id);
+        $http= New Client();
 
-            if ($response->getStatusCode() == 200) {
-                session()->flash('message', 'Action Deleted.');
-                $this->redirect('/showrequest'); // Redirect to desired page after deletion
-            } else {
-                session()->flash('error', 'Failed to delete action.');
-            }
-        } catch (\Exception $e) {
-            session()->flash('error', 'An error occurred: ' . $e->getMessage());
-        }
+        $http->delete('http://localhost:8000/api/actions/' . $id);
+
+        // Remove the deleted action from the $this->action array
+        $this->action = array_filter($this->action, function ($act) use ($id) {
+            return $act['id'] != $id;
+        });
     }
+
+
+
     public function goToEditAction($item){
         //dd('test');
 
         $temp = $this->findActionById($item);
         //dd($temp);
         session()->put('dataToPass', $temp);
+        // hna nzidou ndirou ssesion -> w nzidou request w ki ndirou edit l action n3awdou nrej3ouha mais ma3alablich ida c bien ookk ?okk
 
         $this->redirect('/editactions');
     }

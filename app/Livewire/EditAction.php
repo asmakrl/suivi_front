@@ -12,11 +12,11 @@ class EditAction extends Component
     public $action_time;
 
     public $type;
+    public $title;
     public $receivedData;
 
     public $type_id;
     public $typeData;
-    public $stateData;
 public function mount()
 {
 
@@ -39,14 +39,25 @@ public function mount()
     public function updateAction()
     {
         $http = new Client();
-
+        // hadi erreur lowla hna ndirou check if type_id ==nul nedou type[id] eli b3athnah m3a session ok ?ok
+        if($this->type_id == null){
         $actionData = [
             'name' => $this->name,
             'action_time' => $this->action_time,
            // 'request_id' => $this->request_id,
-            'type_id' => $this->type_id,
-        ];
-        // dd($actionData);
+            'type_id' => $this->receivedData['type_id'],
+        ];}
+        else{
+            $actionData = [
+                'name' => $this->name,
+                'action_time' => $this->action_time,
+                // 'request_id' => $this->request_id,
+                'type_id' => $this->type_id,
+            ];
+        }
+
+
+         //dd($actionData);
         $client = new Client();
 
         // Send the form data to the API endpoint using GuzzleHttp
@@ -55,11 +66,13 @@ public function mount()
             'json' => $actionData,
 
         ]);
-        //dd($response);
 
 
         if ($response->getStatusCode() == 200) {
             session()->flash('message', 'Action Updated.');
+            $data= json_decode($response->getBody(), true);
+            session()->put('dataToPass', $data);
+
             $this->redirect('/editrequest');
         } else {
             session()->flash('error', 'Failed to update action.');

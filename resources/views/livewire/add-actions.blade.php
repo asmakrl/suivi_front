@@ -1,53 +1,31 @@
-<div class="container">
-    <h2>Show a Request</h2>
+<div class="container mx-auto p-8" style="direction: rtl;">
+    <h2 class="text-2xl font-bold mb-4">إضافة إجراء</h2>
+    <hr class="border-b border-gray-300 mb-4">
     <form wire:submit.prevent="save">
         @csrf
         <input type="hidden" name="id" value="{{ $id }}">
-        <div class="form-group">
-            <label for="title">Title:</label>
-            <input wire:model="title" type="text" id="title" name="title" value="{{ $title}}" required >
-        </div>
-        <div class="form-group">
-            <label for="description">Description:</label>
-            <textarea wire:model="description" id="description" name="description" rows="4"  required>  "{{ $description}}" </textarea>
-        </div>
-        <div class="form-group">
-            <label for="received_at">Received At (Date):</label>
-            <input wire:model="received_at" type="date" id="received_at" name="received_at" value="{{ $received_at}}" required>
-        </div>
-        <div class="form-group">
-            <label for="sender">Sender:</label>
-            <input wire:model="sender" type="text" id="sender" name="sender" value="{{ $sender}}" required>
-        </div>
-        <div class="form-group">
-            <label for="state">State:</label>
-            <input wire:model="state" id="state" name="state" value="{{ $state}}" required>
-        </div>
-        <div class="form-group">
-            <label for="notes">Notes:</label>
-            <textarea wire:model="name" id="name" name="name" rows="4"  required>  "{{ $name}}" </textarea>
-        </div>
-        <div class="form-group">
-            <label for="received_at">Action Date (Date):</label>
-            <input wire:model="date" type="date" id="date" name="date" value="{{ $date}}" required>
-        </div>
-        <label>
-            <select name="action_id" wire:model="action" >
-                <option value="">Select an action</option>
-                @forelse($actionData['data'] as $action)
 
-                        <option value="{{ $action['type']['id'] }}" >{{ $action['type']['action_type'] }}</option>
+        <div class="mb-4">
+            <label for="notes" class="block text-sm font-semibold mb-1">ملاحظات:</label>
+            <textarea wire:model="name" id="name" name="name" rows="4" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">{{ $name }}</textarea>
+        </div>
+        <div class="mb-4">
+            <label for="action_date" class="block text-sm font-semibold mb-1">تاريخ الإجراء (التاريخ):</label>
+            <input wire:model="date" type="date" id="date" name="date" value="{{ $date }}" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+        </div>
+        <div class="mb-4">
+            <label class="block text-sm font-semibold mb-1">اختر إجراءً:</label>
+            <select name="action_id" wire:model="action" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+                <option value="">اختر إجراءً</option>
+                @forelse($actionData['data'] as $act)
+                    <option value="{{ $act['type']['id'] }}">{{ $act['type']['action_type'] }}</option>
                 @empty
-                        <option value="" disabled>No actions available</option>
+                    <option value="" disabled>لا تتوفر إجراءات</option>
                 @endforelse
             </select>
-        </label>
-
-
-
-
-        <div class="form-group">
-            <button  type="submit" class="px-3 py-1 bg-blue-500 text-white rounded">Save</button>
+        </div>
+        <div class="mb-4">
+            <button type="submit" class="px-3 py-1 bg-blue-500 text-white rounded">حفظ</button>
         </div>
     </form>
 </div>
