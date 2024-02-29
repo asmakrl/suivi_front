@@ -26,6 +26,7 @@ Route::get('/editrequest', function () {
     return view('edit');
 });
 
+
 Route::get('/addactions', function () {
     return view('addaction');
 });
@@ -37,3 +38,4 @@ Route::get('/showrequests', function () {
 Route::get('/editactions', function () {
     return view('editact');
 });
+

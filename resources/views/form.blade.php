@@ -8,11 +8,15 @@
     <title>Laravel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+
     @livewireStyles
 </head>
 <body class="antialiased">
     <livewire:requests-form />
 
+    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+    @yield('scripts')
 
 </body>
 </html>

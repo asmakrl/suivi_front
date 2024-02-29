@@ -1,5 +1,5 @@
 <div class="container mx-auto">
-    <form wire:submit.prevent="store" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" style="direction: rtl;">
+    <form wire:submit.prevent="store" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" style="direction: rtl;" >
 
         <h2 class="text-2xl font-bold mb-4 text-center">اضافة ملف جديد</h2>
         <hr class="border-b border-gray-300 mb-4">
@@ -38,8 +38,10 @@
                 @endforelse
             </select>
         </div>
+        <input name="file" type="file" wire:model="file">
         <div class="flex items-center justify-center">
             <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">إرسال</button>
         </div>
     </form>
+
 </div>
