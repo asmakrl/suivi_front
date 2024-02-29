@@ -84,7 +84,7 @@ class RequestsForm extends Component
         ]);
         if ($response->getStatusCode() == 201) {
             // Resource created successfully
-            dd($response->getBody());
+           // dd($response->getBody());
             session()->flash('success', 'Resource created successfully');
             $this->resetFormFields();// Reset form fields after successful submission
             $this->redirect('/');
