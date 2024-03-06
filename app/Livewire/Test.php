@@ -20,6 +20,7 @@ class Test extends Component
     public $state;
     public $state_id;
     public $action;
+    public $status;
     public $receivedData;
     public $senderData;
     public $stateData;
@@ -33,6 +34,7 @@ class Test extends Component
         $this->title = $this->receivedData['title'];
         $this->description = $this->receivedData['description'];
         $this->received_at = $this->receivedData['received_at'];
+        $this->status = $this->receivedData['status'];
         $this->sender = $this->receivedData['sender'];
        // $this->sender2 = $this->receivedData['sender']['id'];
         $this->state = $this->receivedData['state'];
@@ -57,6 +59,7 @@ class Test extends Component
             'title' => $this->title,
             'description' => $this->description,
             'received_at' => $this->received_at,
+            'status' => $this->status,
             'sender_id' => $this->sender_id,
             'state_id' => $this->state_id,
              //'action'=> $this->action,

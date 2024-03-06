@@ -16,9 +16,13 @@ class RequestsForm extends Component
     public $title;
     public $description;
     public $received_at;
+    public $status;
     public $sender;
     public $state;
-    public $file;
+    public $categories;
+
+    public $files;
+    public $file_title;
     public $senderData = [];
     public $stateData = [];
 
@@ -29,71 +33,66 @@ class RequestsForm extends Component
         $this->getState();
     }
 
+
     public function store()
     {
-
-        // Replace the API endpoint with your actual endpoint for creating a resource
         $apiUrl = 'http://localhost:8000/api/requests';
 
-
-        // Prepare the request data
-        $requestData = [
-            'title' => $this->title,
-            'description' => $this->description,
-            'received_at' => $this->received_at,
-            'sender_id' => $this->sender,
-            'state_id' => $this->state,
-        ];
-//        $requestData['file'] = base64_encode(file_get_contents($this->file->getRealPath()));
-        //dd($requestData);
-        // Make a POST request to create a new resource
-        $filePath = $this->file->store('uploads');
-        $http = new Client();
-        $multipart = new MultipartStream([
+        $data = [
             [
                 'name' => 'title',
-                'contents' => $this->title // Assuming 'title' is a form field
+                'contents' => $this->title
             ],
             [
                 'name' => 'description',
-                'contents' => $this->description // Assuming 'description' is a form field
+                'contents' => $this->description
             ],
             [
                 'name' => 'received_at',
-                'contents' => $this->received_at// Assuming 'received_at' is a form field
+                'contents' => $this->received_at
+            ],
+            [
+                'name' => 'status',
+                'contents' => $this->status,
             ],
             [
                 'name' => 'sender_id',
-                'contents' => $this->sender // Assuming 'sender_id' is a form field
+                'contents' => $this->sender
             ],
             [
                 'name' => 'state_id',
-                'contents' => $this->state // Assuming 'state_id' is a form field
+                'contents' => $this->state
             ],
-            [
-                'name' => 'file',
-                'contents' => fopen($this->file->getRealPath(), 'r'),
-                'filename' => $this->file->getClientOriginalName(),
-            ]
-        ]);
+        ];
+
+        foreach ($this->files as $file) {
+            $data[] = [
+                'name' => 'files[]',
+                'contents' => fopen($file->getRealPath(), 'r'),
+                'filename' => $file->getClientOriginalName()
+            ];
+        }
+        //dd($data);
+        $multipart = new MultipartStream($data);
+       // dd($multipart);
+        $http = new Client();
         $response = $http->post($apiUrl, [
             'headers' => [
                 'Content-Type' => 'multipart/form-data; boundary=' . $multipart->getBoundary()
             ],
             'body' => $multipart
         ]);
+
         if ($response->getStatusCode() == 201) {
-            // Resource created successfully
-           // dd($response->getBody());
             session()->flash('success', 'Resource created successfully');
-            $this->resetFormFields();// Reset form fields after successful submission
+            $this->resetFormFields(); // Reset form fields after successful submission
             $this->redirect('/');
         } else {
             // Handle other status codes or scenarios
             session()->flash('error', 'Failed to create resource');
         }
-
     }
+
 
     private function resetFormFields()
     {
@@ -101,6 +100,7 @@ class RequestsForm extends Component
         $this->title = '';
         $this->description = '';
         $this->received_at = '';
+        $this->status = '';
         $this->sender = '';
         $this->state = '';
     }
@@ -145,6 +145,7 @@ class RequestsForm extends Component
     public function render()
     {
         return view('livewire.requests-form', [
-            'sender' => $this->senderData]);
+            'sender' => $this->senderData
+        ]);
     }
 }

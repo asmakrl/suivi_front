@@ -39,6 +39,13 @@
             </select>
         </div>
         <div class="mb-4">
+            <label for="status" class="block text-sm font-semibold mb-2">الوضعية:</label>
+            <select wire:model="status" id="status" name="status" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+                <option value="على قيد الدراسة" {{ $status == 'على قيد الدراسة' ? 'selected' : '' }}>على قيد الدراسة</option>
+                <option value="مخلق" {{ $status == 'مخلق' ? 'selected' : '' }}>مخلق</option>
+            </select>
+        </div>
+        <div class="mb-4">
             <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">تحديث الطلب</button>
         </div>
     </form>

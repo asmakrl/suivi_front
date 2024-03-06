@@ -25,6 +25,10 @@
             <input wire:model="state" id="state" name="state" value="{{ $state }}" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
         </div>
         <div class="mb-4">
+            <label for="status" class="block text-sm font-semibold mb-1">الوضعية:</label>
+            <input wire:model="status" id="status" name="state" value="{{ $status }}" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+        </div>
+        <div class="mb-4">
             <h2 class="text-xl font-semibold mb-2">قائمة الإجراءات</h2>
             @foreach ($action as $act)
                 <div class="bg-gray-100 rounded-md p-4 mb-4">
