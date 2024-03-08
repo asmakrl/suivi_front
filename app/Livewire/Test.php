@@ -21,10 +21,11 @@ class Test extends Component
     public $state_id;
     public $action;
     public $status;
+    public $category_id=0;
     public $receivedData;
     public $senderData;
     public $stateData;
-    public $requestData;
+    public $categoryData;
     public function mount()
     {
 
@@ -42,8 +43,9 @@ class Test extends Component
 
         $this->action = $this->receivedData['action'];
 
-        $this->getSender();
+        $this->getSender($this->category_id);
         $this->getState();
+        $this->getCategories();
 
        // $this->delete($this->action['id']);
        // dd($this->receivedData);
@@ -88,22 +90,25 @@ class Test extends Component
             return redirect()->back();
         }
     }
-    public function getSender()
+    public function getSender($categoryId)
     {
-
-        $http = new Client();
-
-        $response = $http->get('http://localhost:8000/api/senders');
+        // Send a GET request to the API endpoint with the provided category_id
+        $response = Http::get("http://localhost:8000/api/senders?category_id={$categoryId}");
 
         // Check if the request was successful (status code 2xx)
-
-        // Get the response body as an array
-        $data = json_decode($response->getBody(), true);
-
-        // Check if the decoding was successful
-
-        $this->senderData = $data;
-
+        if ($response->successful()) {
+            // Get the response body as an array
+            $this->senderData = $response->json();
+        } else {
+            // Handle the case when the request was not successful
+            // For example, log an error or display a message to the user
+            // You may also want to initialize senderData with an empty array or null here
+            $this->senderData = [];
+            // Log error or show error message
+            logger()->error("Failed to fetch sender data. Status code: {$response->status()}");
+            // Or show error message to user
+            // $this->addError('senderData', 'Failed to fetch sender data.');
+        }
     }
     public function getState()
     {
@@ -120,6 +125,24 @@ class Test extends Component
         // Check if the decoding was successful
 
         $this->stateData = $data;
+
+    }
+
+    public function getCategories()
+    {
+
+        $http = new Client();
+
+        $response = $http->get('http://localhost:8000/api/categories');
+
+        // Check if the request was successful (status code 2xx)
+
+        // Get the response body as an array
+        $data = json_decode($response->getBody(), true);
+
+        // Check if the decoding was successful
+
+        $this->categoryData = $data;
 
     }
     public function delete($id){

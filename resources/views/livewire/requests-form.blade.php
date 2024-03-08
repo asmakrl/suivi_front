@@ -17,6 +17,13 @@
             <input wire:model="received_at" type="date" id="received_at" name="received_at" required placeholder="اختر تاريخ الاستلام" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
         </div>
         <div class="mb-4">
+            <label for="category" class="block text-sm font-semibold mb-2">فئة المرسل:</label>
+            <select wire:model="category_id" id="category_id" wire:change="getSender($event.target.value)">
+                <option value="">Select Category</option>
+                @foreach ($categoryData  as $category)
+                    <option value="{{ $category['id'] }}">{{ $category['category'] }}</option>
+                @endforeach
+            </select>
             <label for="sender" class="block text-sm font-semibold mb-2">المرسل:</label>
             <select name="sender_id" wire:model="sender" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
                 <option value="">اختر المرسل</option>
@@ -42,7 +49,7 @@
             <label for="status" class="block text-sm font-semibold mb-2">الوضعية:</label>
             <select wire:model="status" id="status" name="status" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
                 <option value="على قيد الدراسة" {{ $status == 'على قيد الدراسة' ? 'selected' : '' }}>على قيد الدراسة</option>
-                <option value="مخلق" {{ $status == 'مخلق' ? 'selected' : '' }}>مخلق</option>
+                <option value="مخلق" {{ $status == 'مخلق' ? 'selected' : '' }}>مغلق</option>
             </select>
         </div>
         <div class="mb-4">

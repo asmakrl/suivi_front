@@ -19,18 +19,19 @@ class RequestsForm extends Component
     public $status;
     public $sender;
     public $state;
-    public $categories;
+    public $category_id=0;
 
     public $files;
     public $file_title;
     public $senderData = [];
     public $stateData = [];
+    public $categoryData = [];
 
     public function mount()
     {
-
-        $this->getSender();
+        $this->getSender($this->category_id);
         $this->getState();
+        $this->getCategories();
     }
 
 
@@ -105,22 +106,25 @@ class RequestsForm extends Component
         $this->state = '';
     }
 
-    public function getSender()
+    public function getSender($categoryId)
     {
-
-        $http = new Client();
-
-        $response = $http->get('http://localhost:8000/api/senders');
+        // Send a GET request to the API endpoint with the provided category_id
+        $response = Http::get("http://localhost:8000/api/senders?category_id={$categoryId}");
 
         // Check if the request was successful (status code 2xx)
-
-        // Get the response body as an array
-        $data = json_decode($response->getBody(), true);
-
-        // Check if the decoding was successful
-
-        $this->senderData = $data;
-
+        if ($response->successful()) {
+            // Get the response body as an array
+            $this->senderData = $response->json();
+        } else {
+            // Handle the case when the request was not successful
+            // For example, log an error or display a message to the user
+            // You may also want to initialize senderData with an empty array or null here
+            $this->senderData = [];
+            // Log error or show error message
+            logger()->error("Failed to fetch sender data. Status code: {$response->status()}");
+            // Or show error message to user
+            // $this->addError('senderData', 'Failed to fetch sender data.');
+        }
     }
 
     public function getState()
@@ -141,7 +145,23 @@ class RequestsForm extends Component
 
     }
 
+    public function getCategories()
+    {
 
+        $http = new Client();
+
+        $response = $http->get('http://localhost:8000/api/categories');
+
+        // Check if the request was successful (status code 2xx)
+
+        // Get the response body as an array
+        $data = json_decode($response->getBody(), true);
+
+        // Check if the decoding was successful
+
+        $this->categoryData = $data;
+
+    }
     public function render()
     {
         return view('livewire.requests-form', [
