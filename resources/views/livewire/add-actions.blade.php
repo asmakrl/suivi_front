@@ -17,8 +17,8 @@
             <label class="block text-sm font-semibold mb-1">اختر إجراءً:</label>
             <select name="action_id" wire:model="action" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
                 <option value="">اختر إجراءً</option>
-                @forelse($actionData['data'] as $act)
-                    <option value="{{ $act['type']['id'] }}">{{ $act['type']['action_type'] }}</option>
+                @forelse($typeData as $type)
+                    <option value="{{ $type['id'] }}">{{ $type['action_type'] }}</option>
                 @empty
                     <option value="" disabled>لا تتوفر إجراءات</option>
                 @endforelse

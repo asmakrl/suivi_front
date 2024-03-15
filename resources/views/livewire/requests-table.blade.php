@@ -12,21 +12,19 @@
                 <th class="py-3 px-6 text-right">العنوان</th>
                 <th class="py-3 px-6 text-right">الوصف</th>
                 <th class="py-3 px-6 text-right">التاريخ</th>
-                <th class="py-3 px-6 text-center">الوضعية</th>
+                <th class="py-3 px-6 text-right">الوضعية</th>
                 <th class="py-3 px-6 text-right">مجموع الاجراءات</th>
                 <th class="py-3 px-6 text-center">الإجراءات</th>
+
             </tr>
             </thead>
             <tbody class="text-gray-600 text-sm font-light">
             @foreach( $requests as $item)
-                <tr class="border-b border-gray-200 hover:bg-gray-100
-                    @if ($item['status'] == 'على قيد الدراسة') bg-white-100
-                    @elseif ($item['status'] == 'مخلق') bg-green-100
-                    @endif">
+                <tr class="border-b border-gray-200 hover:bg-gray-100">
                     <td class="py-3 px-6 text-right whitespace-nowrap">{{ $item['title'] }}</td>
                     <td class="py-3 px-6 text-right">{{ $item['description'] }}</td>
                     <td class="py-3 px-6 text-right">{{ $item['received_at'] }}</td>
-                    <td class="py-3 px-6 text-right">{{ $item['status'] }}</td>
+                    <td class="py-3 px-6 text-right" wire:click="">{{ $item['last_status'] }}</td>
                     <td class="py-3 px-6 text-right">{{ count($item['action']) }}</td>
                     <td class="py-3 px-6 text-center">
                         <div class="flex justify-center items-center">

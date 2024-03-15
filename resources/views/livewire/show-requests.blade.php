@@ -21,12 +21,8 @@
             <input wire:model="sender" type="text" id="sender" name="sender" value="{{ $sender }}" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
         </div>
         <div class="mb-4">
-            <label for="state" class="block text-sm font-semibold mb-1">الحالة:</label>
+            <label for="state" class="block text-sm font-semibold mb-1">الولاية:</label>
             <input wire:model="state" id="state" name="state" value="{{ $state }}" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
-        </div>
-        <div class="mb-4">
-            <label for="status" class="block text-sm font-semibold mb-1">الوضعية:</label>
-            <input wire:model="status" id="status" name="state" value="{{ $status }}" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
         </div>
         <div class="mb-4">
             <h2 class="text-xl font-semibold mb-2">قائمة الإجراءات</h2>

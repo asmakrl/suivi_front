@@ -17,7 +17,7 @@ class AddActions extends Component
     public $date;
     public $action;
     public $receivedData;
-    public $actionData = [];
+    public $typeData = [];
 
 
     public function mount()
@@ -33,15 +33,15 @@ class AddActions extends Component
 
 //         Fetch data for the request being edited
 
-         $this->getAction()  ;
+         $this->getType()  ;
 //        dd($this->receivedData);
     }
 
-    public function getAction()
+    public function getType()
     {
         $http = new Client();
 
-            $response = $http->get('http://localhost:8000/api/actions');
+            $response = $http->get('http://localhost:8000/api/types');
 
             // Check if the request was successful (status code 2xx)
 
@@ -51,7 +51,7 @@ class AddActions extends Component
                 // Check if the decoding was successful
 
 
-        $this->actionData = $data;
+        $this->typeData = $data;
 
 
 
@@ -65,7 +65,7 @@ class AddActions extends Component
         $http = new Client();
         $actionData = [
             'name' => $this->name,
-            'action_time' =>'2024-12-12',//$this->date,
+            'action_time' =>$this->date,//$this->date,
             'request_id' => $this->id,
             'type_id' => $this->action,
 
@@ -91,7 +91,6 @@ class AddActions extends Component
 
     public function render()
     {
-        return view('livewire.add-actions',[
-            'actions' => $this->actionData]);
+        return view('livewire.add-actions');
     }
 }

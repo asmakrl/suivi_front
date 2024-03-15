@@ -35,21 +35,14 @@
             </select>
         </div>
         <div class="mb-4">
-            <label for="state" class="block text-sm font-semibold mb-2">الحالة:</label>
+            <label for="state" class="block text-sm font-semibold mb-2">الولاية:</label>
             <select name="state_id" wire:model="state" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
-                <option value="">اختر الحالة</option>
+                <option value="">اختر الولاية</option>
                 @forelse($stateData as $item)
                     <option value="{{ $item['id'] }}">{{ $item['nomAr'] }}</option>
                 @empty
-                    <option value="" disabled>لا تتوفر حالات</option>
+                    <option value="" disabled>لا تتوفر الولاية</option>
                 @endforelse
-            </select>
-        </div>
-        <div class="mb-4">
-            <label for="status" class="block text-sm font-semibold mb-2">الوضعية:</label>
-            <select wire:model="status" id="status" name="status" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
-                <option value="على قيد الدراسة" {{ $status == 'على قيد الدراسة' ? 'selected' : '' }}>على قيد الدراسة</option>
-                <option value="مخلق" {{ $status == 'مخلق' ? 'selected' : '' }}>مغلق</option>
             </select>
         </div>
         <div class="mb-4">
