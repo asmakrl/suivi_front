@@ -98,30 +98,7 @@ class RequestsForm extends Component
         }
     }
 
-    public function attachStatus($id_status)
-    {
-        // Check if status ID is not empty
-        if (!empty($this->status)) {
-            try {
-                // Make a request to your API to attach the status to the request
-                $response = Http::post("http://localhost:8000/api/requests/{$this->id}/statuses/{$this->id_status}");
 
-                // Check if the request was successful
-                if ($response->successful()) {
-                    // Log or handle successful attachment
-                    logger()->info('Status attached successfully');
-                } else {
-                    // Log or handle failed attachment
-                    logger()->error('Failed to attach status: ' . $response->status());
-                    session()->flash('error', 'Failed to attach status');
-                }
-            } catch (\Exception $e) {
-                // Log or handle exception
-                logger()->error('Failed to attach status: ' . $e->getMessage());
-                session()->flash('error', 'Failed to attach status');
-            }
-        }
-    }
     private function resetFormFields()
     {
         // Reset form fields after successful submission

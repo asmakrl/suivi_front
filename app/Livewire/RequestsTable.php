@@ -14,10 +14,16 @@ class RequestsTable extends Component
     public $totalPages = 1;
     public $requests = [];
     public $typeData = [];
+    public $isStatusDialogOpen = false;
+    public $selectedRequestId;
+    public $statuses = [];
+    public $selectedStatusId;
 
+    protected $listeners = ['statusUpdated'];
     public function mount()
     {
         $this->goToPage($this->currentPage);
+       // $this->getStatus();
     }
     public function fetchRequests()
     {
@@ -115,8 +121,40 @@ class RequestsTable extends Component
         $this->redirect('/showrequests');
     }
 
-    public function getStatus($request_id){
-        dd('test');
+    public function openStatusDialog($requestId)
+    {
+        $this->selectedRequestId = $requestId;
+        $http = new Client();
+
+        $response = $http->get('http://localhost:8000/api/statuses');
+
+        // Check if the request was successful (status code 2xx)
+
+        // Get the response body as an array
+        $data = json_decode($response->getBody(), true);
+
+        // Check if the decoding was successful
+
+        $this->statuses = $data;
+        $this->isStatusDialogOpen = true;
+    }
+
+    public function closeStatusDialog()
+    {
+        $this->isStatusDialogOpen = false;
+    }
+
+    public function changeStatus()
+    {
+        $http = new Client();
+       // $response = $http->post('http://localhost:8000/api/requests/'.$this->selectedRequestId.'/statuses/'.$this->selectedStatusId);
+        $response = $http->post('http://localhost:8000/api/requests/'.$this->selectedRequestId.'/statuses/'.$this->selectedStatusId, [
+             'request_id' => $this->selectedRequestId,
+             'status_id' => $this->selectedStatusId,
+         ]);
+        //$this->emit('statusUpdated');
+        $this->closeStatusDialog();
+
     }
 
 
