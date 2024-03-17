@@ -19,7 +19,6 @@ class RequestsTable extends Component
     public $statuses = [];
     public $selectedStatusId;
 
-    protected $listeners = ['statusUpdated'];
     public function mount()
     {
         $this->goToPage($this->currentPage);
@@ -147,16 +146,25 @@ class RequestsTable extends Component
     public function changeStatus()
     {
         $http = new Client();
-       // $response = $http->post('http://localhost:8000/api/requests/'.$this->selectedRequestId.'/statuses/'.$this->selectedStatusId);
-        $response = $http->post('http://localhost:8000/api/requests/'.$this->selectedRequestId.'/statuses/'.$this->selectedStatusId, [
-             'request_id' => $this->selectedRequestId,
-             'status_id' => $this->selectedStatusId,
-         ]);
-        //$this->emit('statusUpdated');
+        $response = $http->get('http://localhost:8000/api/requests/'.$this->selectedRequestId.'/statuses/'.$this->selectedStatusId);
+        foreach ($this->requests as &$request) {
+            if ($request['id'] == $this->selectedRequestId) {
+                $request['last_status'] = $this->getStatusName($this->selectedStatusId);
+                break;
+            }
+        }
         $this->closeStatusDialog();
 
     }
+    public function getStatusName($statusId)
+    {
+        $http = new Client();
+        $response = $http->get('http://localhost:8000/api/statuses/'.$statusId);
 
+        $data = json_decode($response->getBody(), true);
+
+        return $data['status'];
+    }
 
 
     public function render()
