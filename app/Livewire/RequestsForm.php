@@ -16,20 +16,21 @@ class RequestsForm extends Component
     public $title;
     public $description;
     public $received_at;
-    public $status;
     public $sender;
     public $state;
     public $id;
-    public $category_id=0;
+    public $category_id;
 
     public $files;
+    public $status;
+
     public $file_title;
     public $senderData = [];
     public $stateData = [];
     public $categoryData = [];
 
     public $statusData =[];
-
+    public $isLoading=True;
     public function mount()
     {
         $this->getSender($this->category_id);
@@ -38,7 +39,14 @@ class RequestsForm extends Component
         $this->getstatus();
     }
 
+    public Function loadData(){
+        $this->getSender($this->category_id);
+        $this->getState();
+        $this->getCategories();
+        $this->getstatus();
+        $this->isLoading=False;
 
+    }
     public function store()
     {
         $apiUrl = 'http://localhost:8000/api/requests';
@@ -64,10 +72,7 @@ class RequestsForm extends Component
                 'name' => 'state_id',
                 'contents' => $this->state
             ],
-            [
-                'name' => 'status_id',
-                'contents' => $this->status,
-            ],
+
         ];
 
         foreach ($this->files as $file) {
@@ -77,7 +82,7 @@ class RequestsForm extends Component
                 'filename' => $file->getClientOriginalName()
             ];
         }
-        //dd($data);
+       // dd($data);
         $multipart = new MultipartStream($data);
        // dd($multipart);
         $http = new Client();
@@ -110,26 +115,58 @@ class RequestsForm extends Component
         $this->state = '';
     }
 
-    public function getSender($categoryId)
+    public function getSender($category_id)
     {
-        // Send a GET request to the API endpoint with the provided category_id
-        $response = Http::get("http://localhost:8000/api/senders?category_id={$categoryId}");
+        $http = new Client();
 
-        // Check if the request was successful (status code 2xx)
-        if ($response->successful()) {
-            // Get the response body as an array
-            $this->senderData = $response->json();
+        // Make a request to the API endpoint to retrieve all senders
+        $response = $http->get('http://localhost:8000/api/senders');
+
+        // Check if the request was successful
+        if ($response->getStatusCode() === 200) {
+            // Decode the response body
+            $allSenders = json_decode($response->getBody(), true);
+
+            // Filter the sender data based on the category ID
+            $filteredSenders = array_filter($allSenders, function ($sender) use ($category_id) {
+                return $sender['category_id'] == $category_id;
+            });
+
+            // Update the senderData property with the filtered senders
+            $this->senderData = array_values($filteredSenders); // Re-index the array
         } else {
-            // Handle the case when the request was not successful
-            // For example, log an error or display a message to the user
-            // You may also want to initialize senderData with an empty array or null here
+            // Handle the case where the request fails
+            // You can log an error message or set senderData to an empty array
             $this->senderData = [];
-            // Log error or show error message
-            logger()->error("Failed to fetch sender data. Status code: {$response->status()}");
-            // Or show error message to user
-            // $this->addError('senderData', 'Failed to fetch sender data.');
+            // Log the error if needed
+            logger()->error('Failed to fetch senders. Status code: ' . $response->getStatusCode());
         }
     }
+
+
+    public function getSender1($category_id)
+    {
+        $http = new Client();
+
+        // Make a request to the API endpoint to retrieve senders based on the category ID
+        $response = $http->get('http://localhost:8000/api/senders');
+
+        // Check if the request was successful
+        if ($response->getStatusCode() == 200) {
+            // Decode the response body
+            $data = json_decode($response->getBody(), true);
+
+            // Update the senderData property with the retrieved senders
+            $this->senderData = $data;
+        } else {
+            // Handle the case where the request fails
+            // You can log an error message or set senderData to an empty array
+            $this->senderData = [];
+            // Log the error if needed
+            logger()->error('Failed to fetch senders. Status code: ' . $response->getStatusCode());
+        }
+    }
+
 
     public function getState()
     {

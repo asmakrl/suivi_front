@@ -1,8 +1,20 @@
-<div class="container mx-auto">
-    <form wire:submit.prevent="store" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" style="direction: rtl; text-align: right;">
+<div class="container mx-auto p-8 text-right" style="direction: rtl;">
 
-        <h2 class="text-2xl font-bold mb-4 text-center">إضافة ملف جديد</h2>
-        <hr class="border-b border-gray-300 mb-4">
+    <h2 class="text-2xl font-bold">إضافة ملف جديد</h2>
+    <div class="float-left">
+        <a href="{{ url()->previous() }}" class="inline-flex items-center px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:bg-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-back-up">
+                <path stroke="none" d="M0 0h24v24H0z"></path>
+                <path d="M9 14l-4 -4l4 -4"></path>
+                <path d="M5 10h11a4 4 0 1 1 0 8h-1"></path>
+            </svg>
+            <span class="ml-2">رجوع</span>
+        </a>
+    </div>
+
+    <hr class="border-b border-gray-300 mb-4">
+
+    <form wire:submit.prevent="store" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" style="direction: rtl; text-align: right;">
 
         <div class="mb-4">
             <label for="title" class="block text-sm font-semibold mb-2">العنوان:</label>
@@ -18,7 +30,7 @@
         </div>
         <div class="mb-4">
             <label for="category" class="block text-sm font-semibold mb-2">فئة المرسل:</label>
-            <select wire:model="category_id" id="category_id" wire:change="getSender($event.target.value)">
+            <select wire:model="category_id" id="category_id" wire:change="getSender($event.target.value)" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" >
                 <option value="">Select Category</option>
                 @foreach ($categoryData  as $category)
                     <option value="{{ $category['id'] }}">{{ $category['category'] }}</option>

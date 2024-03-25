@@ -17,12 +17,13 @@ class RequestsTable extends Component
     public $isStatusDialogOpen = false;
     public $selectedRequestId;
     public $statuses = [];
-    public $selectedStatusId;
+    public $isLoading=True;
+    public $selectedStatusId=1;
 
     public function mount()
     {
-        $this->goToPage($this->currentPage);
-       // $this->getStatus();
+       // $this->goToPage($this->currentPage);
+      //  $this->getStatus();
     }
     public function fetchRequests()
     {
@@ -44,6 +45,7 @@ class RequestsTable extends Component
 
         // Calculate the total number of pages
         $this->totalPages = $data['last_page'];
+        $this->isLoading=False;
     }
 
     public function getLastStatus($request_id){

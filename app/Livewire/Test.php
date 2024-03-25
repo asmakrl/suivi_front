@@ -163,7 +163,6 @@ class Test extends Component
         $temp = $this->findActionById($item);
         //dd($temp);
         session()->put('dataToPass', $temp);
-        // hna nzidou ndirou ssesion -> w nzidou request w ki ndirou edit l action n3awdou nrej3ouha mais ma3alablich ida c bien ookk ?okk
 
         $this->redirect('/editactions');
     }

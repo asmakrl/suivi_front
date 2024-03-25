@@ -13,6 +13,10 @@ class EditAction extends Component
 
     public $type;
     public $title;
+    public $description;
+    public $received_at;
+    public $sender;
+    public $state;
     public $receivedData;
 
     public $type_id;
