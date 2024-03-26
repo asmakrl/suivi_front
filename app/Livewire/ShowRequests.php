@@ -22,6 +22,7 @@ class ShowRequests extends Component
 
     public function mount()
     {
+
         // Fetch data for the request being edited
         $this->receivedData = session()->get('dataToPass');
         //dd($this->receivedData = session()->get('dataToPass'));
@@ -44,36 +45,34 @@ class ShowRequests extends Component
         //dd($this->receivedData);
 
     }
-
+    public function test(){
+        dd(url()->previous());
+    }
 
     public function downloadFile($file_path)
     {
+        $remoteFileUrl = 'http://127.0.0.1:8000/'.$file_path;
+        //dd($remoteFileUrl);
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'downloaded_file');
 
-        // Call the API endpoint to download the file
-//        $http= New Client();
-//        $response = $http->get('http://localhost:8000/api/files/' . $fileId.'/download');
-//        //dd($response);
-//        // Check if the request was successful
-//        if ($response->getStatusCode()===200) {
-//            // Get the file name and contents from the response
-//            $fileName = $response->getHeader('Content-Disposition');
-//            $fileContents = $response->getBody();
-//
-//
-//            // Trigger the file download in the browser
-//            return response()->streamDownload(function () use ($fileContents) {
-//                echo $fileContents;}
-//                 , $fileName);}
-//         else {
-//            // Handle the case where the request fails
-//            session()->flash('error', 'Failed to download file.');
-//        }
-        return Storage::disk(name: 'local')->download($file_path);
+        // Télécharger le fichier localement
+        $fileContent = file_get_contents($remoteFileUrl);
+        file_put_contents($tempFilePath, $fileContent);
+
+        // Obtenir le nom de fichier à partir de l'URL
+        $fileName = basename($remoteFileUrl);
+
+        // Téléchargez le fichier localement en utilisant Laravel Storage
+        return response()->download($tempFilePath, $fileName)->deleteFileAfterSend(true);
+
     }
+
 
 
     public function render()
     {
+
         return view('livewire.show-requests');
+
     }
 }

@@ -13,10 +13,10 @@
     @livewireStyles
 </head>
 <body class="antialiased">
-    <livewire:requests-form />
+<livewire:requests-form />
 
-    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
-    @yield('scripts')
+<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+@yield('scripts')
 
 </body>
 </html>

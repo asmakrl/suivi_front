@@ -33,10 +33,10 @@ class RequestsForm extends Component
     public $isLoading=True;
     public function mount()
     {
-        $this->getSender($this->category_id);
-        $this->getState();
-        $this->getCategories();
-        $this->getstatus();
+        // $this->getSender($this->category_id);
+        // $this->getState();
+        // $this->getCategories();
+        // $this->getstatus();
     }
 
     public Function loadData(){
@@ -82,9 +82,9 @@ class RequestsForm extends Component
                 'filename' => $file->getClientOriginalName()
             ];
         }
-       // dd($data);
+        // dd($data);
         $multipart = new MultipartStream($data);
-       // dd($multipart);
+        // dd($multipart);
         $http = new Client();
         $response = $http->post($apiUrl, [
             'headers' => [

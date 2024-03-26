@@ -2,7 +2,7 @@
 
     <h2 class="text-2xl font-bold">عرض الطلب</h2>
     <div class="float-left">
-        <a href="{{ url()->previous() }}" class="inline-flex items-center px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:bg-gray-300">
+        <a wire:click="test()" class="inline-flex items-center px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:bg-gray-300">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-back-up">
                 <path stroke="none" d="M0 0h24v24H0z"></path>
                 <path d="M9 14l-4 -4l4 -4"></path>

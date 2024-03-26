@@ -36,7 +36,7 @@ class Test extends Component
         $this->description = $this->receivedData['description'];
         $this->received_at = $this->receivedData['received_at'];
         $this->sender = $this->receivedData['sender'];
-       // $this->sender2 = $this->receivedData['sender']['id'];
+        // $this->sender2 = $this->receivedData['sender']['id'];
         $this->state = $this->receivedData['state'];
         //$this->state2 = $this->receivedData['state']['id'];
 
@@ -46,8 +46,8 @@ class Test extends Component
         $this->getState();
         $this->getCategories();
 
-       // $this->delete($this->action['id']);
-       // dd($this->receivedData);
+        // $this->delete($this->action['id']);
+        // dd($this->receivedData);
     }
 
 
@@ -62,7 +62,7 @@ class Test extends Component
             'received_at' => $this->received_at,
             'sender_id' => $this->sender_id,
             'state_id' => $this->state_id,
-             //'action'=> $this->action,
+            //'action'=> $this->action,
 
         ];
 
@@ -163,6 +163,7 @@ class Test extends Component
         $temp = $this->findActionById($item);
         //dd($temp);
         session()->put('dataToPass', $temp);
+        // hna nzidou ndirou ssesion -> w nzidou request w ki ndirou edit l action n3awdou nrej3ouha mais ma3alablich ida c bien ookk ?okk
 
         $this->redirect('/editactions');
     }

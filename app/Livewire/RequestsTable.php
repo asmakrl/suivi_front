@@ -37,25 +37,14 @@ class RequestsTable extends Component
 
         $data = json_decode($response->getBody(), true);
 
-      //  $this->requests = $data['data'];
-        foreach ($data['data'] as $request) {
-            $request['last_status'] = $this->getLastStatus($request['id']);
-            $this->requests[] = $request;
-        }
 
+        $this->requests = $data['data'];
         // Calculate the total number of pages
         $this->totalPages = $data['last_page'];
         $this->isLoading=False;
     }
 
-    public function getLastStatus($request_id){
-        $http = new Client();
-        $response = $http->get('http://localhost:8000/api/requests/' . $request_id);
 
-        $data = json_decode($response->getBody(), true);
-
-        return $data['status'];
-    }
 
     public function goToPage($page)
     {
