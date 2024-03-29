@@ -15,6 +15,7 @@ class ShowRequests extends Component
     public $sender = [];
     public $state = [];
     public $action;
+    public $category;
     public $actionTime;
     public $actionType;
     public $receivedData;
@@ -31,6 +32,7 @@ class ShowRequests extends Component
         $this->description = $this->receivedData['description'];
         $this->received_at = $this->receivedData['received_at'];
         $this->sender = $this->receivedData['sender']['name'];
+        $this->category = $this->receivedData['sender']['category']['category'];
         $this->state = $this->receivedData['state']['nomAr'];
 
         $this->action = $this->receivedData['action'];
@@ -67,7 +69,15 @@ class ShowRequests extends Component
 
     }
 
+    public function goToEditRequest(){
+        //dd('test');
 
+        //win rah l item ?ama? ok ok
+        $temp = $this->receivedData;
+        session()->put('dataToPass', $temp);
+
+        $this->redirect('/editrequest');
+    }
 
     public function render()
     {

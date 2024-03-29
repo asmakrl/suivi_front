@@ -9,7 +9,7 @@
 
         <div class="mt-8 flex justify-between items-center">
             <div>
-                <button wire:click="goToLink()" class="mb-2 px-6 py-3 bg-blue-500 text-white rounded"> إضافة طلب</button>
+                <button wire:click="goToaddrRequest()" class="mb-2 px-6 py-3 bg-blue-500 text-white rounded"> إضافة طلب</button>
             </div>
         </div>
         <div class="overflow-x-auto">
@@ -44,7 +44,7 @@
                         <!-- Actions column -->
                         <td class="py-3 px-6 text-center">
                             <div class="flex justify-center items-center">
-                                <button wire:click="goToLink4({{ $item['id'] }})"
+                                <button wire:click="goToShowRequest({{ $item['id'] }})"
                                         class="mr-2 px-4 py-2 bg-blue-500 text-white rounded"><svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="icon icon-tabler icon-tabler-clipboard" width="24" height="24"
@@ -56,7 +56,7 @@
                                         <path
                                             d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
                                     </svg></button>
-                                <button wire:click="goToLink3({{ $item['id'] }})"
+                                <button wire:click="goToAddAction({{ $item['id'] }})"
                                         class="mr-2 px-4 py-2 bg-green-500 text-white rounded"><svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="icon icon-tabler icon-tabler-playlist-add" width="24"
@@ -69,7 +69,7 @@
                                         <path d="M15 16h6" />
                                         <path d="M18 13v6" />
                                     </svg></button>
-                                <button wire:click="goToLink2({{ $item['id'] }})"
+                                <button wire:click="goToEditRequest({{ $item['id'] }})"
                                         class="mr-2 px-4 py-2 bg-orange-500 text-white rounded"><svg
                                         xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"

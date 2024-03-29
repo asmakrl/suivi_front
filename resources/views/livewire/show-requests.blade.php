@@ -28,15 +28,19 @@
             <input wire:model="received_at" type="date" id="received_at" name="received_at" value="{{ $received_at }}" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
         </div>
         <div class="mb-4">
+            <label for="sender" class="block text-sm font-semibold mb-1">فئة المرسل:</label>
+            <input wire:model="category" type="text" id="sender" name="sender" value="{{ $category }}" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+        </div>
+        <div class="mb-4">
             <label for="sender" class="block text-sm font-semibold mb-1">المرسل:</label>
-            <input wire:model="sender" type="text" id="sender" name="sender" value="{{ $sender }}" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+            <input wire:model="sender" type="text" id="sender" name="sender" value="{{ $sender}}" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
         </div>
         <div class="mb-4">
             <label for="state" class="block text-sm font-semibold mb-1">الولاية:</label>
             <input wire:model="state" id="state" name="state" value="{{ $state }}" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
         </div>
-
     </form>
+
     <div class="mb-4">
         <h2 class="text-xl font-semibold mb-2">ملفات المرفقة</h2>
         @foreach ($files as $file)
@@ -58,5 +62,16 @@
             </div>
         @endforeach
     </div>
-
+    <button wire:click="goToEditRequest()"
+            class="mr-2 px-4 py-2 bg-orange-500 text-white rounded"><svg
+            xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit"
+            width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+            <path
+                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+            <path d="M16 5l3 3" />
+        </svg></button>
 </div>

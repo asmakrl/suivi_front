@@ -26,6 +26,8 @@ class Test extends Component
     public $senderData;
     public $stateData;
     public $categoryData;
+    public $category;
+    public $files;
     public function mount()
     {
 
@@ -36,11 +38,14 @@ class Test extends Component
         $this->description = $this->receivedData['description'];
         $this->received_at = $this->receivedData['received_at'];
         $this->sender = $this->receivedData['sender'];
+        //$this->category= $this->receivedData['sender']['category'];
+
         // $this->sender2 = $this->receivedData['sender']['id'];
         $this->state = $this->receivedData['state'];
-        //$this->state2 = $this->receivedData['state']['id'];
 
         $this->action = $this->receivedData['action'];
+        $this->files = $this->receivedData['file'];
+
 
         $this->getSender($this->category_id);
         $this->getState();
@@ -60,12 +65,12 @@ class Test extends Component
             'title' => $this->title,
             'description' => $this->description,
             'received_at' => $this->received_at,
-            'sender_id' => $this->sender_id,
-            'state_id' => $this->state_id,
+            'sender_id' => $this->sender,
+            'state_id' => $this->state,
             //'action'=> $this->action,
 
         ];
-
+       dd($requestData);
         // Create a GuzzleHttp client instance
         $client = new Client();
 
@@ -76,36 +81,45 @@ class Test extends Component
 
         ]);
 
-        // Check if the request was successful  pour afficher les erreur chabin koul wahda son message / coleur / crtique ou pas ....okkkk ida kan erreur me serveur return l home sinn y3awed yeb3ath sinn ...:p je vois dailleurs lyoumaweritlou w kali zidi afayess =Dhhhhhhh ma3lich apres nchofouhoum nebdaw fi hadi ?
-        /// makhalitekch meme pas takray  lol mdrrr okkk nkhalik testé wela ?? rak tssakssi? nn ok lol aya nokhrej 3la jal les data okkkk
         if ($response->getStatusCode() == 200) {
             // Resource edited successfully
             session()->flash('success', 'Resource edited successfully');
-            $this->redirect('/');
+            $this->redirect('/showrequest');
         } else {
             // Handle other status codes or scenarios
             session()->flash('error', 'Failed to edit resource');
             return redirect()->back();
         }
     }
+
+    public function deleteFile(){
+
+    }
     public function getSender($categoryId)
     {
-        // Send a GET request to the API endpoint with the provided category_id
-        $response = Http::get("http://localhost:8000/api/senders?category_id={$categoryId}");
+        $http = new Client();
 
-        // Check if the request was successful (status code 2xx)
-        if ($response->successful()) {
-            // Get the response body as an array
-            $this->senderData = $response->json();
+        // Make a request to the API endpoint to retrieve all senders
+        $response = $http->get('http://localhost:8000/api/senders');
+
+        // Check if the request was successful
+        if ($response->getStatusCode() === 200) {
+            // Decode the response body
+            $allSenders = json_decode($response->getBody(), true);
+
+            // Filter the sender data based on the category ID
+            $filteredSenders = array_filter($allSenders, function ($sender) use ($categoryId) {
+                return $sender['category_id'] == $categoryId;
+            });
+
+            // Update the senderData property with the filtered senders
+            $this->senderData = array_values($filteredSenders); // Re-index the array
         } else {
-            // Handle the case when the request was not successful
-            // For example, log an error or display a message to the user
-            // You may also want to initialize senderData with an empty array or null here
+            // Handle the case where the request fails
+            // You can log an error message or set senderData to an empty array
             $this->senderData = [];
-            // Log error or show error message
-            logger()->error("Failed to fetch sender data. Status code: {$response->status()}");
-            // Or show error message to user
-            // $this->addError('senderData', 'Failed to fetch sender data.');
+            // Log the error if needed
+            logger()->error('Failed to fetch senders. Status code: ' . $response->getStatusCode());
         }
     }
     public function getState()

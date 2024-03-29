@@ -19,7 +19,7 @@ class RequestsTable extends Component
     public $statuses = [];
     public $isLoading=True;
     public $selectedStatusId=1;
-
+    public $pageId;
     public function mount()
     {
        // $this->goToPage($this->currentPage);
@@ -77,11 +77,11 @@ class RequestsTable extends Component
 
     }
 
-    public function goToLink(){
+    public function goToaddrRequest(){
         //dd('test');
         $this->redirect('/addrequest');
     }
-    public function goToLink2($item){
+    public function goToEditRequest($item){
         //dd('test');
 
         //win rah l item ?ama? ok ok
@@ -91,7 +91,7 @@ class RequestsTable extends Component
         $this->redirect('/editrequest');
     }
 
-    public function goToLink3($item){
+    public function goToAddAction($item){
         //dd('test');
 
         //win rah l item ?ama? ok ok
@@ -101,7 +101,7 @@ class RequestsTable extends Component
         $this->redirect('/addactions');
     }
 
-    public function goToLink4($item){
+    public function goToShowRequest($item){
         //dd('test');
 
         //win rah l item ?ama? ok ok

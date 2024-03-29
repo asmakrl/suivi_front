@@ -133,7 +133,7 @@ class RequestsForm extends Component
             });
 
             // Update the senderData property with the filtered senders
-            $this->senderData = array_values($filteredSenders); // Re-index the array
+            $this->senderData = array_values($filteredSenders);
         } else {
             // Handle the case where the request fails
             // You can log an error message or set senderData to an empty array
