@@ -67,6 +67,7 @@
             اضف ملفات اخرى
         </button>
     </div>
+    @livewire('file-uploader')
 
 
     <div>

@@ -14,8 +14,7 @@
 <body class="antialiased">
 
 <livewire:test />
-<!-- Include the FileUploader component -->
-<livewire:file-uploader />
+
 
 
 </body>
