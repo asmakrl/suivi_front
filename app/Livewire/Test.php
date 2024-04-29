@@ -2,12 +2,16 @@
 
 namespace App\Livewire;
 
+
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Test extends Component
 {
+    use WithFileUploads;
+
     public $id;
     public $title;
     public $description;
@@ -28,6 +32,7 @@ class Test extends Component
     public $categoryData;
     public $category;
     public $files;
+
     public function mount()
     {
 
@@ -45,6 +50,8 @@ class Test extends Component
 
         $this->action = $this->receivedData['action'];
         $this->files = $this->receivedData['file'];
+        $this->sender_id = $this->receivedData['sender']['id'];
+        $this->state_id = $this->receivedData['state']['id'];
 
 
         $this->getSender($this->category_id);
@@ -65,12 +72,12 @@ class Test extends Component
             'title' => $this->title,
             'description' => $this->description,
             'received_at' => $this->received_at,
-            'sender_id' => $this->sender,
-            'state_id' => $this->state,
+            'sender_id' => $this->sender_id,
+            'state_id' => $this->state_id,
             //'action'=> $this->action,
 
         ];
-       dd($requestData);
+    //   dd($requestData);
         // Create a GuzzleHttp client instance
         $client = new Client();
 
@@ -84,7 +91,11 @@ class Test extends Component
         if ($response->getStatusCode() == 200) {
             // Resource edited successfully
             session()->flash('success', 'Resource edited successfully');
-            $this->redirect('/showrequest');
+            $data = json_decode($response->getBody(), true);
+
+            session()->put('dataToPass', $data);
+            // le s :poui
+            $this->redirect('/showrequests');
         } else {
             // Handle other status codes or scenarios
             session()->flash('error', 'Failed to edit resource');
@@ -92,9 +103,7 @@ class Test extends Component
         }
     }
 
-    public function deleteFile(){
 
-    }
     public function getSender($categoryId)
     {
         $http = new Client();
@@ -157,7 +166,7 @@ class Test extends Component
         $this->categoryData = $data;
 
     }
-    public function delete($id){
+    public function deleteAct($id){
 
         $http= New Client();
 
@@ -168,8 +177,49 @@ class Test extends Component
             return $act['id'] != $id;
         });
     }
+    public function deleteFile($file_id, $request_id)
+    {
+
+        $apiUrl = 'http://localhost:8000/api/files/' . $file_id;
+        // dd($apiUrl);
+
+        $http= New Client();
 
 
+        $response = $http->delete($apiUrl);
+
+        if ($response->getStatusCode()==200) {
+            // Retrieve updated data for the edit request page
+            $updatedDataResponse = $http->get('http://localhost:8000/api/requests/'.$request_id);
+
+            if ($updatedDataResponse->getStatusCode()==200) {
+                // Retrieve the updated data from the response
+
+                $updatedData = json_decode($updatedDataResponse->getBody(), true);
+
+                // Pass the updated data to the edit request page
+                return redirect('/showrequests', $updatedData)->with('success', 'File deleted successfully');
+            } else {
+                // Handle error if unable to fetch updated data
+                return redirect()->back()->with('error', 'Failed to fetch updated data after file deletion');
+            }
+
+        }
+    }
+    public function delete($id)
+    {
+
+        $apiUrl = 'http://localhost:8000/api/requests/' . $id;
+        // dd($apiUrl);
+
+        $http= New Client();
+
+
+        $http->delete($apiUrl);
+
+        $this->redirect('/');
+
+    }
 
     public function goToEditAction($item){
         //dd('test');
@@ -177,7 +227,6 @@ class Test extends Component
         $temp = $this->findActionById($item);
         //dd($temp);
         session()->put('dataToPass', $temp);
-        // hna nzidou ndirou ssesion -> w nzidou request w ki ndirou edit l action n3awdou nrej3ouha mais ma3alablich ida c bien ookk ?okk
 
         $this->redirect('/editactions');
     }
