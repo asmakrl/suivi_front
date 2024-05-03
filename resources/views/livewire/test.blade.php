@@ -60,15 +60,12 @@
             </div>
         @endforeach
     </div>
-
     <div class="mb-4">
         <!-- Button to open dialog -->
-        <button wire:click="openDialog" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+        <button wire:click="$dispatch('openModal', { component: 'file-uploader' , arguments: { requestId: {{ $id }} }})" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
             اضف ملفات اخرى
         </button>
-    </div>
-    @livewire('file-uploader')
-
+        @livewire('wire-elements-modal')
 
     <div>
         <h2 class="text-xl font-semibold mb-2">قائمة الإجراءات</h2>

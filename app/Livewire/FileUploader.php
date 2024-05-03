@@ -2,37 +2,50 @@
 
 namespace App\Livewire;
 
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use LivewireUI\Modal\ModalComponent;
 
-class FileUploader extends Component
+class FileUploader extends ModalComponent
 {
     use WithFileUploads;
+    // This will inject just the ID
+     public int $requestId;
+    public $fileInputs = [];
 
-    public $showDialog = false;
-    public $files;
 
-    public function openDialog()
+
+
+    public function mount()
     {
-        $this->showDialog = true;
+       // Gate::authorize('uploadFiles', $this->requestId);
+       // error_log($this->requestId);
     }
-
     public function closeDialog()
     {
-        $this->reset(['showDialog', 'files']);
+       // $this->reset(['showDialog', 'files']);
+        $this->closeModal();
+
     }
 
     public function uploadFiles()
     {
-        // Validate files
-        $this->validate([
-            'files.*' => 'required|file|max:10240', // Example validation for maximum file size (10MB)
-        ]);
+        $http = new Client();
+        foreach ($this->fileInputs as $uploadedFile) {
+             $http->attach(
 
-        // Save uploaded files
+                'files[]',
+                $uploadedFile->getRealPath(),
+                $uploadedFile->getClientOriginalName()
+            )->post('http://localhost:8000/api/files/' . $this->requestId);
 
-        // Clear the file input
-        $this->reset('files');
+
+        }
+
+        // Clear file inputs after upload
+        $this->fileInputs = [];
 
         // Close the dialog
         $this->closeDialog();

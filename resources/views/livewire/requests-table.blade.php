@@ -1,4 +1,19 @@
 <div wire:init="fetchRequests" class="container mx-auto p-8">
+    <!-- Search bar -->
+    <div>
+        <!-- Search input field -->
+        <input type="text" wire:model.debounce.500ms="searchTitle" placeholder="Search by Title">
+
+        <input type="text" wire:model.debounce.500ms="searchDescription" placeholder="Search by Description">
+
+        <input type="text" wire:model.debounce.500ms="searchSenderName" placeholder="Search by Sender Name">
+
+
+        <!-- Search button -->
+        <button wire:click="performSearch">Search</button>
+
+
+    </div>
     <div class="mt-8 overflow-x-auto relative">
         <!-- Loading indicator -->
         @if ($isLoading)
@@ -140,5 +155,7 @@
                     @endfor
                 </ul>
             </nav>
+        </div>
+
         </div>
     </div>

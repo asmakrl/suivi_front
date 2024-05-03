@@ -32,6 +32,7 @@ class Test extends Component
     public $categoryData;
     public $category;
     public $files;
+    public $showDialog = false;
 
     public function mount()
     {
@@ -186,25 +187,12 @@ class Test extends Component
         $http= New Client();
 
 
-        $response = $http->delete($apiUrl);
+        $http->delete($apiUrl);
 
-        if ($response->getStatusCode()==200) {
-            // Retrieve updated data for the edit request page
-            $updatedDataResponse = $http->get('http://localhost:8000/api/requests/'.$request_id);
-
-            if ($updatedDataResponse->getStatusCode()==200) {
-                // Retrieve the updated data from the response
-
-                $updatedData = json_decode($updatedDataResponse->getBody(), true);
-
-                // Pass the updated data to the edit request page
-                return redirect('/showrequests', $updatedData)->with('success', 'File deleted successfully');
-            } else {
-                // Handle error if unable to fetch updated data
-                return redirect()->back()->with('error', 'Failed to fetch updated data after file deletion');
-            }
-
-        }
+        // Remove the deleted action from the $this->action array
+        $this->files = array_filter($this->files, function ($file) use ($file_id) {
+            return $file['id'] != $file_id;
+        });
     }
     public function delete($id)
     {
@@ -239,7 +227,10 @@ class Test extends Component
         }
     }
 
-
+    public function openDialog()
+    {
+        $this->showDialog = true;
+    }
 
 
     public function render()

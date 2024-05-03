@@ -19,7 +19,9 @@ class RequestsTable extends Component
     public $statuses = [];
     public $isLoading=True;
     public $selectedStatusId=1;
-    public $pageId;
+    public $searchTitle = '';
+    public $searchDescription = '';
+    public $searchSenderName = '';
     public function mount()
     {
        // $this->goToPage($this->currentPage);
@@ -45,6 +47,40 @@ class RequestsTable extends Component
     }
 
 
+    public function performSearch()
+    {
+        $queryParams = [
+            'title' => $this->searchTitle,
+            'description' => $this->searchDescription,
+            'sender_name' => $this->searchSenderName,
+            // Add more search parameters as needed
+        ];
+
+        $queryString = http_build_query($queryParams);
+
+        $http = new Client();
+        $response = $http->get('http://localhost:8000/api/requests/search?' . $queryString);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Update Livewire component properties with search results
+        $this->requests = $data['data'];
+        $this->totalPages = $data['last_page'];
+    }
+    public function searchTitle()
+    {
+        $this->searchTitle->performSearch();
+    }
+
+    public function searchDescription()
+    {
+        $this->searchDescription->performSearch();
+    }
+
+    public function searchSenderName()
+    {
+        $this->searchSenderName->performSearch();
+    }
 
     public function goToPage($page)
     {
@@ -52,6 +88,7 @@ class RequestsTable extends Component
 
 
         $this->fetchRequests();
+
     }
 
     public function changeSize($size)
