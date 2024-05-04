@@ -75,7 +75,8 @@ public function mount()
         if ($response->getStatusCode() == 200) {
             session()->flash('message', 'Action Updated.');
             $data= json_decode($response->getBody(), true);
-            session()->put('dataToPass', $data);
+            dd($data);
+             session()->put('dataToPass', $data);
 
             $this->redirect('/editrequest');
         } else {

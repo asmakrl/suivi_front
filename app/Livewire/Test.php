@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use function Laravel\Prompts\error;
 
 class Test extends Component
 {
@@ -33,6 +34,7 @@ class Test extends Component
     public $category;
     public $files;
     public $showDialog = false;
+    public $listeners = ['requestUpdated'=>'updateReq'];
 
     public function mount()
     {
@@ -58,12 +60,19 @@ class Test extends Component
         $this->getSender($this->category_id);
         $this->getState();
         $this->getCategories();
-
+        $this->updateReq();
         // $this->delete($this->action['id']);
         // dd($this->receivedData);
     }
 
+    public function updateReq(){
+        //error_log("dddddddd");
+        $http = new Client();
+        $response = $http->get('http://localhost:8000/api/files/'. $this->id);
+        $data = json_decode($response->getBody(), true);
+        $this->files = $data;
 
+    }
 
     public function sendEdit()
     {
@@ -225,11 +234,6 @@ class Test extends Component
                 return $act;
             }
         }
-    }
-
-    public function openDialog()
-    {
-        $this->showDialog = true;
     }
 
 

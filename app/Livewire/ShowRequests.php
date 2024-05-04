@@ -5,8 +5,9 @@ namespace App\Livewire;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use LivewireUI\Modal\ModalComponent;
 
-class ShowRequests extends Component
+class ShowRequests extends ModalComponent
 {
     public $id;
     public $title;

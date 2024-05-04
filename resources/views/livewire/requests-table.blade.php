@@ -2,15 +2,13 @@
     <!-- Search bar -->
     <div>
         <!-- Search input field -->
-        <input type="text" wire:model.debounce.500ms="searchTitle" placeholder="Search by Title">
+        <div>
+            <input type="text" wire:model.live.debounce.500ms="titleSearch" placeholder="Search by Title">
+            <button wire:click="search">Search</button>
+        </div>
 
-        <input type="text" wire:model.debounce.500ms="searchDescription" placeholder="Search by Description">
-
-        <input type="text" wire:model.debounce.500ms="searchSenderName" placeholder="Search by Sender Name">
 
 
-        <!-- Search button -->
-        <button wire:click="performSearch">Search</button>
 
 
     </div>

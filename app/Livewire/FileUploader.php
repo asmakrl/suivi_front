@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\MultipartStream;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -21,28 +22,43 @@ class FileUploader extends ModalComponent
     public function mount()
     {
        // Gate::authorize('uploadFiles', $this->requestId);
-       // error_log($this->requestId);
+        //error_log($this->requestId);
     }
     public function closeDialog()
     {
        // $this->reset(['showDialog', 'files']);
-        $this->closeModal();
+        $this->closeModalWithEvents([
+            Test::class =>'requestUpdated'
+        ]);
 
     }
 
     public function uploadFiles()
     {
-        $http = new Client();
-        foreach ($this->fileInputs as $uploadedFile) {
-             $http->attach(
-
-                'files[]',
-                $uploadedFile->getRealPath(),
-                $uploadedFile->getClientOriginalName()
-            )->post('http://localhost:8000/api/files/' . $this->requestId);
 
 
+        $apiUrl = 'http://localhost:8000/api/files/' . $this->requestId;
+
+        $data = [];
+
+        foreach ($this->fileInputs as $file) {
+            $data[] = [
+                'name' => 'files[]',
+                'contents' => fopen($file->getRealPath(), 'r'),
+                'filename' => $file->getClientOriginalName()
+            ];
         }
+        // dd($data);
+        $multipart = new MultipartStream($data);
+        // dd($multipart);
+        $http = new Client();
+        $response = $http->post($apiUrl, [
+            'headers' => [
+                'Content-Type' => 'multipart/form-data; boundary=' . $multipart->getBoundary()
+            ],
+            'body' => $multipart
+        ]);
+
 
         // Clear file inputs after upload
         $this->fileInputs = [];
@@ -50,6 +66,9 @@ class FileUploader extends ModalComponent
         // Close the dialog
         $this->closeDialog();
     }
+
+
+
     public function render()
     {
         return view('livewire.file-uploader');
