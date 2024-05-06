@@ -5,6 +5,7 @@ namespace App\Livewire;
 use GuzzleHttp\Client;
 use Livewire\Component;
 use Livewire\WithPagination;
+use function Laravel\Prompts\error;
 
 class RequestsTable extends Component
 {
@@ -64,8 +65,7 @@ class RequestsTable extends Component
         $this->totalPages = $data['last_page'];
         $this->isLoading=False;
     }
-    else{$this->fetchRequests();
-    }}
+    }
 
 
     public function goToPage($page)
@@ -179,8 +179,14 @@ class RequestsTable extends Component
 
         return $data['status'];
     }
+    public function updated($name,$value){
+        error_log($name);
+        error_log($value);
+        if($name=='SearchKey' && $value==''){
+            $this->fetchRequests();
+        }
 
-
+    }
     public function render()
     {
         return view('livewire.requests-table', [

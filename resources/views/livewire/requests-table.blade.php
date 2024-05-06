@@ -3,7 +3,7 @@
     <div class="mt-8">
         <!-- Search input field -->
         <div class="flex items-center">
-            <input type="text" wire:model="SearchKey" wire:keydown.enter="search" placeholder="Search by Title"
+            <input type="search" wire:model.live="SearchKey" wire:keydown.enter="search" placeholder="Search by Title"
                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
             <button wire:click="search" class="ml-2 px-3 py-2 bg-blue-500 text-white rounded">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24"
