@@ -104,7 +104,6 @@ class Test extends Component
             $data = json_decode($response->getBody(), true);
 
             session()->put('dataToPass', $data);
-            // le s :poui
             $this->redirect('/showrequests');
         } else {
             // Handle other status codes or scenarios

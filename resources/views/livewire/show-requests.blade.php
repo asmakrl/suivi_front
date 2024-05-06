@@ -57,21 +57,21 @@
                 <ul class="list-none p-0">
                     <li class="mb-2"><strong>نوع الإجراء:</strong> {{ $act['type']['action_type'] }}</li>
                     <li class="mb-2"><strong>وقت الإجراء:</strong> {{ $act['action_time'] }}</li>
-                    <li class="mb-2"><strong>الملاحظات:</strong> {{ $act['name'] }}</li>
+                    <li class="mb-2"><strong>الملاحظات:</strong><pre> {{ $act['name'] }} </pre></li>
                 </ul>
             </div>
         @endforeach
     </div>
-    <button wire:click="goToEditRequest()"
-            class="mr-2 px-4 py-2 bg-orange-500 text-white rounded"><svg
-            xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit"
-            width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" fill="none" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-            <path
-                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-            <path d="M16 5l3 3" />
-        </svg></button>
+
+    <!-- Centered Edit button -->
+    <div class="flex justify-center">
+        <button wire:click="goToEditRequest()" class="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 focus:outline-none focus:bg-orange-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M12 20h9"></path>
+                <path d="M16.496 4.496l3.504 3.504l-9 9l-3.5 1.5l1.5 -3.5l9 -9"></path>
+            </svg>
+            <span class="ml-2">تعديل الملف</span>
+        </button>
+    </div>
 </div>

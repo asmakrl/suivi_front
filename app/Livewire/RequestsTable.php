@@ -19,7 +19,7 @@ class RequestsTable extends Component
     public $statuses = [];
     public $isLoading=True;
     public $selectedStatusId=1;
-    public $titleSearch = '';
+    public $SearchKey = '';
     public function mount()
     {
        // $this->goToPage($this->currentPage);
@@ -47,19 +47,25 @@ class RequestsTable extends Component
 
     public function search()
     {
-        $requestData = [
-            'title' => $this->titleSearch,
-        ];
-
         $http = new Client();
-        $response = $http->get('http://localhost:8000/api/requests/search', $requestData);
+
+        //$this->size = request()->query('size',20); // Get the current page from query string, default is 1
+        if (!empty($this->SearchKey)) {
+
+            $response = $http->get('http://localhost:8000/api/requests/search/'.$this->SearchKey);
+        // convert response to LengthAwarePaginator
+
 
         $data = json_decode($response->getBody(), true);
 
-        // Update Livewire component properties with search results
+
         $this->requests = $data['data'];
+        // Calculate the total number of pages
         $this->totalPages = $data['last_page'];
+        $this->isLoading=False;
     }
+    else{$this->fetchRequests();
+    }}
 
 
     public function goToPage($page)

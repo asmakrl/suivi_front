@@ -27,9 +27,7 @@ class FileUploader extends ModalComponent
     public function closeDialog()
     {
        // $this->reset(['showDialog', 'files']);
-        $this->closeModalWithEvents([
-            Test::class =>'requestUpdated'
-        ]);
+        $this->closeModal();
 
     }
 
@@ -64,8 +62,9 @@ class FileUploader extends ModalComponent
         $this->fileInputs = [];
 
         // Close the dialog
-        $this->closeDialog();
-    }
+        $this->closeModalWithEvents([
+            Test::class =>'requestUpdated'
+        ]);    }
 
 
 

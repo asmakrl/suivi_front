@@ -74,7 +74,7 @@
                 <ul class="list-none p-0">
                     <li class="mb-2"><strong>نوع الإجراء:</strong> {{ $act['type']['action_type'] }}</li>
                     <li class="mb-2"><strong>وقت الإجراء:</strong> {{ $act['action_time'] }}</li>
-                    <li class="mb-2"><strong>الملاحظات:</strong> {{ $act['name'] }}</li>
+                    <li class="mb-2"><strong>الملاحظات:</strong><pre> {{ $act['name'] }}</pre></li>
                 </ul>
                 <div class="flex justify-end">
                     <button wire:click="goToEditAction({{ $act['id'] }})" class="px-3 py-1 bg-red-500 text-white rounded-md mr-2 hover:bg-red-600 focus:outline-none focus:bg-red-600">تعديل</button>
@@ -83,20 +83,19 @@
             </div>
         @endforeach
     </div>
-    <button onclick="confirm('هل أنت متأكد من حذف هذا الطلب؟')"
-            wire:click="delete({{ $id}})"
-            class="mr-2 ml-2 px-4 py-2 bg-red-500 text-white rounded"><svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-trash" width="24" height="24"
-            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M4 7l16 0" />
-            <path d="M10 11l0 6" />
-            <path d="M14 11l0 6" />
-            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-        </svg></button>
+        <div  class="flex justify-center">
+            <button onclick="confirm('هل أنت متأكد من حذف هذا الطلب؟')" wire:click="delete({{ $id }})" class="px-4 py-2 bg-red-500 text-white rounded">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M4 7l16 0" />
+                    <path d="M10 11l0 6" />
+                    <path d="M14 11l0 6" />
+                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                </svg>
+                <span class="ml-2">حذف الملف</span>
+            </button>
+        </div>
 
 
 </div>

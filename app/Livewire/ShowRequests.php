@@ -73,7 +73,6 @@ class ShowRequests extends ModalComponent
     public function goToEditRequest(){
         //dd('test');
 
-        //win rah l item ?ama? ok ok
         $temp = $this->receivedData;
         session()->put('dataToPass', $temp);
 
