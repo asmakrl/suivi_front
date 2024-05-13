@@ -117,13 +117,14 @@ class RequestsForm extends Component
 
     public function getSender($category_id)
     {
-        $http = new Client();
+
+        $client = new Client;
 
         // Make a request to the API endpoint to retrieve all senders
-        $response = $http->get('http://localhost:8000/api/senders');
+        $response = $client->get('http://localhost:8000/api/senders');
 
         // Check if the request was successful
-        if ($response->getStatusCode() === 200) {
+        if ($response->getStatusCode() == 200) {
             // Decode the response body
             $allSenders = json_decode($response->getBody(), true);
 

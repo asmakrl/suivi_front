@@ -19,7 +19,7 @@
         </div>
         <div class="mb-4">
             <label for="category" class="block text-sm font-semibold mb-2">فئة المرسل:</label>
-            <select name="category_id" wire:model="category_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" wire:change="getSender($event.target.value)">
+            <select id="category_id" wire:model="category_id" wire:change="getSender($event.target.value)" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" >
                 <option value="">{{$sender['category']['category']}}</option>
                 @foreach ($categoryData  as $item)
                     <option value="{{ $item['id'] }}">{{ $item['category'] }}</option>

@@ -26,14 +26,14 @@ class Test extends Component
     public $state_id;
     public $action;
     public $status;
-    public $category_id=0;
+    public $category_id;
     public $receivedData;
     public $senderData;
     public $stateData;
     public $categoryData;
     public $category;
     public $files;
-    public $showDialog = false;
+    public $isLoading=True;
     public $listeners = ['requestUpdated'=>'updateReq'];
 
     public function mount()
@@ -121,7 +121,7 @@ class Test extends Component
         $response = $http->get('http://localhost:8000/api/senders');
 
         // Check if the request was successful
-        if ($response->getStatusCode() === 200) {
+        if ($response->getStatusCode() == 200) {
             // Decode the response body
             $allSenders = json_decode($response->getBody(), true);
 

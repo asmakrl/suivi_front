@@ -58,10 +58,7 @@ class AddActions extends Component
 
     }
     public function save(){
-        //:dd('test');
-        //localhost:8000/api/requests/29/actions/4
-        // win rahi l'action ?hadi li telfetli lol ah ok ok
-        // hna dok ndirou notre json
+
         $http = new Client();
         $actionData = [
             'name' => $this->name,
