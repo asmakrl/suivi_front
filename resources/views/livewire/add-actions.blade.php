@@ -32,6 +32,26 @@
             <input wire:model="date" type="date" id="date" name="date" value="{{ $date }}" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
         </div>
         <div class="mb-4">
+            <label for="category" class="block text-sm font-semibold mb-2">فئة المرسل:</label>
+            <select wire:model="category_id" id="category_id" wire:change="getSender($event.target.value)"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+                <option value="">اختر فئة المرسل</option>
+                @foreach ($categoryData as $category)
+                    <option value="{{ $category['id'] }}">{{ $category['category'] }}</option>
+                @endforeach
+            </select>
+            <label for="sender" class="block text-sm font-semibold mb-2">المرسل:</label>
+            <select name="sender_id" wire:model="sender"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+                <option value="">اختر المرسل</option>
+                @forelse($senderData as $item)
+                    <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+                @empty
+                    <option value="" disabled>لا يوجد مرسلون متاحون</option>
+                @endforelse
+            </select>
+        </div>
+        <div class="mb-4">
             <label for="notes" class="block text-sm font-semibold mb-1">ملاحظات:</label>
             <textarea wire:model="name" id="name" name="name" rows="4" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">{{ $name }}</textarea>
         </div>

@@ -20,7 +20,7 @@
         <div class="mb-4">
             <label for="category" class="block text-sm font-semibold mb-2">فئة المرسل:</label>
             <select id="category_id" wire:model="category_id" wire:change="getSender($event.target.value)" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" >
-                <option value="">{{$sender['category']['category']}}</option>
+                <option value="}">{{$sender['category']['category']}}</option>
                 @foreach ($categoryData  as $item)
                     <option value="{{ $item['id'] }}">{{ $item['category'] }}</option>
                 @endforeach
@@ -74,6 +74,7 @@
                 <ul class="list-none p-0">
                     <li class="mb-2"><strong>نوع الإجراء:</strong> {{ $act['type']['action_type'] }}</li>
                     <li class="mb-2"><strong>وقت الإجراء:</strong> {{ $act['action_time'] }}</li>
+                    <li class="mb-2"><strong>المرسل اليه:</strong> {{ $act['sender']['name'] }}</li>
                     <li class="mb-2"><strong>الملاحظات:</strong><pre> {{ $act['name'] }}</pre></li>
                 </ul>
                 <div class="flex justify-end">

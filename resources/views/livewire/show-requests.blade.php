@@ -57,6 +57,8 @@
                 <ul class="list-none p-0">
                     <li class="mb-2"><strong>نوع الإجراء:</strong> {{ $act['type']['action_type'] }}</li>
                     <li class="mb-2"><strong>وقت الإجراء:</strong> {{ $act['action_time'] }}</li>
+                    <li class="mb-2"><strong>المرسل اليه:</strong> {{ $act['sender']['name'] }}</li>
+
                     <li class="mb-2"><strong>الملاحظات:</strong><pre> {{ $act['name'] }} </pre></li>
                 </ul>
             </div>

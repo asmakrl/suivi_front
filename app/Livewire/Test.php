@@ -56,10 +56,10 @@ class Test extends Component
         $this->sender_id = $this->receivedData['sender']['id'];
         $this->state_id = $this->receivedData['state']['id'];
 
+        $this->getCategories();
 
         $this->getSender($this->category_id);
         $this->getState();
-        $this->getCategories();
         $this->updateReq();
         // $this->delete($this->action['id']);
         // dd($this->receivedData);
