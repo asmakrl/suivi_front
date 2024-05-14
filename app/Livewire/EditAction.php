@@ -49,7 +49,7 @@ public function mount()
     $this->gettype();
    // $this->getState();
 
-    //dd($this->category);
+//    dd($this->receivedData);
 }
 
     public function getSender($category_id)

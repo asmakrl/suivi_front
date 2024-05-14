@@ -28,6 +28,7 @@ class AddActions extends Component
     {
         //dd($this->receivedData = session()->get('dataToPass'));
         $this->receivedData = session()->get('dataToPass');
+        $this->id = $this->receivedData['id'];
         $this->title = $this->receivedData['title'];
         $this->description = $this->receivedData['description'];
         $this->received_at = $this->receivedData['received_at'];
@@ -119,11 +120,13 @@ class AddActions extends Component
             'name' => $this->name,
             'action_time' =>$this->date,//$this->date,
             'request_id' => $this->id,
+
             'sender_id' => $this->sender,
+
             'type_id' => $this->action,
 
         ];
-//        dd($actionData);
+       //dd($actionData);
 //        $response = $http->post('http://localhost:8000/api/actions');
         $response= $http->post('http://localhost:8000/api/actions', [
             'headers' => ['Content-Type' => 'application/json'],

@@ -62,7 +62,7 @@ class Test extends Component
         $this->getState();
         $this->updateReq();
         // $this->delete($this->action['id']);
-        // dd($this->receivedData);
+        // dd($this->action);
     }
 
     public function updateReq(){
@@ -221,7 +221,7 @@ class Test extends Component
         //dd('test');
 
         $temp = $this->findActionById($item);
-        //dd($temp);
+//        dd($temp);
         session()->put('dataToPass', $temp);
 
         $this->redirect('/editactions');
