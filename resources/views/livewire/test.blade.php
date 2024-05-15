@@ -20,13 +20,13 @@
         <div class="mb-4">
             <label for="category" class="block text-sm font-semibold mb-2">فئة المرسل:</label>
             <select id="category_id" wire:model="category_id" wire:change="getSender($event.target.value)" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" >
-                <option value="}">{{$sender['category']['category']}}</option>
+                <option value="">{{$sender['category']['category']}}</option>
                 @foreach ($categoryData  as $item)
                     <option value="{{ $item['id'] }}">{{ $item['category'] }}</option>
                 @endforeach
             </select>
             <label for="sender" class="block text-sm font-semibold mb-2">المرسل:</label>
-            <select name="sender_id" wire:model="sender_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+            <select name="sender_id" wire:model="sender" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
                 <option value="">{{$sender['name']}}</option>
                 @forelse($senderData as $obj)
                     <option value="{{ $obj['id'] }}">{{ $obj['name'] }}</option>

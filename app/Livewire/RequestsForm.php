@@ -115,7 +115,25 @@ class RequestsForm extends Component
         $this->state = '';
     }
 
-    public function getSender($category_id)
+    public function getSender($categoryId){
+
+        $client = new Client();
+
+        $response = $client->get('http://localhost:8000/api/senders/'. $categoryId);
+
+        $senders = json_decode($response->getBody(), true);
+
+        // Check if the request was successful
+        if ($response->getStatusCode() == 200) {
+            $this->senderData = $senders;
+        }
+        else{
+            $this->senderData = [];
+            logger()->error('Failed to fetch senders. Status code: ' . $response->getStatusCode());
+
+        }
+    }
+    public function getSender2($category_id)
     {
 
         $client = new Client;
