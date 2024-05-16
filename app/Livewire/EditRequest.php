@@ -9,7 +9,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use function Laravel\Prompts\error;
 
-class Test extends Component
+class EditRequest extends Component
 {
     use WithFileUploads;
 
@@ -46,7 +46,7 @@ class Test extends Component
         $this->description = $this->receivedData['description'];
         $this->received_at = $this->receivedData['received_at'];
         $this->sender = $this->receivedData['sender'];
-        //$this->category= $this->receivedData['sender']['category'];
+        $this->category_id= $this->receivedData['sender']['category']['id'];
 
         // $this->sender2 = $this->receivedData['sender']['id'];
         $this->state = $this->receivedData['state'];
@@ -113,6 +113,7 @@ class Test extends Component
     }
 
     public function getSender($categoryId){
+        error_log($categoryId);
 
         $client = new Client();
 
@@ -255,6 +256,6 @@ class Test extends Component
 
     public function render()
     {
-        return view('livewire.test');
+        return view('livewire.edit-request');
     }
 }

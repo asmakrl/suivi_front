@@ -57,7 +57,7 @@
 </head>
 <body class="antialiased">
 
-<livewire:test />
+<livewire:edit-request/>
 
 
 

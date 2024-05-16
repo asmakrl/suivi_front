@@ -54,6 +54,8 @@ public function mount()
 
     public function getSender($categoryId){
 
+        error_log($categoryId);
+
         $client = new Client();
 
         $response = $client->get('http://localhost:8000/api/senders/'. $categoryId);

@@ -97,6 +97,7 @@
                 <span class="ml-2">حذف الملف</span>
             </button>
         </div>
+    </div>
 
 
 </div>
