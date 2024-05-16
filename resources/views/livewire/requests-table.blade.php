@@ -3,7 +3,7 @@
     <div class="mt-8">
         <!-- Search input field -->
         <div class="flex items-center">
-            <input type="search" wire:model.live="SearchKey" wire:keydown.enter="search" placeholder="Search by Title"
+            <input type="search" wire:model.live="SearchKey" wire:keydown.enter="search" placeholder="البحث"
                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
             <button wire:click="search" class="ml-2 px-3 py-2 bg-blue-500 text-white rounded">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24"
@@ -26,7 +26,7 @@
 
         <div class="mt-8 flex justify-between items-center">
             <div>
-                <button wire:click="goToaddrRequest()" class="mb-2 px-6 py-3 bg-blue-500 text-white rounded"> إضافة طلب</button>
+                <button wire:click="goToaddrRequest()" class="mb-2 px-6 py-3 bg-blue-500 text-white rounded"> إضافة ملف</button>
             </div>
         </div>
         <div class="overflow-x-auto">
@@ -149,15 +149,33 @@
         <div class="mt-8 flex justify-center">
             <nav aria-label="Page navigation">
                 <ul class="flex list-none">
+                    <!-- Previous Page Button -->
+                    <li>
+                        <button wire:click="previousPage"
+                                class="px-3 py-2 bg-gray-200 text-gray-600 hover:bg-gray-300 rounded">
+                            السابق
+                        </button>
+                    </li>
+
+                    <!-- Page Buttons -->
                     @for ($i = 1; $i <= $totalPages; $i++)
                         <li>
                             <button wire:click="goToPage({{ $i }})"
-                                    class="px-3 py-2 bg-gray-200 text-gray-600 hover:bg-gray-300 rounded {{ $i == $currentPage ? 'font-bold' : '' }}">{{ $i }}</button>
+                                    class="px-3 py-2 bg-gray-200 text-gray-600 hover:bg-gray-300 rounded {{ $i == $currentPage ? 'font-bold' : '' }}">
+                                {{ $i }}
+                            </button>
                         </li>
                     @endfor
+
+                    <!-- Next Page Button -->
+                    <li>
+                        <button wire:click="nextPage"
+                                class="px-3 py-2 bg-gray-200 text-gray-600 hover:bg-gray-300 rounded">
+                            التالي
+                        </button>
+                    </li>
                 </ul>
             </nav>
         </div>
 
-        </div>
     </div>

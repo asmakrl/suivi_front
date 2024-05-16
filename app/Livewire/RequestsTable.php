@@ -76,6 +76,21 @@ class RequestsTable extends Component
         $this->fetchRequests();
 
     }
+    public function nextPage()
+    {
+        if ($this->currentPage < $this->totalPages) {
+            $this->currentPage++;
+            $this->fetchRequests();
+        }
+    }
+
+    public function previousPage()
+    {
+        if ($this->currentPage > 1) {
+            $this->currentPage--;
+            $this->fetchRequests();
+        }
+    }
 
     public function changeSize($size)
     {
