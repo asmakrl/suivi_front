@@ -143,7 +143,15 @@
                     <option value="100">100</option>
                 </select>
             </div>
-
+            <div class="text-sm text-gray-600 mb-4">
+                عرض
+                <span class="font-semibold">{{ ($currentPage - 1) * $size + 1 }}</span>
+                إلى
+                <span class="font-semibold">{{ max($currentPage * $size, $totalPages) }}</span>
+                من
+                <span class="font-semibold">{{ $totalItems }}</span>
+                مُدخل
+            </div>
         </div>
 
         <div class="mt-8 flex justify-center">
@@ -179,3 +187,4 @@
         </div>
 
     </div>
+</div>

@@ -21,6 +21,7 @@ class RequestsTable extends Component
     public $isLoading=True;
     public $selectedStatusId=1;
     public $SearchKey = '';
+    public $totalItems;
     public function mount()
     {
        // $this->goToPage($this->currentPage);
@@ -42,6 +43,13 @@ class RequestsTable extends Component
         $this->requests = $data['data'];
         // Calculate the total number of pages
         $this->totalPages = $data['last_page'];
+
+        $this->totalItems = $data['total'];
+
+
+       // $this->totalItems = count($data);
+
+
         $this->isLoading=False;
     }
 
@@ -63,6 +71,7 @@ class RequestsTable extends Component
         $this->requests = $data['data'];
         // Calculate the total number of pages
         $this->totalPages = $data['last_page'];
+
         $this->isLoading=False;
     }
     }
