@@ -17,6 +17,7 @@ class AddActions extends Component
     public $date;
     public $action;
     public $category_id;
+    public $response_id ='01';
     public $receivedData;
     public $typeData = [];
     public $senderData = [];
@@ -143,9 +144,11 @@ class AddActions extends Component
             'sender_id' => $this->sender,
 
             'type_id' => $this->action,
+            'response_id' => $this->response_id,
+
 
         ];
-       //dd($actionData);
+    //   dd($actionData);
 //        $response = $http->post('http://localhost:8000/api/actions');
         $response= $http->post('http://localhost:8000/api/actions', [
             'headers' => ['Content-Type' => 'application/json'],

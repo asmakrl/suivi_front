@@ -39,3 +39,7 @@ Route::get('/editactions', function () {
     return view('editact');
 });
 
+Route::get('/showresponses', function () {
+    return view('showresponse');
+});
+

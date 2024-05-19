@@ -63,7 +63,7 @@ class FileUploader extends ModalComponent
 
         // Close the dialog
         $this->closeModalWithEvents([
-            Test::class =>'requestUpdated'
+            EditRequest::class =>'requestUpdated'
         ]);    }
 
 

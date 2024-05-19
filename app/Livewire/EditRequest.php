@@ -33,6 +33,7 @@ class EditRequest extends Component
     public $categoryData;
     public $category;
     public $files;
+    public $response;
     public $isLoading=True;
     public $listeners = ['requestUpdated'=>'updateReq'];
 
@@ -53,6 +54,8 @@ class EditRequest extends Component
 
         $this->action = $this->receivedData['action'];
         $this->files = $this->receivedData['file'];
+        //$this->response = $this->receivedData['action']['response'];
+
         $this->sender_id = $this->receivedData['sender']['id'];
         $this->state_id = $this->receivedData['state']['id'];
 
@@ -244,6 +247,15 @@ class EditRequest extends Component
 
         $this->redirect('/editactions');
     }
+
+    public function goToShowResponse(){
+        dd($this->receivedData);
+        $temp = $this->findResponseById($item);
+        dd($temp);
+        session()->put('dataToPass', $temp);
+
+        $this->redirect('/showresponses');
+    }
     public function findActionById($id)
     {
         foreach ($this->action as $act) {
@@ -252,6 +264,14 @@ class EditRequest extends Component
             }
         }
     }
+
+    public function findResponseById($id)
+    {
+        foreach ($this->action['response'] as $res) {
+            if ($res['id'] == $id) {
+                return $res;
+            }
+        }}
 
 
     public function render()
