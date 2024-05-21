@@ -33,6 +33,7 @@ class EditRequest extends Component
     public $categoryData;
     public $category;
     public $files;
+
     public $response;
     public $isLoading=True;
     public $listeners = ['requestUpdated'=>'updateReq'];
@@ -40,13 +41,15 @@ class EditRequest extends Component
     public function mount()
     {
 
+      //  dd($this->receivedData = session()->get('dataToPass'));
         $this->receivedData = session()->get('dataToPass');
-
         $this->id = $this->receivedData['id'];
         $this->title = $this->receivedData['title'];
         $this->description = $this->receivedData['description'];
         $this->received_at = $this->receivedData['received_at'];
         $this->sender = $this->receivedData['sender'];
+        $this->response = $this->receivedData['action'][0]['response'];
+
         $this->category_id= $this->receivedData['sender']['category']['id'];
 
         // $this->sender2 = $this->receivedData['sender']['id'];
@@ -59,15 +62,16 @@ class EditRequest extends Component
         $this->sender_id = $this->receivedData['sender']['id'];
         $this->state_id = $this->receivedData['state']['id'];
 
+        $this->category_id = $this->receivedData['sender']['category_id'];
+    }
+    public function load()
+    {
         $this->getCategories();
-
-        $this->getSender($this->category_id);
+        // $this->getAllSender();
         $this->getState();
         $this->updateReq();
-        // $this->delete($this->action['id']);
-        // dd($this->action);
+        $this->isLoading = false;
     }
-
     public function updateReq(){
         //error_log("dddddddd");
         $http = new Client();
@@ -115,23 +119,27 @@ class EditRequest extends Component
         }
     }
 
-    public function getSender($categoryId){
-        error_log($categoryId);
+    public function getSender()
+    {
+        $this->senderData = [];
 
-        $client = new Client();
+        // Check if the categoryData is not empty
+        if (!empty($this->categoryData)) {
+            // Filter the categoryData to get the specific category with the matching ID
+            $filteredCategories = array_filter($this->categoryData, function ($cat) {
+                return $cat['id'] == $this->category_id;
+            });
 
-        $response = $client->get('http://localhost:8000/api/senders/'. $categoryId);
-
-        $senders = json_decode($response->getBody(), true);
-
-        // Check if the request was successful
-        if ($response->getStatusCode() == 200) {
-            $this->senderData = $senders;
-        }
-        else{
-            $this->senderData = [];
-            logger()->error('Failed to fetch senders. Status code: ' . $response->getStatusCode());
-
+            // Check if any category is found
+            if (!empty($filteredCategories)) {
+                // Get the first category (assuming there's only one category with the same ID)
+                $category = reset($filteredCategories);
+                // Check if the sender key exists in the category data
+                if (isset($category['sender'])) {
+                    // Assign sender data to senderData property
+                    $this->senderData = $category['sender'];
+                }
+            }
         }
     }
     public function getSender2($categoryId)
@@ -194,6 +202,7 @@ class EditRequest extends Component
         // Check if the decoding was successful
 
         $this->categoryData = $data;
+        $this->getSender();
 
     }
     public function deleteAct($id){
@@ -248,10 +257,10 @@ class EditRequest extends Component
         $this->redirect('/editactions');
     }
 
-    public function goToShowResponse(){
-        dd($this->receivedData);
+    public function goToShowResponse($item){
+        //dd($this->receivedData);
         $temp = $this->findResponseById($item);
-        dd($temp);
+        //dd($temp);
         session()->put('dataToPass', $temp);
 
         $this->redirect('/showresponses');
@@ -267,7 +276,7 @@ class EditRequest extends Component
 
     public function findResponseById($id)
     {
-        foreach ($this->action['response'] as $res) {
+        foreach ($this->response as $res) {
             if ($res['id'] == $id) {
                 return $res;
             }
