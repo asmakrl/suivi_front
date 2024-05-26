@@ -36,6 +36,7 @@ class EditRequest extends Component
 
     public $response;
     public $isLoading=True;
+    public $isOpen = [];
     public $listeners = ['requestUpdated'=>'updateReq'];
 
     public function mount()
@@ -63,6 +64,9 @@ class EditRequest extends Component
         $this->state_id = $this->receivedData['state']['id'];
 
         $this->category_id = $this->receivedData['sender']['category_id'];
+        foreach ($this->action as $action) {
+            $this->isOpen[$action['id']] = false; // Initialize all as closed
+        }
     }
     public function load()
     {
@@ -70,6 +74,7 @@ class EditRequest extends Component
         // $this->getAllSender();
         $this->getState();
         $this->updateReq();
+
         $this->isLoading = false;
     }
     public function updateReq(){
@@ -79,6 +84,14 @@ class EditRequest extends Component
         $data = json_decode($response->getBody(), true);
         $this->files = $data;
 
+    }
+
+
+
+    public function toggle($id)
+    {
+      //  dd($id);
+        $this->isOpen[$id] = !$this->isOpen[$id];
     }
 
     public function sendEdit()
