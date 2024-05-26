@@ -79,7 +79,7 @@
                 <div class="flex items-center justify-between bg-gray-100 rounded-md p-4 mb-4">
                     <div>{{ $file['title'] }}</div>
                     <button onclick="confirm('هل أنت متأكد أنك تريد حذف هذا الملف؟')"
-                            wire:click="deleteFile('{{ $file['id'] }}', '{{ $file['request_id'] }}')"
+                            wire:click="deleteFile('{{ $file['id'] }}')"
                             class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600">حذف</button>
                 </div>
             @endforeach
@@ -92,6 +92,7 @@
             class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
             اضف ملفات اخرى
         </button>
+        @livewire('wire-elements-modal')
 
 
         <div>
@@ -108,17 +109,19 @@
                             </li>
                         </ul>
                     <div class="flex justify-end">
-                        <button wire:click="goToShowResponse({{$act['response'][0]['id']}})" class="px-3 py-1 bg-blue-500 text-white rounded-md mr-2 hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="icon icon-tabler icon-tabler-clipboard" width="24" height="24"
-                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
-                                 stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path
-                                    d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
-                                <path
-                                    d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                            </svg></button>
+                        @if(!empty($act['response']))
+                            <button wire:click="goToShowResponse({{$act['response'][0]['id']}})" class="px-3 py-1 bg-blue-500 text-white rounded-md mr-2 hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="icon icon-tabler icon-tabler-clipboard" width="24" height="24"
+                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+                                     stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+                                    <path
+                                        d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                </svg></button>
+                        @endif
                         <button wire:click="goToEditAction({{ $act['id'] }})" class="px-3 py-1 bg-green-500 text-white rounded-md mr-2 hover:bg-green-600 focus:outline-none focus:bg-green-600">
                             <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -140,12 +143,12 @@
                 @endforeach
             @endif
         </div>
-        <div  class="flex justify-center">
-            <button onclick="confirm('هل أنت متأكد من حذف هذا الطلب؟')" wire:click="delete({{ $id }})" class="px-4 py-2 bg-red-500 text-white rounded">
+        <div class="flex justify-center" x-data>
+            <button @click="if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) { $wire.delete({{ $id }}) }"
+                    class="px-4 py-2 bg-red-500 text-white rounded">
                 <span class="ml-2">حذف الملف</span>
             </button>
         </div>
-
 
     </div>
 </div>

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use function Laravel\Prompts\error;
-
+use Barryvdh\Debugbar\Facades\Debugbar as FacadesDebugbar;
 class EditRequest extends Component
 {
     use WithFileUploads;
@@ -41,14 +41,14 @@ class EditRequest extends Component
     public function mount()
     {
 
-      //  dd($this->receivedData = session()->get('dataToPass'));
+     //   dd($this->receivedData = session()->get('dataToPass'));
         $this->receivedData = session()->get('dataToPass');
         $this->id = $this->receivedData['id'];
         $this->title = $this->receivedData['title'];
         $this->description = $this->receivedData['description'];
         $this->received_at = $this->receivedData['received_at'];
         $this->sender = $this->receivedData['sender'];
-        $this->response = $this->receivedData['action'][0]['response'];
+       // $this->response = $this->receivedData['action'][0]['response'];
 
         $this->category_id= $this->receivedData['sender']['category']['id'];
 
@@ -216,13 +216,12 @@ class EditRequest extends Component
             return $act['id'] != $id;
         });
     }
-    public function deleteFile($file_id, $request_id)
+    public function deleteFile($file_id)
     {
-
         $apiUrl = 'http://localhost:8000/api/files/' . $file_id;
         // dd($apiUrl);
 
-        $http= New Client();
+        $http = new Client();
 
 
         $http->delete($apiUrl);

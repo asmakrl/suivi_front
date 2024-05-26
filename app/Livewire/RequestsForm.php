@@ -74,14 +74,14 @@ class RequestsForm extends Component
             ],
 
         ];
-
-        foreach ($this->files as $file) {
-            $data[] = [
-                'name' => 'files[]',
-                'contents' => fopen($file->getRealPath(), 'r'),
-                'filename' => $file->getClientOriginalName()
-            ];
-        }
+        if($this->files){
+            foreach ($this->files as $file) {
+                $data[] = [
+                    'name' => 'files[]',
+                    'contents' => fopen($file->getRealPath(), 'r'),
+                    'filename' => $file->getClientOriginalName()
+                ];
+            }}
         // dd($data);
         $multipart = new MultipartStream($data);
         // dd($multipart);
