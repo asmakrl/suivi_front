@@ -1,9 +1,9 @@
 <div class="container mx-auto p-8 text-right" style="direction: rtl;">
 
-    <h2 class="text-2xl font-bold">عرض الملف</h2>
-    <div class="float-left">
+    <h2 class="text-2xl font-bold mb-4">عرض الملف</h2>
+    <div class="mb-4">
         <a wire:click="test()" class="inline-flex items-center px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:bg-gray-300">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-back-up">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-arrow-back-up">
                 <path stroke="none" d="M0 0h24v24H0z"></path>
                 <path d="M9 14l-4 -4l4 -4"></path>
                 <path d="M5 10h11a4 4 0 1 1 0 8h-1"></path>
@@ -12,6 +12,7 @@
         </a>
     </div>
     <hr class="border-b border-gray-300 mb-4">
+
     <form style="direction: rtl;">
         @csrf
         <input type="hidden" name="id" value="{{ $id }}">
@@ -43,28 +44,47 @@
 
     <div class="mb-4">
         <h2 class="text-xl font-semibold mb-2">الملفات المرفقة</h2>
-        @foreach ($files as $file)
-            <div class="flex items-center justify-between bg-gray-100 rounded-md p-4 mb-4">
-                <div>{{ $file['title'] }}</div>
-                <button wire:click="downloadFile('{{ $file['file_path'] }}')" class="px-3 py-1 bg-blue-500 text-white rounded">
-                    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-download"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 11l5 5l5 -5" /><path d="M12 4l0 12" /></svg>
-                </button>
-            </div>
-        @endforeach
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            @foreach ($files as $file)
+                <div class="flex items-center justify-between bg-gray-100 rounded-md p-4 mb-4">
+                    <div>{{ $file['title'] }}</div>
+                    <button wire:click="downloadFile('{{ $file['file_path'] }}')" class="px-3 py-1 bg-blue-500 text-white rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-download">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"/>
+                            <path d="M7 11l5 5l5 -5"/>
+                            <path d="M12 4l0 12"/>
+                        </svg>
+                    </button>
+                </div>
+            @endforeach
+        </div>
     </div>
+
     <div class="mb-4">
         <h2 class="text-xl font-semibold mb-2">قائمة الإجراءات</h2>
-        @foreach ($action as $act)
-            <div class="bg-gray-100 rounded-md p-4 mb-4">
-                <ul class="list-none p-0">
-                    <li class="mb-2"><strong>نوع الإجراء:</strong> {{ $act['type']['action_type'] }}</li>
-                    <li class="mb-2"><strong>وقت الإجراء:</strong> {{ $act['action_time'] }}</li>
-                    <li class="mb-2"><strong>المرسل اليه:</strong> {{ $act['sender']['name'] }}</li>
-
-                    <li class="mb-2"><strong>الملاحظات:</strong><pre> {{ $act['name'] }} </pre></li>
-                </ul>
-            </div>
-        @endforeach
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            @foreach ($action as $act)
+                <div class="expansion-panel">
+                    <button wire:click="toggle({{ $act['id'] }})" class="block w-full text-left">
+                        {{ $isOpen[$act['id']] ? 'Collapse' : 'Expand' }}
+                    </button>
+                    <div class="bg-gray-100 rounded-md p-4 mb-4">
+                        <ul class="list-none p-0">
+                            <li class="mb-2"><strong>نوع الإجراء:</strong> {{ $act['type']['action_type'] }}</li>
+                            <li class="mb-2"><strong>وقت الإجراء:</strong> {{ $act['action_time'] }}</li>
+                            <li class="mb-2"><strong>المرسل اليه:</strong> {{ $act['sender']['name'] }}</li>
+                            <li class="mb-2"><strong>الملاحظات:</strong><pre> {{ $act['name'] }} </pre></li>
+                        </ul>
+                        @if($isOpen[$act['id']])
+                            <div class="panel-content">
+                                <p>This is the content of the expansion panel.</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+        </div>
     </div>
 
     <!-- Centered Edit button -->

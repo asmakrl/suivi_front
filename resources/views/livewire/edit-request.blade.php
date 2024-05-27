@@ -78,8 +78,7 @@
                 @foreach ($files as $file)
                     <div class="flex items-center justify-between bg-gray-100 rounded-md p-4 mb-4">
                         <div>{{ $file['title'] }}</div>
-                        <button onclick="confirm('هل أنت متأكد أنك تريد حذف هذا الملف؟')"
-                                wire:click="deleteFile('{{ $file['id'] }}')"
+                        <button @click="if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) { $wire.deleteFile('{{ $file['id'] }}') }"
                                 class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600">حذف</button>
                     </div>
                 @endforeach

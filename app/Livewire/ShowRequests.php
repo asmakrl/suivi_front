@@ -21,6 +21,8 @@ class ShowRequests extends ModalComponent
     public $actionType;
     public $receivedData;
     public $files = [];
+    public $isOpen = [];
+
 
     public function mount()
     {
@@ -38,7 +40,9 @@ class ShowRequests extends ModalComponent
 
         $this->action = $this->receivedData['action'];
         $this->files = $this->receivedData['file'];
-
+        foreach ($this->action as $action) {
+            $this->isOpen[$action['id']] = false; // Initialize all as closed
+        }
 
         //$this->actionName = $action['name'];
         //$this->actionTime = $action['action_time'];
@@ -47,6 +51,11 @@ class ShowRequests extends ModalComponent
 
         //dd($this->receivedData);
 
+    }
+    public function toggle($id)
+    {
+        //  dd($id);
+        $this->isOpen[$id] = !$this->isOpen[$id];
     }
     public function test(){
         dd(url()->previous());
