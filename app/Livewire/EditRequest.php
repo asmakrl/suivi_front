@@ -42,7 +42,7 @@ class EditRequest extends Component
     public function mount()
     {
 
-     //   dd($this->receivedData = session()->get('dataToPass'));
+     //  dd($this->receivedData = session()->get('dataToPass'));
         $this->receivedData = session()->get('dataToPass');
         $this->id = $this->receivedData['id'];
         $this->title = $this->receivedData['title'];

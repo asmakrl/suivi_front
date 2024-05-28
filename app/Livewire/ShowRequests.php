@@ -21,6 +21,7 @@ class ShowRequests extends ModalComponent
     public $actionType;
     public $receivedData;
     public $files = [];
+    public $response = [];
     public $isOpen = [];
 
 
@@ -29,6 +30,7 @@ class ShowRequests extends ModalComponent
 
         // Fetch data for the request being edited
         $this->receivedData = session()->get('dataToPass');
+
         //dd($this->receivedData = session()->get('dataToPass'));
         $this->id = $this->receivedData['id'];
         $this->title = $this->receivedData['title'];
@@ -52,18 +54,29 @@ class ShowRequests extends ModalComponent
         //dd($this->receivedData);
 
     }
+
     public function toggle($id)
     {
-        //  dd($id);
+        // Toggle the isOpen state
         $this->isOpen[$id] = !$this->isOpen[$id];
+
+        // Find action by id and get responses
+        $action = collect($this->action)->firstWhere('id', $id);
+
+        if (isset($action['response'])) {
+            $this->response[$id] = $action['response'];
+        } else {
+            $this->response[$id] = [];
+        }
     }
-    public function test(){
+    public function test()
+    {
         dd(url()->previous());
     }
 
     public function downloadFile($file_path)
     {
-        $remoteFileUrl = 'http://127.0.0.1:8000/'.$file_path;
+        $remoteFileUrl = 'http://127.0.0.1:8000/' . $file_path;
         //dd($remoteFileUrl);
         $tempFilePath = tempnam(sys_get_temp_dir(), 'downloaded_file');
 
@@ -76,10 +89,10 @@ class ShowRequests extends ModalComponent
 
         // Téléchargez le fichier localement en utilisant Laravel Storage
         return response()->download($tempFilePath, $fileName)->deleteFileAfterSend(true);
-
     }
 
-    public function goToEditRequest(){
+    public function goToEditRequest()
+    {
         //dd('test');
 
         $temp = $this->receivedData;
@@ -93,6 +106,5 @@ class ShowRequests extends ModalComponent
     {
 
         return view('livewire.show-requests');
-
     }
 }
