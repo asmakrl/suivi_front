@@ -43,3 +43,6 @@ Route::get('/showresponses', function () {
     return view('showresponse');
 });
 
+Route::get('/addresponses', function () {
+    return view('addresponse');
+});

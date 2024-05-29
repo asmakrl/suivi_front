@@ -69,6 +69,15 @@ class ShowRequests extends ModalComponent
             $this->response[$id] = [];
         }
     }
+    public function goToAddResponse(){
+        //dd('test');
+
+        $temp = $this->receivedData;
+        //dd($temp);
+        session()->put('dataToPass', $temp);
+
+        $this->redirect('/addresponses');
+    }
     public function test()
     {
         dd(url()->previous());
