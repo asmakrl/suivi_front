@@ -12,29 +12,31 @@ class AddResponse extends Component
     public $id;
     public $response;
     public $response_time;
-    public $action;
+    public $action = [];
+    public $selectedActionId;
     public $files = [];
 
     use WithFileUploads;
 
-    public function mount(){
-
-        //dd($this->receivedData = session()->get('dataToPass'));
+    public function mount()
+    {
+        // Ensure the session data is retrieved correctly
         $this->receivedData = session()->get('dataToPass');
-        $this->id = $this->receivedData['id'];
-        $this->response = $this->receivedData['response'];
-        $this->description = $this->receivedData['description'];
-        $this->received_at = $this->receivedData['received_at'];
-        // $this->category = $this->receivedData['category'];
-        $this->sender = $this->receivedData['sender'];
+        if ($this->receivedData && isset($this->receivedData['action'])) {
+            $this->action = $this->receivedData['action'];
+        }
+        // Set default selected action id if available
+        if (!empty($this->action)) {
+            $this->selectedActionId = $this->action[0]['id'];
+        }
+    }
 
-}
-
-    public function save(){
-        //dd('test');
-
+    public function save()
+    {
+        // API URL to post data
         $apiUrl = 'http://localhost:8000/api/responses';
 
+        // Prepare the data for multipart form submission
         $data = [
             [
                 'name' => 'response',
@@ -44,23 +46,27 @@ class AddResponse extends Component
                 'name' => 'response_time',
                 'contents' => $this->response_time
             ],
-
             [
                 'name' => 'action_id',
-                'contents' => $this->action
+                'contents' => $this->selectedActionId
             ],
         ];
-        if($this->files){
+
+        // Handle file uploads
+        if ($this->files) {
             foreach ($this->files as $file) {
                 $data[] = [
                     'name' => 'files[]',
                     'contents' => fopen($file->getRealPath(), 'r'),
                     'filename' => $file->getClientOriginalName()
                 ];
-            }}
-        // dd($data);
+            }
+        }
+       // dd($data);
+        // Create MultipartStream from data
         $multipart = new MultipartStream($data);
-        // dd($multipart);
+
+        // Initialize HTTP client and send request
         $http = new Client();
         $response = $http->post($apiUrl, [
             'headers' => [
@@ -69,17 +75,19 @@ class AddResponse extends Component
             'body' => $multipart
         ]);
 
+        // Check response status and handle accordingly
         if ($response->getStatusCode() == 201) {
             session()->flash('success', 'Resource created successfully');
-           // $this->resetFormFields(); // Reset form fields after successful submission
             $this->redirect('/showrequests');
         } else {
-            // Handle other status codes or scenarios
             session()->flash('error', 'Failed to create resource');
         }
     }
+
     public function render()
     {
-        return view('livewire.add-response');
+        return view('livewire.add-response', [
+            'actions' => $this->action
+        ]);
     }
 }
