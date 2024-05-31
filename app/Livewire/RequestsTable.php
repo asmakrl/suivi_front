@@ -158,6 +158,16 @@ class RequestsTable extends Component
         $this->redirect('/showrequests');
     }
 
+    public function goToAddResponse($item){
+        //dd('test');
+
+        $temp = $this->findRequestById($item);
+        session()->put('dataToPass', $temp);
+
+        $this->redirect('/addresponses');
+    }
+
+
     public function openStatusDialog($requestId)
     {
         $this->selectedRequestId = $requestId;

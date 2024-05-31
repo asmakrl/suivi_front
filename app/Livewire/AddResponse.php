@@ -10,6 +10,8 @@ use Livewire\WithFileUploads;
 class AddResponse extends Component
 {
     public $id;
+    public $receivedData;
+
     public $response;
     public $response_time;
     public $action = [];
@@ -78,7 +80,7 @@ class AddResponse extends Component
         // Check response status and handle accordingly
         if ($response->getStatusCode() == 201) {
             session()->flash('success', 'Resource created successfully');
-            $this->redirect('/showrequests');
+            $this->redirect('/');
         } else {
             session()->flash('error', 'Failed to create resource');
         }

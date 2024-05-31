@@ -91,7 +91,7 @@
                                 <pre> {{ $act['name'] }} </pre>
                             </li>
                         </ul>
-                        <button wire:click="goToAddResponse()"
+                       <!-- <button wire:click="goToAddResponse()"
                                 class="mr-2 px-4 py-2 bg-green-500 text-white rounded"><svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 class="icon icon-tabler icon-tabler-playlist-add" width="24"
@@ -103,7 +103,7 @@
                                 <path d="M11 16h-6" />
                                 <path d="M15 16h6" />
                                 <path d="M18 13v6" />
-                            </svg></button>
+                            </svg></button>-->
                         @if ($isOpen[$act['id']] ?? false)
                             <div class="panel-content">
                                 @if (!empty($response[$act['id']]))
@@ -127,10 +127,10 @@
     </div>
 
     <!-- Centered Edit button -->
-    <div class="flex justify-center">
+   <!-- <div class="flex justify-center">
         <button wire:click="goToEditRequest()"
                 class="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 focus:outline-none focus:bg-orange-600">
             <span class="ml-2">تعديل الملف</span>
         </button>
-    </div>
+    </div>-->
 </div>

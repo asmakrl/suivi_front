@@ -124,7 +124,7 @@ class EditRequest extends Component
             $data = json_decode($response->getBody(), true);
 
             session()->put('dataToPass', $data);
-            $this->redirect('/showrequests');
+            $this->redirect('/editrequest');
         } else {
             // Handle other status codes or scenarios
             session()->flash('error', 'Failed to edit resource');

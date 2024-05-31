@@ -69,7 +69,7 @@ class ShowRequests extends ModalComponent
             $this->response[$id] = [];
         }
     }
-    public function goToAddResponse(){
+   /* public function goToAddResponse(){
         //dd('test');
 
         $temp = $this->receivedData;
@@ -77,7 +77,7 @@ class ShowRequests extends ModalComponent
         session()->put('dataToPass', $temp);
 
         $this->redirect('/addresponses');
-    }
+    }*/
     public function test()
     {
         dd(url()->previous());
@@ -100,7 +100,7 @@ class ShowRequests extends ModalComponent
         return response()->download($tempFilePath, $fileName)->deleteFileAfterSend(true);
     }
 
-    public function goToEditRequest()
+   /* public function goToEditRequest()
     {
         //dd('test');
 
@@ -108,7 +108,7 @@ class ShowRequests extends ModalComponent
         session()->put('dataToPass', $temp);
 
         $this->redirect('/editrequest');
-    }
+    }*/
 
 
     public function render()

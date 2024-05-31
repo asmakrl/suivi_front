@@ -60,6 +60,13 @@
                         <td class="py-3 px-6 text-right">{{ count($item['action']) }}</td>
                         <!-- Actions column -->
                         <td class="py-3 px-6 text-center">
+                            <x-filament::button
+                                wire:click="goToShowRequest({{$item['id'] }})"
+                                color="blue"
+                                class="mr-2"
+                            >
+                                View
+                            </x-filament::button>
                             <div class="flex justify-center items-center">
                                 <button wire:click="goToShowRequest({{ $item['id'] }})"
                                         class="mr-2 px-4 py-2 bg-blue-500 text-white rounded"><svg
@@ -86,6 +93,26 @@
                                         <path d="M15 16h6" />
                                         <path d="M18 13v6" />
                                     </svg></button>
+                                <button wire:click="goToAddResponse({{ $item['id'] }})"
+                                        class="mr-2 px-4 py-2 bg-green-500 text-white rounded"><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-playlist-add" width="24"
+                                        height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M19 8h-14" />
+                                        <path d="M5 12h9" />
+                                        <path d="M11 16h-6" />
+                                        <path d="M15 16h6" />
+                                        <path d="M18 13v6" />
+                                    </svg></button>
+                                <button wire:click="goToEditRequest({{ $item['id'] }})"
+                                        class="mr-2 px-4 py-2 bg-green-500 text-white rounded"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" /></svg>
+                                </button>
                             </div>
                         </td>
                     </tr>
