@@ -33,6 +33,7 @@
             <table class="min-w-full border-collapse table-auto">
                 <thead>
                 <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                    <th class="py-3 px-6 text-right">رقم</th> <!-- New numbering column -->
                     <th class="py-3 px-6 text-right">العنوان</th>
                     <th class="py-3 px-6 text-right">الوصف</th>
                     <th class="py-3 px-6 text-right">التاريخ</th>
@@ -42,9 +43,11 @@
                 </tr>
                 </thead>
                 <tbody class="text-gray-600 text-sm font-light">
-                @foreach ($requests as $item)
+                @foreach ($requests as $index => $item)
                     <!-- Request row -->
                     <tr class="border-b border-gray-200 hover:bg-gray-100">
+                        <!-- Numbering column -->
+                        <td class="py-3 px-6 text-right">{{ ($currentPage - 1) * $size + $index + 1 }}</td>
                         <!-- Title column -->
                         <td class="py-3 px-6 text-right whitespace-nowrap">{{ $item['title'] }}</td>
                         <!-- Description column -->
@@ -59,53 +62,106 @@
                         <!-- Action count column -->
                         <td class="py-3 px-6 text-right">{{ count($item['action']) }}</td>
                         <!-- Actions column -->
-                        <td class="py-3 px-6 text-center">
-                            <div class="flex justify-center items-center">
-                                <button wire:click="goToShowRequest({{ $item['id'] }})"
-                                        class="mr-2 px-4 py-2 bg-blue-500 text-white rounded"><svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-clipboard" width="24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path
-                                            d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
-                                        <path
-                                            d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                                    </svg></button>
-                                <button wire:click="goToAddAction({{ $item['id'] }})"
-                                        class="mr-2 px-4 py-2 bg-green-500 text-white rounded"><svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-playlist-add" width="24"
-                                        height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M19 8h-14" />
-                                        <path d="M5 12h9" />
-                                        <path d="M11 16h-6" />
-                                        <path d="M15 16h6" />
-                                        <path d="M18 13v6" />
-                                    </svg></button>
-                                <button wire:click="goToAddResponse({{ $item['id'] }})"
-                                        class="mr-2 px-4 py-2 bg-green-500 text-white rounded"><svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-playlist-add" width="24"
-                                        height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M19 8h-14" />
-                                        <path d="M5 12h9" />
-                                        <path d="M11 16h-6" />
-                                        <path d="M15 16h6" />
-                                        <path d="M18 13v6" />
-                                    </svg></button>
-                                <button wire:click="goToEditRequest({{ $item['id'] }})"
-                                        class="mr-2 px-4 py-2 bg-green-500 text-white rounded"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                        <path d="M16 5l3 3" /></svg>
+                        <td class="relative">
+                            <div x-data="{ show: false }" @click.away="show = false">
+                                <button @click="show = ! show" class="mt-4 border-0 block bg-white-600 bg-white-600 text-dark-200 rounded-lg px-6 text-sm py-3 overflow-hidden focus:outline-none focus:border-white">
+                                    <div class="flex justify-between">
+                                        <svg class="fill-current text-gray-200" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M7 10l5 5 5-5z" />
+                                            <path d="M0 0h24v24H0z" fill="none" />
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-dots-vertical">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                            <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                            <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        </svg>
+                                    </div>
                                 </button>
+                                <div x-show="show" class="mt-2 py-2 bg-white rounded-lg shadow-xl">
+                                    <a wire:click="goToShowRequest({{ $item['id'] }})"
+                                       class="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white flex items-center space-x-2">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-clipboard"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            fill="none"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+                                            <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                        </svg>
+                                        <span>عرض الملف</span>
+                                    </a>
+
+                                    <a wire:click="goToAddAction({{ $item['id'] }})"
+                                       class="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white flex items-center space-x-2">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-playlist-add"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            fill="none"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M19 8h-14" />
+                                            <path d="M5 12h9" />
+                                            <path d="M11 16h-6" />
+                                            <path d="M15 16h6" />
+                                            <path d="M18 13v6" />
+                                        </svg>
+                                        <span>اضافة اجراء</span>
+                                    </a>
+
+                                    <a wire:click="goToAddResponse({{ $item['id'] }})"
+                                       class="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white flex items-center space-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             width="24"
+                                             height="24"
+                                             viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="2"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round"
+                                             class="icon icon-tabler icons-tabler-outline icon-tabler-circle-plus">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/>
+                                            <path d="M9 12h6"/>
+                                            <path d="M12 9v6"/>
+                                        </svg>
+                                        <span>اضافة اجابة</span>
+                                    </a>
+
+                                    <a wire:click="goToEditRequest({{ $item['id'] }})"
+                                       class="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white flex items-center space-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             width="24"
+                                             height="24"
+                                             viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="2"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round"
+                                             class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"/>
+                                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"/>
+                                            <path d="M16 5l3 3"/>
+                                        </svg>
+                                        <span>تعديل الملف</span>
+                                    </a>
+                                </div>
                             </div>
                         </td>
                     </tr>
