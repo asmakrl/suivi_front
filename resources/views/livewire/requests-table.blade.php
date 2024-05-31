@@ -60,13 +60,6 @@
                         <td class="py-3 px-6 text-right">{{ count($item['action']) }}</td>
                         <!-- Actions column -->
                         <td class="py-3 px-6 text-center">
-                            <x-filament::button
-                                wire:click="goToShowRequest({{$item['id'] }})"
-                                color="blue"
-                                class="mr-2"
-                            >
-                                View
-                            </x-filament::button>
                             <div class="flex justify-center items-center">
                                 <button wire:click="goToShowRequest({{ $item['id'] }})"
                                         class="mr-2 px-4 py-2 bg-blue-500 text-white rounded"><svg
