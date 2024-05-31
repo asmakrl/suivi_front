@@ -141,7 +141,6 @@ class RequestsTable extends Component
     public function goToAddAction($item){
         //dd('test');
 
-        //win rah l item ?ama? ok ok
         $temp = $this->findRequestById($item);
         session()->put('dataToPass', $temp);
 
@@ -200,6 +199,7 @@ class RequestsTable extends Component
                 $request['last_status'] = $this->getStatusName($this->selectedStatusId);
                 break;
             }
+
         }
         $this->closeStatusDialog();
 

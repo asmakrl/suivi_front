@@ -35,7 +35,7 @@
                 <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                     <th class="py-3 px-6 text-right">رقم</th> <!-- New numbering column -->
                     <th class="py-3 px-6 text-right">العنوان</th>
-                    <th class="py-3 px-6 text-right">الوصف</th>
+                    <!--<th class="py-3 px-6 text-right">الوصف</th>-->
                     <th class="py-3 px-6 text-right">التاريخ</th>
                     <th class="py-3 px-6 text-right">الوضعية</th>
                     <th class="py-3 px-6 text-right">مجموع الاجراءات</th>
@@ -51,13 +51,16 @@
                         <!-- Title column -->
                         <td class="py-3 px-6 text-right whitespace-nowrap">{{ $item['title'] }}</td>
                         <!-- Description column -->
-                        <td class="py-3 px-6 text-right">{{ $item['description'] }}</td>
+                        <!--<td class="py-3 px-6 text-right">{{ $item['description'] }}</td>-->
                         <!-- Received at column -->
                         <td class="py-3 px-6 text-right">{{ $item['received_at'] }}</td>
                         <!-- Status column -->
                         <td class="py-3 px-6 text-right">
-                            <button wire:click="openStatusDialog({{ $item['id'] }})"
-                                    class="px-4 py-2 bg-blue-500 text-white rounded">{{ $item['last_status'] }}</button>
+                            <button wire:click="openStatusDialog({{ $item['id'] }})" class="mr-2 px-4 py-2 rounded
+                               @if ($item['last_status'] == 'على قيد الدراسة') bg-orange-500 text-white
+                               @elseif ($item['last_status'] == 'مغلق') bg-green-500 text-white
+                               @else bg-blue-500 text-white
+                               @endif">{{ $item['last_status'] }}</button>
                         </td>
                         <!-- Action count column -->
                         <td class="py-3 px-6 text-right">{{ count($item['action']) }}</td>
