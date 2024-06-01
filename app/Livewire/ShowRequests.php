@@ -25,6 +25,7 @@ class ShowRequests extends ModalComponent
     public $isOpen = [];
     public $isFileDialogOpen = false;
     public $selectedFiles = [];
+    public $selectedId;
 
 
     public function mount()
@@ -66,6 +67,7 @@ class ShowRequests extends ModalComponent
         $action = collect($this->action)->firstWhere('id', $id);
 
         if (isset($action['response'])) {
+            $this->selectedId = $id;
             $this->response[$id] = $action['response'];
         } else {
             $this->response[$id] = [];
@@ -106,9 +108,9 @@ class ShowRequests extends ModalComponent
     {
      //   dd($responseId);
         // Find the response by ID
-        dd($this->response);
-        $response = collect($this->response)->firstWhere('id', $responseId);
-        dd($response);
+       // dd($this->response);
+        $response = collect($this->response[$this->selectedId])->firstWhere('id', $responseId);
+         //dd($response);
         // Load the files for the selected response
         $this->selectedFiles = $response['file'] ?? [];
 

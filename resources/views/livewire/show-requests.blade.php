@@ -104,9 +104,9 @@
                         @if ($isOpen[$act['id']] ?? false)
                             <div class="panel-content">
                                 @if (!empty($response[$act['id']]))
-                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    <div class="flex flex-col gap-4">
                                         @foreach ($response[$act['id']] as $item)
-                                            <div class="flex flex-col bg-gray-100 rounded-md p-4 mb-4">
+                                            <div class="bg-gray-100 rounded-md p-4 mb-4">
                                                 <div class="mb-4">
                                                     <label for="response" class="block text-sm font-semibold mb-1">الجواب:</label>
                                                     <textarea id="response" name="response" rows="4" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
@@ -120,23 +120,33 @@
                                                 <div class="mb-4">
                                                     @if (!empty($item['file']))
                                                         <label class="block text-sm font-semibold mb-1">عدد الملفات:</label>
-                                                        <p class="text-blue-500 cursor-pointer" wire:click="showFiles({{ $item['id'] }})">{{ count($item['file']) }} ملفات</p>
+                                                        <p class="text-blue-500 cursor-pointer" wire:click="showFiles({{ $item['id'] }})">{{ count($item['file']) }}</p>
                                                     @endif
                                                 </div>
-                                                <!-- Modal Dialog -->
                                                 @if ($isFileDialogOpen)
                                                     <div class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
                                                         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                                                             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
                                                             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                                                            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                                            <div class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                                                                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                                                     <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">ملفات الرد</h3>
                                                                     <div class="mt-2">
                                                                         @if (!empty($selectedFiles))
                                                                             <ul>
                                                                                 @foreach ($selectedFiles as $file)
-                                                                                    <li>{{ $file['$title'] }}</li> <!-- Adjust the file display as needed -->
+                                                                                    <li>{{ $file['title'] }}</li> <!-- Adjust the file display as needed -->
+                                                                                    <button wire:click="downloadFile('{{ $file['file_path'] }}')"
+                                                                                            class="px-3 py-1 bg-blue-500 text-white rounded">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                                                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                                             stroke-linejoin="round" class="icon icon-tabler icon-tabler-download">
+                                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                                                            <path d="M7 11l5 5l5 -5" />
+                                                                                            <path d="M12 4l0 12" />
+                                                                                        </svg>
+                                                                                    </button>
                                                                                 @endforeach
                                                                             </ul>
                                                                         @else
