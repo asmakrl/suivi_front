@@ -104,14 +104,15 @@
         </button>
         @livewire('wire-elements-modal')
 
-        <div>
+        <div class="mb-4">
             <h2 class="text-xl font-semibold mb-2">قائمة الإجراءات</h2>
             @if (!empty($action))
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     @foreach ($action as $act)
-                        <div class="expansion-panel">
+                        <div>
                             <button wire:click="toggle({{ $act['id'] }})">
-                                {{ $isOpen[$act['id']] ? 'Collapse' : 'Expand' }}
+                                {{ $isOpen[$act['id']] ? 'اخفي' : 'اظهر' }}
+                                اجابة {{ $act['sender']['name'] }}
                             </button>
                             <div class="bg-gray-100 rounded-md p-4 mb-4">
                                 <ul class="list-none p-0">
@@ -119,23 +120,10 @@
                                     <li class="mb-2"><strong>وقت الإجراء:</strong> {{ $act['action_time'] }}</li>
                                     <li class="mb-2"><strong>المرسل اليه:</strong> {{ $act['sender']['name'] }}</li>
                                     <li class="mb-2"><strong>الملاحظات:</strong>
-                                        <pre> {{ $act['name'] }}</pre>
+                                        <pre> {{ $act['name'] }} </pre>
                                     </li>
                                 </ul>
                                 <div class="flex justify-end">
-                                    @if(!empty($act['response']))
-                                        <button wire:click="goToShowResponse({{$act['response'][0]['id']}})" class="px-3 py-1 bg-blue-500 text-white rounded-md mr-2 hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                 class="icon icon-tabler icon-tabler-clipboard" width="24" height="24"
-                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
-                                                 stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                <path
-                                                    d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
-                                                <path
-                                                    d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
-                                            </svg></button>
-                                    @endif
                                     <button wire:click="goToEditAction({{ $act['id'] }})" class="px-3 py-1 bg-green-500 text-white rounded-md mr-2 hover:bg-green-600 focus:outline-none focus:bg-green-600">
                                         <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -154,9 +142,104 @@
                                     </button>
                                 </div>
                             </div>
-                            @if($isOpen[$act['id']])
+
+                            @if ($isOpen[$act['id']] ?? false)
                                 <div class="panel-content">
-                                    <p>This is the content of the expansion panel.</p>
+                                    @if (!empty($response[$act['id']]))
+                                        <div class="flex flex-col gap-4">
+                                            @foreach ($response[$act['id']] as $item)
+                                                <div class="bg-gray-100 rounded-md p-4 mb-4">
+                                                    <div class="mb-4">
+                                                        <label for="response" class="block text-sm font-semibold mb-1">الجواب:</label>
+                                                        <textarea id="response" name="response" rows="4" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">{{ $item['response'] }}</textarea>
+                                                    </div>
+                                                    <div class="mb-4">
+                                                        <label for="response_time" class="block text-sm font-semibold mb-1">تم الاستلام في (التاريخ):</label>
+                                                        <input type="date" id="response_time" name="response_time" value="{{ $item['response_time'] }}" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+                                                    </div>
+                                                    <div class="mb-4">
+                                                        @if (!empty($item['file']))
+                                                            <label class="block text-sm font-semibold mb-1">عدد الملفات:</label>
+                                                            <p class="text-blue-500 cursor-pointer" wire:click="showFiles({{ $item['id'] }})">{{ count($item['file']) }}</p>
+                                                        @endif
+                                                    </div>
+                                                    @if ($isFileDialogOpen)
+                                                        <div class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                                                            <div class="flex items-center justify-center min-h-screen px-4 text-center sm:block sm:p-0">
+                                                                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                                                                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                                                                <div class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                                                    <div class="flex justify-center mb-4">
+                                                                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">ملفات الرد</h3>
+                                                                    </div>
+                                                                    <div class="mt-2 max-h-60 overflow-y-auto">
+                                                                        @if (!empty($selectedFiles))
+                                                                            <ul class="space-y-2">
+                                                                                @foreach ($selectedFiles as $file)
+                                                                                    <li class="flex justify-between items-center bg-gray-100 p-2 rounded-md">
+                                                                                        <span>{{ $file['title'] }}</span>
+                                                                                        <button wire:click="downloadFile('{{ $file['file_path'] }}')" class="px-3 py-1 bg-blue-500 text-white rounded-md flex items-center">
+                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-download">
+                                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                                                <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                                                                <path d="M7 11l5 5l5 -5" />
+                                                                                                <path d="M12 4l0 12" />
+                                                                                            </svg>
+                                                                                        </button>
+                                                                                    </li>
+                                                                                @endforeach
+                                                                            </ul>
+                                                                        @else
+                                                                            <p class="text-gray-500">لا توجد ملفات</p>
+                                                                        @endif
+                                                                    </div>
+                                                                    <div class="bg-gray-50 px-4 py-3 sm:px-6 flex justify-center">
+                                                                        <button wire:click="closeFileDialog" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-sm">
+                                                                            إغلاق
+                                                                        </button>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                                @endif
+                                                <div class="flex justify-end">
+                                                    <!-- Button to open dialog -->
+                                                    <button
+                                                        wire:click="$dispatch('openModal', { component: 'edit-request'"
+                                                        class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                                                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                            <path d="M16 5l3 3" /></svg>
+                                                    </button>
+                                                    @livewire('wire-elements-modal')
+                                                    <!--<button wire:click="goToEditAction({{ $item['id'] }})" class="px-3 py-1 bg-green-500 text-white rounded-md mr-2 hover:bg-green-600 focus:outline-none focus:bg-green-600">
+                                                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                            <path d="M16 5l3 3" /></svg></button>-->
+                                                    <button  @click="if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) { $wire.deleteRes({{ $item['id'] }}) }"   class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M4 7l16 0" />
+                                                            <path d="M10 11l0 6" />
+                                                            <path d="M14 11l0 6" />
+                                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div>لا يوجد اجابة</div>
+
+                                    @endif
                                 </div>
                             @endif
                         </div>
@@ -164,6 +247,13 @@
                 </div>
             @endif
         </div>
+
+
+
+
+
+
+
         <div class="flex justify-center" x-data>
             <button @click="if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) { $wire.delete({{ $id }}) }"
                     class="px-4 py-2 bg-red-500 text-white rounded">

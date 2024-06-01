@@ -34,9 +34,12 @@ class EditRequest extends Component
     public $category;
     public $files;
 
-    public $response;
+    public $response=[];
+    public $selectedId;
     public $isLoading=True;
     public $isOpen = [];
+    public $isFileDialogOpen = false;
+    public $selectedFiles = [];
     public $listeners = ['requestUpdated'=>'updateReq'];
 
     public function mount()
@@ -90,8 +93,36 @@ class EditRequest extends Component
 
     public function toggle($id)
     {
-      //  dd($id);
+        // Toggle the isOpen state
         $this->isOpen[$id] = !$this->isOpen[$id];
+
+        // Find action by id and get responses
+        $action = collect($this->action)->firstWhere('id', $id);
+
+        if (isset($action['response'])) {
+            $this->selectedId = $id;
+            $this->response[$id] = $action['response'];
+        } else {
+            $this->response[$id] = [];
+        }
+    }
+
+    public function showFiles($responseId)
+    {
+        //   dd($responseId);
+        // dd($this->response);
+        $response = collect($this->response[$this->selectedId])->firstWhere('id', $responseId);
+        //dd($response);
+        // Load the files for the selected response
+        $this->selectedFiles = $response['file'] ?? [];
+
+        // Open the file dialog
+        $this->isFileDialogOpen = true;
+    }
+    public function closeFileDialog()
+    {
+        // Close the file dialog
+        $this->isFileDialogOpen = false;
     }
 
     public function sendEdit()
@@ -227,6 +258,18 @@ class EditRequest extends Component
         // Remove the deleted action from the $this->action array
         $this->action = array_filter($this->action, function ($act) use ($id) {
             return $act['id'] != $id;
+        });
+    }
+
+    public function deleteRes($id){
+      //dd($id);
+       $http= New Client();
+
+        $http->delete('http://localhost:8000/api/responses/' . $id);
+
+        // Remove the deleted action from the $this->action array
+        $this->response = array_filter($this->response, function ($res) use ($id){
+            return isset($res['id']) && $res["id"] != $id;
         });
     }
     public function deleteFile($file_id)
