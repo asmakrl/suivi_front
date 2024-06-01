@@ -23,6 +23,8 @@ class ShowRequests extends ModalComponent
     public $files = [];
     public $response = [];
     public $isOpen = [];
+    public $isFileDialogOpen = false;
+    public $selectedFiles = [];
 
 
     public function mount()
@@ -99,6 +101,27 @@ class ShowRequests extends ModalComponent
         // Téléchargez le fichier localement en utilisant Laravel Storage
         return response()->download($tempFilePath, $fileName)->deleteFileAfterSend(true);
     }
+
+    public function showFiles($responseId)
+    {
+     //   dd($responseId);
+        // Find the response by ID
+        dd($this->response);
+        $response = collect($this->response)->firstWhere('id', $responseId);
+        dd($response);
+        // Load the files for the selected response
+        $this->selectedFiles = $response['file'] ?? [];
+
+        // Open the file dialog
+        $this->isFileDialogOpen = true;
+    }
+
+    public function closeFileDialog()
+    {
+        // Close the file dialog
+        $this->isFileDialogOpen = false;
+    }
+
 
    /* public function goToEditRequest()
     {

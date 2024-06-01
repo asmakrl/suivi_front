@@ -1,6 +1,16 @@
 <div wire:init="load" class="container mx-auto p-8 text-right" style="direction: rtl;">
 
     <h2 class="text-2xl font-bold mb-4">تعديل الطلب</h2>
+    <div class="float-left">
+        <a href="{{ url()->previous() }}" class="inline-flex items-center px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:bg-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-back-up">
+                <path stroke="none" d="M0 0h24v24H0z"></path>
+                <path d="M9 14l-4 -4l4 -4"></path>
+                <path d="M5 10h11a4 4 0 1 1 0 8h-1"></path>
+            </svg>
+            <span class="ml-2">رجوع</span>
+        </a>
+    </div>
     <hr class="border-b border-gray-300 mb-4">
     @if ($isLoading)
         <div class="absolute inset-0 flex items-center justify-center ">

@@ -17,7 +17,7 @@
         <input type="hidden" name="id" value="{{ $id }}">
 
         <div class="mb-4">
-            <label for="response" class="block text-sm font-semibold mb-1">الوصف:</label>
+            <label for="response" class="block text-sm font-semibold mb-1">الجواب:</label>
             <textarea wire:model="response" id="response" name="response" rows="4" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">{{ $response }}</textarea>
         </div>
         <div class="mb-4">
