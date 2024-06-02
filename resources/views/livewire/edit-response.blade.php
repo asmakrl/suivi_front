@@ -21,6 +21,7 @@
             </div>
         </form>
 
+
         <button wire:click="closeDialog" style="background-color: #dc3545; color: #fff; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin-top: 20px;">إغلاق</button>
     </div>
 </div>

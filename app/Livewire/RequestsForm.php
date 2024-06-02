@@ -20,6 +20,9 @@ class RequestsForm extends Component
     public $state;
     public $id;
     public $category_id;
+    public $state_id;
+
+    public $source;
 
     public $files;
     public $status;
@@ -40,10 +43,14 @@ class RequestsForm extends Component
     }
 
     public Function loadData(){
-        $this->getSender($this->category_id);
+
         $this->getState();
         $this->getCategories();
         $this->getstatus();
+        $this->getSender();
+       // $this->updatecat($this->category_id);
+
+       // $this->updatestate($this->state_id);
         $this->isLoading=False;
 
     }
@@ -59,6 +66,10 @@ class RequestsForm extends Component
             [
                 'name' => 'description',
                 'contents' => $this->description
+            ],
+            [
+                'name' => 'source',
+                'contents' => $this->source
             ],
             [
                 'name' => 'received_at',
@@ -109,29 +120,42 @@ class RequestsForm extends Component
         // Reset form fields after successful submission
         $this->title = '';
         $this->description = '';
+        $this->source= '';
         $this->received_at = '';
         $this->status = '';
         $this->sender = '';
         $this->state = '';
     }
 
-    public function getSender($categoryId){
+    public function updatecat($categoryId){
+        $this->category_id = $categoryId;
+        $this->getSender();
+    }
+    public function updatestate($stateId){
+        $this->state_id = $stateId;
+        $this->getSender();
+    }
 
-        $client = new Client();
 
-        $response = $client->get('http://localhost:8000/api/senders/'. $categoryId);
 
-        $senders = json_decode($response->getBody(), true);
+    public function getSender(){
+        if ($this->category_id && $this->state_id){
+            $client = new Client();
 
-        // Check if the request was successful
-        if ($response->getStatusCode() == 200) {
-            $this->senderData = $senders;
-        }
-        else{
-            $this->senderData = [];
-            logger()->error('Failed to fetch senders. Status code: ' . $response->getStatusCode());
 
-        }
+            $response = $client->get('http://localhost:8000/api/senders/category/'. $this->category_id.'/state/'.$this->state_id);
+
+            $senders = json_decode($response->getBody(), true);
+
+            // Check if the request was successful
+            if ($response->getStatusCode() == 200) {
+                $this->senderData = $senders;
+            }
+            else{
+                $this->senderData = [];
+                logger()->error('Failed to fetch senders. Status code: ' . $response->getStatusCode());
+
+            }}
     }
     public function getSender2($category_id)
     {

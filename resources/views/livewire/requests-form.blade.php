@@ -37,33 +37,13 @@
                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"></textarea>
         </div>
         <div class="mb-4">
-            <label for="received_at" class="block text-sm font-semibold mb-2">تاريخ الاستلام:</label>
-            <input wire:model="received_at" type="date" id="received_at" name="received_at" required
-                   placeholder="اختر تاريخ الاستلام"
+            <label for="source" class="block text-sm font-semibold mb-2">المصدر:</label>
+            <input wire:model="source" type="text" id="source" name="source" required
+                   placeholder="ادخل مصدر الملف"
                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
         </div>
         <div class="mb-4">
-            <label for="category" class="block text-sm font-semibold mb-2">فئة المرسل:</label>
-            <select wire:model="category_id" id="category_id" wire:change="getSender($event.target.value)"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
-                <option value="">اختر فئة المرسل</option>
-                @foreach ($categoryData as $category)
-                    <option value="{{ $category['id'] }}">{{ $category['category'] }}</option>
-                @endforeach
-            </select>
-            <label for="sender" class="block text-sm font-semibold mb-2">المرسل:</label>
-            <select name="sender_id" wire:model="sender"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
-                <option value="">اختر المرسل</option>
-                @forelse($senderData as $item)
-                    <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
-                @empty
-                    <option value="" disabled>لا يوجد مرسلون متاحون</option>
-                @endforelse
-            </select>
-        </div>
-        <div class="mb-4">
-            <label for="state" class="block text-sm font-semibold mb-2">الولاية:</label>
+            <label for="state" class="block text-sm font-semibold mb-2">ولاية المصدر:</label>
             <select name="state_id" wire:model="state"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
                 <option value="">اختر الولاية</option>
@@ -74,6 +54,47 @@
                 @endforelse
             </select>
         </div>
+        <div class="mb-4">
+            <label for="received_at" class="block text-sm font-semibold mb-2">تاريخ الاستلام:</label>
+            <input wire:model="received_at" type="date" id="received_at" name="received_at" required
+                   placeholder="اختر تاريخ الاستلام"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+        </div>
+        <div class="mb-4">
+            <label for="state" class="block text-sm font-semibold mb-2">ولاية المرسل:</label>
+            <select name="state_id" wire:model="state_id" wire:change="updatestate($event.target.value)"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+                <option value="">اختر الولاية</option>
+                @forelse($stateData as $item)
+                    <option value="{{ $item['id'] }}">{{ $item['nomAr'] }}</option>
+                @empty
+                    <option value="" disabled>لا تتوفر الولاية</option>
+                @endforelse
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="category" class="block text-sm font-semibold mb-2">فئة المرسل:</label>
+            <select wire:model="category_id" id="category_id" wire:change="updatecat($event.target.value)"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+                <option value="">اختر فئة المرسل</option>
+                @foreach ($categoryData as $category)
+                    <option value="{{ $category['id'] }}">{{ $category['category'] }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="sender" class="block text-sm font-semibold mb-2">المرسل:</label>
+            <select name="sender_id" wire:model="sender" wire:model="getSender()"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+                <option value="">اختر المرسل</option>
+                @forelse($senderData as $sen)
+                    <option value="{{ $sen['id'] }}">{{ $sen['name'] }}</option>
+                @empty
+                    <option value="" disabled>لا يوجد مرسلون متاحون</option>
+                @endforelse
+            </select>
+        </div>
+
         <div class="mb-4">
             <label for="file" class="block text-sm font-semibold mb-2">تحميل الملفات:</label>
             <input name="files[]" type="file" wire:model="files" multiple>

@@ -213,7 +213,8 @@
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                                             <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
                                                             <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                            <path d="M16 5l3 3" /></svg>
+                                                            <path d="M16 5l3 3" />
+                                                         </svg>
                                                     </button>
                                                     @livewire('wire-elements-modal')
                                                     <button  @click="if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) { $wire.deleteRes({{ $item['id'] }}) }"   class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600">
