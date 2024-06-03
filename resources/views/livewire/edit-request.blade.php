@@ -30,48 +30,62 @@
             <textarea wire:model="description" id="description" name="description" rows="4" required
                       class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">{{ $description }}</textarea>
         </div>
+        <div class="mb-4">
+            <label for="source" class="block text-sm font-semibold mb-2">المصدر:</label>
+            <input wire:model="source" type="text" id="source" name="source" value="{{ $source }}" required
+                   placeholder="ادخل مصدر الملف"
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+        </div>
+        <div class="mb-4">
+            <label for="state" class="block text-sm font-semibold mb-2">ولاية المصدر:</label>
+            <select name="state_id" wire:model="state_id"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+                <option value="">{{$state['nomAr']}}</option>
+                @forelse($stateData as $item)
+                    <option value="{{ $item['id'] }}">{{ $item['nomAr'] }}</option>
+                @empty
+                    <option value="" disabled>لا تتوفر الولاية</option>
+                @endforelse
+            </select>
+        </div>
         <div class="col-span-3 mb-4">
             <label for="received_at" class="block text-sm font-semibold mb-1">تاريخ الاستلام:</label>
             <input wire:model="received_at" type="date" id="received_at" name="received_at"
                    value="{{ $received_at }}" required
                    class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
         </div>
-        <div class="col-span-3 mb-4">
+        <div class="mb-4">
+            <label for="state" class="block text-sm font-semibold mb-2">ولاية المرسل:</label>
+            <select name="state_id" wire:model="state" wire:change="updatestate($event.target.value)"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+                <option value="">{{$state['nomAr']}}</option>
+                @forelse($stateData as $item)
+                    <option value="{{ $item['id'] }}">{{ $item['nomAr'] }}</option>
+                @empty
+                    <option value="" disabled>لا تتوفر الولاية</option>
+                @endforelse
+            </select>
+        </div>
+        <div class="mb-4">
             <label for="category" class="block text-sm font-semibold mb-2">فئة المرسل:</label>
-            <select wire:change="getSender()" id="category_id" wire:model="category_id"
+            <select wire:model="category_id" id="category_id" wire:change="updatecat($event.target.value)"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
-                @if (!empty($categoryData))
-                    @foreach ($categoryData as $item)
-                        <option value="{{ $item['id'] }}">{{ $item['category'] }}</option>
-                    @endforeach
-                @endif
+                <option value="">اختر فئة المرسل</option>
+                @foreach ($categoryData as $category)
+                    <option value="{{ $category['id'] }}">{{ $category['category'] }}</option>
+                @endforeach
             </select>
         </div>
-        <div class="col-span-3 mb-4">
+        <div class="mb-4">
             <label for="sender" class="block text-sm font-semibold mb-2">المرسل:</label>
-            <select name="sender_id" wire:model="sender"
+            <select name="sender_id" wire:model="sender_id" wire:model="getSender()"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
-                @if (!empty($senderData))
-                    @forelse($senderData as $obj)
-                        <option value="{{ $obj['id'] }}">{{ $obj['name'] }}</option>
-                    @empty
-                        <option value="" disabled>لا يوجد مرسلون متاحون</option>
-                    @endforelse
-                @endif
-            </select>
-        </div>
-        <div class="col-span-3 mb-4">
-            <label for="state" class="block text-sm font-semibold mb-1">الحالة:</label>
-            <select name="state_id" wire:model="state_id"
-                    class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
-                <option value="">{{ $state['nomAr'] }}</option>
-                @if (!empty($stateData))
-                    @forelse($stateData as $item)
-                        <option value="{{ $item['id'] }}">{{ $item['nomAr'] }}</option>
-                    @empty
-                        <option value="" disabled>لا تتوفر حالات</option>
-                    @endforelse
-                @endif
+                <option value="">{{$sender['name']}}</option>
+                @forelse($senderData as $sen)
+                    <option value="{{ $sen['id'] }}">{{ $sen['name'] }}</option>
+                @empty
+                    <option value="" disabled>لا يوجد مرسلون متاحون</option>
+                @endforelse
             </select>
         </div>
         <div class="col-span-3 mb-4">

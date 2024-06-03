@@ -131,7 +131,6 @@ class RequestsTable extends Component
     public function goToEditRequest($item){
         //dd('test');
 
-        //win rah l item ?ama? ok ok
         $temp = $this->findRequestById($item);
         session()->put('dataToPass', $temp);
 
@@ -150,7 +149,6 @@ class RequestsTable extends Component
     public function goToShowRequest($item){
         //dd('test');
 
-        //win rah l item ?ama? ok ok
         $temp = $this->findRequestById($item);
         session()->put('dataToPass', $temp);
 

@@ -23,14 +23,16 @@ class EditRequest extends Component
 
 
     public $state;
+    public $source;
     public $state_id;
+
     public $action;
     public $status;
     public $category_id;
     public $receivedData;
-    public $senderData;
-    public $stateData;
-    public $categoryData;
+    public $senderData=[];
+    public $stateData=[];
+    public $categoryData=[];
     public $category;
     public $files;
 
@@ -45,26 +47,29 @@ class EditRequest extends Component
     public function mount()
     {
 
-     //  dd($this->receivedData = session()->get('dataToPass'));
+       // dd($this->receivedData = session()->get('dataToPass'));
         $this->receivedData = session()->get('dataToPass');
         $this->id = $this->receivedData['id'];
         $this->title = $this->receivedData['title'];
         $this->description = $this->receivedData['description'];
         $this->received_at = $this->receivedData['received_at'];
         $this->sender = $this->receivedData['sender'];
+         //dd($this->sender);
        // $this->response = $this->receivedData['action'][0]['response'];
 
         $this->category_id= $this->receivedData['sender']['category']['id'];
 
         // $this->sender2 = $this->receivedData['sender']['id'];
         $this->state = $this->receivedData['state'];
+        $this->source = $this->receivedData['source'];
 
         $this->action = $this->receivedData['action'];
         $this->files = $this->receivedData['file'];
         //$this->response = $this->receivedData['action']['response'];
 
         $this->sender_id = $this->receivedData['sender']['id'];
-        $this->state_id = $this->receivedData['state']['id'];
+         $this->state_id = $this->receivedData['state']['id'];
+        //$this->state_id = $this->receivedData['sender']['state']['id'];
 
         $this->category_id = $this->receivedData['sender']['category_id'];
         foreach ($this->action as $action) {
@@ -74,7 +79,7 @@ class EditRequest extends Component
     public function load()
     {
         $this->getCategories();
-        // $this->getAllSender();
+        $this->getSender();
         $this->getState();
         $this->updateReq();
 
@@ -132,13 +137,14 @@ class EditRequest extends Component
         $requestData = [
             'title' => $this->title,
             'description' => $this->description,
+            'source' => $this->source,
             'received_at' => $this->received_at,
             'sender_id' => $this->sender_id,
             'state_id' => $this->state_id,
             //'action'=> $this->action,
 
         ];
-    //   dd($requestData);
+      // dd($requestData);
         // Create a GuzzleHttp client instance
         $client = new Client();
 
@@ -148,7 +154,6 @@ class EditRequest extends Component
             'json' => $requestData,
 
         ]);
-
         if ($response->getStatusCode() == 200) {
             // Resource edited successfully
             session()->flash('success', 'Resource edited successfully');
@@ -163,7 +168,66 @@ class EditRequest extends Component
         }
     }
 
+    public function updatecat($categoryId){
+        $this->category_id = $categoryId;
+        $this->getSender();
+    }
+    public function updatestate($stateId){
+        $this->state_id = $stateId;
+        $this->getSender();
+    }
+
+
     public function getSender()
+    {
+        $this->senderData = [];
+
+        // Check if the categoryData is not empty
+        if (!empty($this->categoryData)) {
+            // Filter the categoryData to get the specific category with the matching ID
+            $filteredCategories = array_filter($this->categoryData, function ($cat) {
+                return $cat['id'] == $this->category_id;
+            });
+
+            // Check if any category is found
+            if (!empty($filteredCategories)) {
+                // Get the first category (assuming there's only one category with the same ID)
+                $category = reset($filteredCategories);
+
+                // Check if the sender key exists in the category data
+                if (isset($category['sender'])) {
+                    // Filter senders based on state_id
+                    $filteredSenders = array_filter($category['sender'], function ($sender) {
+                        return $sender['state_id'] == $this->state_id;
+                    });
+
+                    // Assign filtered sender data to senderData property
+                    $this->senderData = array_values($filteredSenders);
+                }
+            }
+        }
+    }
+    public function getSender3(){
+        if ($this->category_id && $this->state_id){
+            $client = new Client();
+
+
+            $response = $client->get('http://localhost:8000/api/senders/category/'. $this->category_id.'/state/'.$this->state_id);
+
+            $senders = json_decode($response->getBody(), true);
+
+            // Check if the request was successful
+            if ($response->getStatusCode() == 200) {
+                $this->senderData = $senders;
+            }
+            else{
+                $this->senderData = [];
+                logger()->error('Failed to fetch senders. Status code: ' . $response->getStatusCode());
+
+            }}
+    }
+
+    public function getSender1()
     {
         $this->senderData = [];
 
