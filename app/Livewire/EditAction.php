@@ -26,13 +26,15 @@ class EditAction extends Component
     public $type_id;
     public $action;
     public $typeData;
-    public $categoryData;
-    public $senderData;
+    public $state_id;
+    public $categoryData=[];
+    public $senderData = [];
+    public $stateData = [];
 public function mount()
 {
 
 //    Fetch data for the request being edited
- //   dd( $this->receivedData = session()->get('dataToPass'));
+   //dd( $this->receivedData = session()->get('dataToPass'));
     $this->receivedData = session()->get('dataToPass');
 
     $this->id = $this->receivedData['id'];
@@ -43,16 +45,77 @@ public function mount()
     $this->sender = $this->receivedData['sender'];
     //$this->category = $this->receivedData['category'];
     $this->type = $this->receivedData['type'];
+    $this->state_id = $this->receivedData['sender']['state']['id'];
+
 
     $this->getCategories();
-    $this->getSender($this->category_id);
+    $this->getSender();
     $this->gettype();
-   // $this->getState();
+    $this->getState();
+
+    // $this->getState();
 
 //    dd($this->receivedData);
 }
 
-    public function getSender($categoryId){
+    public function updatecat($categoryId){
+        $this->category_id = $categoryId;
+        $this->getSender();
+    }
+    public function updatestate($stateId){
+        $this->state_id = $stateId;
+        $this->getSender();
+    }
+
+
+    public function getSender()
+    {
+        $this->senderData = [];
+
+        // Check if the categoryData is not empty
+        if (!empty($this->categoryData)) {
+            // Filter the categoryData to get the specific category with the matching ID
+            $filteredCategories = array_filter($this->categoryData, function ($cat) {
+                return $cat['id'] == $this->category_id;
+            });
+
+            // Check if any category is found
+            if (!empty($filteredCategories)) {
+                // Get the first category (assuming there's only one category with the same ID)
+                $category = reset($filteredCategories);
+
+                // Check if the sender key exists in the category data
+                if (isset($category['sender'])) {
+                    // Filter senders based on state_id
+                    $filteredSenders = array_filter($category['sender'], function ($sender) {
+                        return $sender['state_id'] == $this->state_id;
+                    });
+
+                    // Assign filtered sender data to senderData property
+                    $this->senderData = array_values($filteredSenders);
+                }
+            }
+        }
+    }
+    public function getState()
+    {
+
+        $http = new Client();
+
+        $response = $http->get('http://localhost:8000/api/states');
+
+        // Check if the request was successful (status code 2xx)
+
+        // Get the response body as an array
+        $data = json_decode($response->getBody(), true);
+
+        // Check if the decoding was successful
+
+        $this->stateData = $data;
+
+    }
+
+    public function getSender1($categoryId){
 
         error_log($categoryId);
 
@@ -123,25 +186,24 @@ public function mount()
     public function updateAction()
     {
         $http = new Client();
-        // hadi erreur lowla hna ndirou check if type_id ==nul nedou type[id] eli b3athnah m3a session ok ?ok
         if($this->type_id == null){
         $actionData = [
             'name' => $this->name,
             'action_time' => $this->action_time,
-           // 'request_id' => $this->request_id,
+            'sender_id' => $this->sender,
             'type_id' => $this->receivedData['type_id'],
         ];}
         else{
             $actionData = [
                 'name' => $this->name,
                 'action_time' => $this->action_time,
-                // 'request_id' => $this->request_id,
+                 'sender_id' => $this->sender,
                 'type_id' => $this->type_id,
             ];
         }
 
 
-         //dd($actionData);
+       //  dd($actionData);
         $client = new Client();
 
         // Send the form data to the API endpoint using GuzzleHttp
