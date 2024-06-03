@@ -39,7 +39,9 @@
                     <th class="py-3 px-6 text-right">التاريخ</th>
                     <th class="py-3 px-6 text-right">الوضعية</th>
                     <th class="py-3 px-6 text-right">مجموع الاجراءات</th>
-                    <th class="py-3 px-6 text-center">الإجراءات</th>
+                    <th class="py-3 px-6 text-right">المرسل اليه</th>
+                    <th class="py-3 px-6 text-right">عدد الاجابات</th>
+                    <th class="py-3 px-6 text-center">العمليات</th>
                 </tr>
                 </thead>
                 <tbody class="text-gray-600 text-sm font-light">
@@ -64,6 +66,32 @@
                         </td>
                         <!-- Action count column -->
                         <td class="py-3 px-6 text-right">{{ count($item['action']) }}</td>
+                        <td class="py-3 px-6 text-right">
+                            @if(!empty($item['action']))
+                                @php
+                                    $senderNames = [];
+                                    foreach($item['action'] as $act) {
+                                        if (!empty($act['sender']['name'])) {
+                                            $senderNames[] = $act['sender']['name'];
+                                        }
+                                    }
+                                @endphp
+                                {!! implode('<br>', $senderNames) !!}
+                            @endif
+                        </td>
+                        <td class="py-3 px-6 text-right">
+                            @if(!empty($item['action']))
+                                @php
+                                    $responseCounts = [];
+                                    foreach($item['action'] as $act) {
+                                        $responseCounts[] = count($act['response']);
+                                    }
+                                @endphp
+                                {!! implode('<hr>', $responseCounts) !!}
+                            @endif
+                        </td>
+
+
                         <!-- Actions column -->
                         <td class="relative">
                             <div x-data="{ show: false }" @click.away="show = false">

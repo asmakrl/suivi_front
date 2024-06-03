@@ -31,26 +31,33 @@ class RequestsTable extends Component
     {
         $http = new Client();
 
-        //$this->size = request()->query('size',20); // Get the current page from query string, default is 1
+        // Fetch the requests from the API with pagination parameters
+        $response = $http->get('http://localhost:8000/api/requests', [
+            'query' => [
+                'size' => $this->size,
+                'page' => $this->currentPage,
+            ],
+        ]);
 
-        $response = $http->get('http://localhost:8000/api/requests?size=' . $this->size . '&page=' . $this->currentPage);
-        // convert response to LengthAwarePaginator
-
-
+        // Decode the response
         $data = json_decode($response->getBody(), true);
 
+        // Check if the response contains the necessary data
+        if (isset($data['data']) && is_array($data['data'])) {
+            // Assign the requests data to the property
+            $this->requests = $data['data'];
+            // Assign pagination data
+            $this->totalPages = $data['last_page'];
+            $this->totalItems = $data['total'];
+        } else {
+            // Handle error or unexpected response structure
+            $this->requests = [];
+            $this->totalPages = 0;
+            $this->totalItems = 0;
+        }
 
-        $this->requests = $data['data'];
-        // Calculate the total number of pages
-        $this->totalPages = $data['last_page'];
-
-        $this->totalItems = $data['total'];
-
-
-       // $this->totalItems = count($data);
-
-
-        $this->isLoading=False;
+        // Indicate that loading is complete
+        $this->isLoading = false;
     }
 
 
