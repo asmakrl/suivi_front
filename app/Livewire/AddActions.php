@@ -17,11 +17,12 @@ class AddActions extends Component
     public $date;
     public $action;
     public $category_id;
+    public $state_id;
     public $response_id ='01';
     public $receivedData;
     public $typeData = [];
     public $senderData = [];
-
+    public $stateData = [];
     public $categoryData=[];
 
 
@@ -35,19 +36,61 @@ class AddActions extends Component
         $this->received_at = $this->receivedData['received_at'];
        // $this->category = $this->receivedData['category'];
         $this->sender = $this->receivedData['sender'];
-
+        $this->state_id = $this-> receivedData['sender']['state']['id'];
         $this->state = $this->receivedData['state']['nomAr'];
+        $this->action = $this->receivedData['action'];
 
 //         Fetch data for the request being edited
 
          $this->getType()  ;
          $this->getCategories();
-         $this->getSender($this->category_id);
+         $this->getSender();
+         $this->getState();
 
 //        dd($this->receivedData);
     }
 
-    public function getSender($categoryId){
+    public function updatecat($categoryId){
+        $this->category_id = $categoryId;
+        $this->getSender();
+    }
+    public function updatestate($stateId){
+        $this->state_id = $stateId;
+        $this->getSender();
+    }
+
+
+    public function getSender()
+    {
+        $this->senderData = [];
+
+        // Check if the categoryData is not empty
+        if (!empty($this->categoryData)) {
+            // Filter the categoryData to get the specific category with the matching ID
+            $filteredCategories = array_filter($this->categoryData, function ($cat) {
+                return $cat['id'] == $this->category_id;
+            });
+
+            // Check if any category is found
+            if (!empty($filteredCategories)) {
+                // Get the first category (assuming there's only one category with the same ID)
+                $category = reset($filteredCategories);
+
+                // Check if the sender key exists in the category data
+                if (isset($category['sender'])) {
+                    // Filter senders based on state_id
+                    $filteredSenders = array_filter($category['sender'], function ($sender) {
+                        return $sender['state_id'] == $this->state_id;
+                    });
+
+                    // Assign filtered sender data to senderData property
+                    $this->senderData = array_values($filteredSenders);
+                }
+            }
+        }
+    }
+
+    public function getSende2r($categoryId){
 
         $client = new Client();
 
@@ -64,6 +107,24 @@ class AddActions extends Component
             logger()->error('Failed to fetch senders. Status code: ' . $response->getStatusCode());
 
         }
+    }
+
+    public function getState()
+    {
+
+        $http = new Client();
+
+        $response = $http->get('http://localhost:8000/api/states');
+
+        // Check if the request was successful (status code 2xx)
+
+        // Get the response body as an array
+        $data = json_decode($response->getBody(), true);
+
+        // Check if the decoding was successful
+
+        $this->stateData = $data;
+
     }
 
     public function getSender2($category_id)
@@ -131,8 +192,9 @@ class AddActions extends Component
 
 
 
-
     }
+
+
     public function save(){
 
         $http = new Client();
@@ -141,14 +203,14 @@ class AddActions extends Component
             'action_time' =>$this->date,//$this->date,
             'request_id' => $this->id,
 
-            'sender_id' => $this->sender,
+            'sender_id' => $this->sender['id'],
 
             'type_id' => $this->action,
-            'response_id' => $this->response_id,
+           // 'response_id' => $this->response_id,
 
 
         ];
-    //   dd($actionData);
+      //  dd($actionData);
 //        $response = $http->post('http://localhost:8000/api/actions');
         $response= $http->post('http://localhost:8000/api/actions', [
             'headers' => ['Content-Type' => 'application/json'],
