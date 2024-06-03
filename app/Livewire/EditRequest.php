@@ -35,6 +35,7 @@ class EditRequest extends Component
     public $categoryData=[];
     public $category;
     public $files;
+    public $senState_id;
 
     public $response=[];
     public $selectedId;
@@ -70,7 +71,7 @@ class EditRequest extends Component
         $this->sender_id = $this->receivedData['sender']['id'];
          $this->state_id = $this->receivedData['state']['id'];
         //$this->state_id = $this->receivedData['sender']['state']['id'];
-
+         $this->senState_id = $this->receivedData['sender']['state']['id'];
         $this->category_id = $this->receivedData['sender']['category_id'];
         foreach ($this->action as $action) {
             $this->isOpen[$action['id']] = false; // Initialize all as closed
@@ -144,7 +145,7 @@ class EditRequest extends Component
             //'action'=> $this->action,
 
         ];
-      // dd($requestData);
+   //  dd($requestData);
         // Create a GuzzleHttp client instance
         $client = new Client();
 
@@ -173,7 +174,7 @@ class EditRequest extends Component
         $this->getSender();
     }
     public function updatestate($stateId){
-        $this->state_id = $stateId;
+        $this->senState_id = $stateId;
         $this->getSender();
     }
 
@@ -198,7 +199,7 @@ class EditRequest extends Component
                 if (isset($category['sender'])) {
                     // Filter senders based on state_id
                     $filteredSenders = array_filter($category['sender'], function ($sender) {
-                        return $sender['state_id'] == $this->state_id;
+                        return $sender['state_id'] == $this->senState_id;
                     });
 
                     // Assign filtered sender data to senderData property
