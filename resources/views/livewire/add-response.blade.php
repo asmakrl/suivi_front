@@ -31,7 +31,7 @@
         </div>
 
         <div class="mb-4">
-            <label for="action_id" class="block text-sm font-semibold mb-2">اختيار العمل:</label>
+            <label for="action_id" class="block text-sm font-semibold mb-2">اختيار الاجراء:</label>
             <select wire:model="selectedActionId" id="action_id" name="action_id"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
                 @foreach ($actions as $action)

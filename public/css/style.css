@@ -78,3 +78,31 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+.response-counts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.response-count-item {
+    margin-bottom: 5px; /* Spacing between items */
+    padding: 5px;
+    background-color: #f1f5f9; /* Light gray background */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.response-count-item:last-child {
+    margin-bottom: 0; /* Remove bottom margin for last item */
+}
+
+.response-count {
+    font-weight: bold;
+    color: #1f2937; /* Dark text color */
+}
+
+.response-count-item:hover {
+    background-color: #e2e8f0; /* Slightly darker background on hover */
+}

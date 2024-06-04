@@ -8,21 +8,39 @@ use LivewireUI\Modal\ModalComponent;
 
 class EditResponse extends ModalComponent
 {
-    public $id;
+    public int $responseID;
 
     public $response;
     public $response_time;
-    public $responseData = [];
+    public $responseData=[];
     public $files;
     public function mount(){
-
-    }
+        error_log($this->responseID);
+  }
     public function closeDialog()
     {
         // $this->reset(['showDialog', 'files']);
         $this->closeModal();
 
     }
+
+    public function getResponse(){
+
+        $client = New Client();
+        $response = $client->get('http://localhost:8000/api/responses/' . $this->responseID);
+
+        $data  = json_decode($response->getBody(), true);
+        if (isset($data['data']) && is_array($data['data'])) {
+            // Assign the requests data to the property
+            $this->responseData = $data['data'];
+            // Assign pagination data
+          //  $this->response = $data['response'];
+
+           // $this->response_time = $data['response_time'];
+        }
+
+    }
+
     public function editResponse() {
         // Prepare the request data
 
@@ -31,29 +49,21 @@ class EditResponse extends ModalComponent
             'response_time' => $this->response_time,
 
         ];
-        //   dd($requestData);
+      //     dd($responseData);
         // Create a GuzzleHttp client instance
         $client = new Client();
 
         // Send the form data to the API endpoint using GuzzleHttp
-        $response = $client->put('http://localhost:8000/api/reponses/' . $this->id, [
+        $response = $client->put('http://localhost:8000/api/responses/' . $this->responseID, [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => $responseData,
 
         ]);
 
-        if ($response->getStatusCode() == 200) {
-            // Resource edited successfully
-            session()->flash('success', 'Resource edited successfully');
-            $data = json_decode($response->getBody(), true);
 
-            session()->put('dataToPass', $data);
-            $this->redirect('/editrequest');
-        } else {
-            // Handle other status codes or scenarios
-            session()->flash('error', 'Failed to edit resource');
-            return redirect()->back();
-        }
+        $this->closeModalWithEvents([
+            EditRequest::class =>'requestUpdated'
+        ]);
 
     }
     public function render()

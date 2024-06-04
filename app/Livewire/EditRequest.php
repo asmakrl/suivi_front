@@ -83,6 +83,8 @@ class EditRequest extends Component
         $this->getSender();
         $this->getState();
         $this->updateReq();
+        $this->updateRes();
+
 
         $this->isLoading = false;
     }
@@ -95,7 +97,15 @@ class EditRequest extends Component
 
     }
 
+    public function updateRes(){
+        //error_log("dddddddd");
+        $http = new Client();
+        $response = $http->get('http://localhost:8000/api/responses/'. $this->id);
 
+        $data = json_decode($response->getBody(), true);
+        $this->response = $data;
+
+    }
 
     public function toggle($id)
     {

@@ -81,13 +81,13 @@
                         </td>
                         <td class="py-3 px-6 text-right">
                             @if(!empty($item['action']))
-                                @php
-                                    $responseCounts = [];
-                                    foreach($item['action'] as $act) {
-                                        $responseCounts[] = count($act['response']);
-                                    }
-                                @endphp
-                                {!! implode('<hr>', $responseCounts) !!}
+                                <div class="response-counts">
+                                    @foreach($item['action'] as $act)
+                                        <div class="response-count-item">
+                                            <span class="response-count">{{ count($act['response']) }}</span>
+                                        </div>
+                                    @endforeach
+                                </div>
                             @endif
                         </td>
 
