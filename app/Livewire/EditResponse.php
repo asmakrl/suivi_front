@@ -61,9 +61,9 @@ class EditResponse extends ModalComponent
         ]);
 
 
-        $this->closeModalWithEvents([
+       /* $this->closeModalWithEvents([
             EditRequest::class =>'requestUpdated'
-        ]);
+        ]);*/
 
     }
     public function render()

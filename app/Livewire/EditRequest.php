@@ -48,15 +48,15 @@ class EditRequest extends Component
     public function mount()
     {
 
-       // dd($this->receivedData = session()->get('dataToPass'));
+        // dd($this->receivedData = session()->get('dataToPass'));
         $this->receivedData = session()->get('dataToPass');
         $this->id = $this->receivedData['id'];
         $this->title = $this->receivedData['title'];
         $this->description = $this->receivedData['description'];
         $this->received_at = $this->receivedData['received_at'];
         $this->sender = $this->receivedData['sender'];
-         //dd($this->sender);
-       // $this->response = $this->receivedData['action'][0]['response'];
+        //dd($this->sender);
+        // $this->response = $this->receivedData['action'][0]['response'];
 
         $this->category_id= $this->receivedData['sender']['category']['id'];
 
@@ -69,9 +69,9 @@ class EditRequest extends Component
         //$this->response = $this->receivedData['action']['response'];
 
         $this->sender_id = $this->receivedData['sender']['id'];
-         $this->state_id = $this->receivedData['state']['id'];
+        $this->state_id = $this->receivedData['state']['id'];
         //$this->state_id = $this->receivedData['sender']['state']['id'];
-         $this->senState_id = $this->receivedData['sender']['state']['id'];
+        $this->senState_id = $this->receivedData['sender']['state']['id'];
         $this->category_id = $this->receivedData['sender']['category_id'];
         foreach ($this->action as $action) {
             $this->isOpen[$action['id']] = false; // Initialize all as closed
@@ -83,7 +83,7 @@ class EditRequest extends Component
         $this->getSender();
         $this->getState();
         $this->updateReq();
-        $this->updateRes();
+       // $this->updateRes();
 
 
         $this->isLoading = false;
@@ -97,7 +97,7 @@ class EditRequest extends Component
 
     }
 
-    public function updateRes(){
+   /* public function updateRes(){
         //error_log("dddddddd");
         $http = new Client();
         $response = $http->get('http://localhost:8000/api/responses/'. $this->id);
@@ -105,7 +105,7 @@ class EditRequest extends Component
         $data = json_decode($response->getBody(), true);
         $this->response = $data;
 
-    }
+    }*/
 
     public function toggle($id)
     {
@@ -155,7 +155,7 @@ class EditRequest extends Component
             //'action'=> $this->action,
 
         ];
-   //  dd($requestData);
+        //  dd($requestData);
         // Create a GuzzleHttp client instance
         $client = new Client();
 
@@ -179,6 +179,38 @@ class EditRequest extends Component
         }
     }
 
+    public function editRes($item){
+
+        $item = json_decode(json_encode($item), true);
+     //   dd($item);
+        $responseData = [
+            'response' => $item['response'],
+            'response_time' => $item['response_time'],
+        ];
+        //  dd($responseData);
+        // Create a GuzzleHttp client instance
+        $client = new Client();
+
+        // Send the form data to the API endpoint using GuzzleHttp
+        $response = $client->put('http://localhost:8000/api/responses/' . $item['id'], [
+            'headers' => ['Content-Type' => 'application/json'],
+            'json' => $responseData,
+
+        ]);
+        if ($response->getStatusCode() == 200) {
+            // Resource edited successfully
+            session()->flash('success', 'Resource edited successfully');
+            $data = json_decode($response->getBody(), true);
+
+            session()->put('dataToPass', $data);
+            $this->redirect('/');
+        } else {
+            // Handle other status codes or scenarios
+            session()->flash('error', 'Failed to edit resource');
+            return redirect()->back();
+        }
+
+}
     public function updatecat($categoryId){
         $this->category_id = $categoryId;
         $this->getSender();
@@ -337,8 +369,8 @@ class EditRequest extends Component
     }
 
     public function deleteRes($id){
-      //dd($id);
-       $http= New Client();
+        //dd($id);
+        $http= New Client();
 
         $http->delete('http://localhost:8000/api/responses/' . $id);
 
@@ -381,7 +413,7 @@ class EditRequest extends Component
         //dd('test');
 
         $temp = $this->findActionById($item);
-      // dd($temp);
+        // dd($temp);
         session()->put('dataToPass', $temp);
 
         $this->redirect('/editactions');

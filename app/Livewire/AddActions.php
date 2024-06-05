@@ -15,10 +15,10 @@ class AddActions extends Component
     public $state;
     public $name;
     public $date;
-    public $action;
+    public $type;
     public $category_id;
     public $state_id;
-    public $response_id ='01';
+    public $action;
     public $receivedData;
     public $typeData = [];
     public $senderData = [];
@@ -28,14 +28,14 @@ class AddActions extends Component
 
     public function mount()
     {
-        //dd($this->receivedData = session()->get('dataToPass'));
+       // dd($this->receivedData = session()->get('dataToPass'));
         $this->receivedData = session()->get('dataToPass');
         $this->id = $this->receivedData['id'];
         $this->title = $this->receivedData['title'];
         $this->description = $this->receivedData['description'];
         $this->received_at = $this->receivedData['received_at'];
        // $this->category = $this->receivedData['category'];
-        $this->sender = $this->receivedData['sender'];
+        $this->sender_id = $this->receivedData['sender']['id'];
         $this->state_id = $this-> receivedData['sender']['state']['id'];
         $this->state = $this->receivedData['state']['nomAr'];
         $this->action = $this->receivedData['action'];
@@ -199,18 +199,18 @@ class AddActions extends Component
 
         $http = new Client();
         $actionData = [
+
             'name' => $this->name,
             'action_time' =>$this->date,//$this->date,
             'request_id' => $this->id,
 
-            'sender_id' => $this->sender['id'],
+            'sender_id' => $this->sender,
 
             'type_id' => $this->action,
-           // 'response_id' => $this->response_id,
 
 
         ];
-      //  dd($actionData);
+       // dd($actionData);
 //        $response = $http->post('http://localhost:8000/api/actions');
         $response= $http->post('http://localhost:8000/api/actions', [
             'headers' => ['Content-Type' => 'application/json'],

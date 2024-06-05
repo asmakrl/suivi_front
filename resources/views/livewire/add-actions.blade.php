@@ -55,7 +55,7 @@
         </div>
         <div class="mb-4">
             <label for="sender" class="block text-sm font-semibold mb-2">المرسل:</label>
-            <select name="sender_id" wire:model="sender_id" wire:model="getSender()"
+            <select name="sender_id" wire:model="sender" wire:model="getSender()"
                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
                 <option value="">اختر المرسل</option>
                 @forelse($senderData as $sen)

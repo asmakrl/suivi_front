@@ -221,14 +221,14 @@
                                                 <div class="flex justify-end">
                                                     <!-- Button to open dialog -->
                                                     <button
-                                                        wire:click="$dispatch('openModal', { component: 'edit-response', arguments: { responseID: {{ $item['id'] }} }})"
+                                                        wire:click='editRes(@json($item))'
                                                         class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
                                                         <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                                             <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
                                                             <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
                                                             <path d="M16 5l3 3" />
-                                                         </svg>
+                                                        </svg>
                                                     </button>
                                                     @livewire('wire-elements-modal')
                                                     <button  @click="if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) { $wire.deleteRes({{ $item['id'] }}) }"   class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600">
@@ -242,33 +242,33 @@
                                                         </svg>
                                                     </button>
                                                 </div>
-                                                </div>
-                                            @endforeach
                                         </div>
-                                    @else
-                                        <div>لا يوجد اجابة</div>
-
-                                    @endif
+                                        @endforeach
                                 </div>
+                            @else
+                                <div>لا يوجد اجابة</div>
+
                             @endif
                         </div>
-                    @endforeach
+                        @endif
                 </div>
-            @endif
+                @endforeach
         </div>
-
-
-
-
-
-
-
-        <div class="flex justify-center" x-data>
-            <button @click="if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) { $wire.delete({{ $id }}) }"
-                    class="px-4 py-2 bg-red-500 text-white rounded">
-                <span class="ml-2">حذف الملف</span>
-            </button>
-        </div>
-
+        @endif
     </div>
+
+
+
+
+
+
+
+    <div class="flex justify-center" x-data>
+        <button @click="if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) { $wire.delete({{ $id }}) }"
+                class="px-4 py-2 bg-red-500 text-white rounded">
+            <span class="ml-2">حذف الملف</span>
+        </button>
+    </div>
+
+</div>
 </div>
