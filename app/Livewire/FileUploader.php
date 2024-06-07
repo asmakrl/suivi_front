@@ -15,6 +15,8 @@ class FileUploader extends ModalComponent
     // This will inject just the ID
     public int $id;
     public string $param;
+    public $uploadStatus = '';
+
     public $fileInputs = [];
 
 
@@ -27,14 +29,13 @@ class FileUploader extends ModalComponent
     }
     public function closeDialog()
     {
-        // $this->reset(['showDialog', 'files']);
+        $this->reset('fileInputs', 'uploadStatus');
         $this->closeModal();
     }
 
     public function uploadFiles()
     {
-
-
+        $this->uploadStatus = 'بدأ التحميل...';
 
         $apiUrl = 'http://localhost:8000/api/files/' . $this->id;
 
@@ -52,17 +53,17 @@ class FileUploader extends ModalComponent
                 'filename' => $file->getClientOriginalName()
             ];
         }
-        // dd($data);
-        $multipart = new MultipartStream($data);
-        // dd($multipart);
-        $http = new Client();
-        $response = $http->post($apiUrl, [
-            'headers' => [
-                'Content-Type' => 'multipart/form-data; boundary=' . $multipart->getBoundary()
-            ],
-            'body' => $multipart
-        ]);
 
+        try {
+            $http = new Client();
+            $response = $http->post($apiUrl, [
+                'multipart' => $data,
+            ]);
+
+            $this->uploadStatus = 'تم تحميل الملفات بنجاح!';
+        } catch (\Exception $e) {
+            $this->uploadStatus = 'فشل في تحميل الملفات: ' . $e->getMessage();
+        }
 
         // Clear file inputs after upload
         $this->fileInputs = [];
