@@ -15,6 +15,7 @@ class FileUploader extends ModalComponent
     // This will inject just the ID
     public int $id;
     public string $param;
+    public int $index;
     public $uploadStatus = '';
 
     public $fileInputs = [];
@@ -69,9 +70,15 @@ class FileUploader extends ModalComponent
         $this->fileInputs = [];
 
         // Close the dialog
-        $this->closeModalWithEvents([
-            EditRequest::class => 'requestUpdated'
-        ]);
+        if ($this->param == 'request') {
+            $this->closeModalWithEvents([
+                EditRequest::class => ['requestUpdated', [$this->param]]
+            ]);
+        } else {
+            $this->closeModalWithEvents([
+                EditRequest::class => ['responseUpdated', [$this->param, $this->index]]
+            ]);
+        }
     }
 
 

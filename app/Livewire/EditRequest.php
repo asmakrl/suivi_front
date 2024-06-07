@@ -43,7 +43,9 @@ class EditRequest extends Component
     public $isOpen = [];
     public $isFileDialogOpen = false;
     public $selectedFiles = [];
-    public $listeners = ['requestUpdated' => 'updateReq'];
+    // get a parameter with $listeners array
+
+    public $listeners = ['requestUpdated' => 'updateReq', 'responseUpdated' => 'updateReponse'];
     public $reponse = [];
     public $response_time = [];
 
@@ -84,19 +86,29 @@ class EditRequest extends Component
         $this->getCategories();
         $this->getSender();
         $this->getState();
-        $this->updateReq();
+        $this->updateReq('request');
         // $this->updateRes();
 
 
         $this->isLoading = false;
     }
-    public function updateReq()
+    public function updateReq($param)
     {
-        //error_log("dddddddd");
+
         $http = new Client();
-        $response = $http->get('http://localhost:8000/api/files/' . $this->id);
+        $response = $http->get('http://localhost:8000/api/files/' . $this->id . '/' . $param);
         $data = json_decode($response->getBody(), true);
         $this->files = $data;
+    }
+    public function updateReponse($param, $index)
+    {
+
+        $http = new Client();
+
+        $response = $http->get('http://localhost:8000/api/files/' . $this->response[$this->selectedId][$index]['id'] . '/' . $param);
+        $data = json_decode($response->getBody(), true);
+
+        $this->response[$this->selectedId][$index]['file'] = $data;
     }
 
     /* public function updateRes(){

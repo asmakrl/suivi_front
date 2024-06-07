@@ -175,15 +175,7 @@
 
                         @if ($isOpen[$act['id']] ?? false)
                             <div class="panel-content">
-                                <div class="mb-4">
-                                    <!-- Button to open dialog -->
-                                    <button
-                                        wire:click="$dispatch('openModal', { component: 'file-uploader' , arguments: { id: {{ $id }}, param: 'response'  }})"
-                                        class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                                        اضف ملفات اخرى
-                                    </button>
-                                   
-                                </div>
+
                                 @if (!empty($response[$act['id']]))
                                     <div class="flex flex-col gap-4">
                                         @foreach ($response[$act['id']] as $index => $item)
@@ -214,6 +206,15 @@
                                                             wire:click="showFiles({{ $item['id'] }})">
                                                             {{ count($item['file']) }}</p>
                                                     @endif
+                                                    <div class="mb-4">
+                                                        <!-- Button to open dialog -->
+                                                        <button
+                                                            wire:click="$dispatch('openModal', { component: 'file-uploader' , arguments: { id: {{ $item['id'] }}, param: 'response',index: {{ $index }}   }})"
+                                                            class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                                                            اضف ملفات اخرى
+                                                        </button>
+
+                                                    </div>
                                                 </div>
                                                 @if ($isFileDialogOpen)
                                                     <div class="fixed z-10 inset-0 overflow-y-auto"
