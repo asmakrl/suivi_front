@@ -13,7 +13,8 @@ class FileUploader extends ModalComponent
 {
     use WithFileUploads;
     // This will inject just the ID
-     public int $requestId;
+    public int $id;
+    public string $param;
     public $fileInputs = [];
 
 
@@ -21,23 +22,28 @@ class FileUploader extends ModalComponent
 
     public function mount()
     {
-       // Gate::authorize('uploadFiles', $this->requestId);
+        // Gate::authorize('uploadFiles', $this->requestId);
         //error_log($this->requestId);
     }
     public function closeDialog()
     {
-       // $this->reset(['showDialog', 'files']);
+        // $this->reset(['showDialog', 'files']);
         $this->closeModal();
-
     }
 
     public function uploadFiles()
     {
 
 
-        $apiUrl = 'http://localhost:8000/api/files/' . $this->requestId;
 
-        $data = [];
+        $apiUrl = 'http://localhost:8000/api/files/' . $this->id;
+
+        $data = [
+            [
+                'name' => 'param',
+                'contents' => $this->param
+            ],
+        ];
 
         foreach ($this->fileInputs as $file) {
             $data[] = [
@@ -63,8 +69,9 @@ class FileUploader extends ModalComponent
 
         // Close the dialog
         $this->closeModalWithEvents([
-            EditRequest::class =>'requestUpdated'
-        ]);    }
+            EditRequest::class => 'requestUpdated'
+        ]);
+    }
 
 
 
@@ -72,5 +79,4 @@ class FileUploader extends ModalComponent
     {
         return view('livewire.file-uploader');
     }
-
 }

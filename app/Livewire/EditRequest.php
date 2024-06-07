@@ -9,6 +9,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use function Laravel\Prompts\error;
 use Barryvdh\Debugbar\Facades\Debugbar as FacadesDebugbar;
+
 class EditRequest extends Component
 {
     use WithFileUploads;
@@ -30,20 +31,21 @@ class EditRequest extends Component
     public $status;
     public $category_id;
     public $receivedData;
-    public $senderData=[];
-    public $stateData=[];
-    public $categoryData=[];
+    public $senderData = [];
+    public $stateData = [];
+    public $categoryData = [];
     public $category;
     public $files;
     public $senState_id;
-
-    public $response=[];
+    public $response = [];
     public $selectedId;
-    public $isLoading=True;
+    public $isLoading = True;
     public $isOpen = [];
     public $isFileDialogOpen = false;
     public $selectedFiles = [];
-    public $listeners = ['requestUpdated'=>'updateReq'];
+    public $listeners = ['requestUpdated' => 'updateReq'];
+    public $reponse = [];
+    public $response_time = [];
 
     public function mount()
     {
@@ -58,7 +60,7 @@ class EditRequest extends Component
         //dd($this->sender);
         // $this->response = $this->receivedData['action'][0]['response'];
 
-        $this->category_id= $this->receivedData['sender']['category']['id'];
+        $this->category_id = $this->receivedData['sender']['category']['id'];
 
         // $this->sender2 = $this->receivedData['sender']['id'];
         $this->state = $this->receivedData['state'];
@@ -83,21 +85,21 @@ class EditRequest extends Component
         $this->getSender();
         $this->getState();
         $this->updateReq();
-       // $this->updateRes();
+        // $this->updateRes();
 
 
         $this->isLoading = false;
     }
-    public function updateReq(){
+    public function updateReq()
+    {
         //error_log("dddddddd");
         $http = new Client();
-        $response = $http->get('http://localhost:8000/api/files/'. $this->id);
+        $response = $http->get('http://localhost:8000/api/files/' . $this->id);
         $data = json_decode($response->getBody(), true);
         $this->files = $data;
-
     }
 
-   /* public function updateRes(){
+    /* public function updateRes(){
         //error_log("dddddddd");
         $http = new Client();
         $response = $http->get('http://localhost:8000/api/responses/'. $this->id);
@@ -116,8 +118,16 @@ class EditRequest extends Component
         $action = collect($this->action)->firstWhere('id', $id);
 
         if (isset($action['response'])) {
+
             $this->selectedId = $id;
-            $this->response[$id] = $action['response'];
+            // if $this->response[$id] is not set, set it to the response data
+            if (!isset($this->response[$id])) {
+                $this->response[$id] = $action['response'];
+                foreach ($this->response[$id] as $item) {
+                    $this->reponse[$item['id']] = $item['response'];
+                    $this->response_time[$item['id']] = $item['response_time'];
+                }
+            }
         } else {
             $this->response[$id] = [];
         }
@@ -179,19 +189,27 @@ class EditRequest extends Component
         }
     }
 
-    public function editRes($item){
+    public function editRes($index, $item)
+    {
 
-        $item = json_decode(json_encode($item), true);
-     //   dd($item);
+        $this->response[$this->selectedId][$index]['response'] = $this->reponse[$item['id']];
+        $this->response[$this->selectedId][$index]['response_time'] = $this->response_time[$item['id']];
+
+
+
+
+
+        //   dd($item);
         $responseData = [
-            'response' => $item['response'],
-            'response_time' => $item['response_time'],
+            'response' => $this->reponse[$item['id']],
+            'response_time' => $this->response_time[$item['id']],
         ];
         //  dd($responseData);
         // Create a GuzzleHttp client instance
         $client = new Client();
 
         // Send the form data to the API endpoint using GuzzleHttp
+
         $response = $client->put('http://localhost:8000/api/responses/' . $item['id'], [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => $responseData,
@@ -200,22 +218,19 @@ class EditRequest extends Component
         if ($response->getStatusCode() == 200) {
             // Resource edited successfully
             session()->flash('success', 'Resource edited successfully');
-            $data = json_decode($response->getBody(), true);
-
-            session()->put('dataToPass', $data);
-            $this->redirect('/');
         } else {
             // Handle other status codes or scenarios
             session()->flash('error', 'Failed to edit resource');
             return redirect()->back();
         }
-
-}
-    public function updatecat($categoryId){
+    }
+    public function updatecat($categoryId)
+    {
         $this->category_id = $categoryId;
         $this->getSender();
     }
-    public function updatestate($stateId){
+    public function updatestate($stateId)
+    {
         $this->senState_id = $stateId;
         $this->getSender();
     }
@@ -250,24 +265,24 @@ class EditRequest extends Component
             }
         }
     }
-    public function getSender3(){
-        if ($this->category_id && $this->state_id){
+    public function getSender3()
+    {
+        if ($this->category_id && $this->state_id) {
             $client = new Client();
 
 
-            $response = $client->get('http://localhost:8000/api/senders/category/'. $this->category_id.'/state/'.$this->state_id);
+            $response = $client->get('http://localhost:8000/api/senders/category/' . $this->category_id . '/state/' . $this->state_id);
 
             $senders = json_decode($response->getBody(), true);
 
             // Check if the request was successful
             if ($response->getStatusCode() == 200) {
                 $this->senderData = $senders;
-            }
-            else{
+            } else {
                 $this->senderData = [];
                 logger()->error('Failed to fetch senders. Status code: ' . $response->getStatusCode());
-
-            }}
+            }
+        }
     }
 
     public function getSender1()
@@ -335,7 +350,6 @@ class EditRequest extends Component
         // Check if the decoding was successful
 
         $this->stateData = $data;
-
     }
 
     public function getCategories()
@@ -354,11 +368,11 @@ class EditRequest extends Component
 
         $this->categoryData = $data;
         $this->getSender();
-
     }
-    public function deleteAct($id){
+    public function deleteAct($id)
+    {
 
-        $http= New Client();
+        $http = new Client();
 
         $http->delete('http://localhost:8000/api/actions/' . $id);
 
@@ -368,14 +382,15 @@ class EditRequest extends Component
         });
     }
 
-    public function deleteRes($id){
+    public function deleteRes($id)
+    {
         //dd($id);
-        $http= New Client();
+        $http = new Client();
 
         $http->delete('http://localhost:8000/api/responses/' . $id);
 
         // Remove the deleted action from the $this->action array
-        $this->response = array_filter($this->response, function ($res) use ($id){
+        $this->response = array_filter($this->response, function ($res) use ($id) {
             return isset($res['id']) && $res["id"] != $id;
         });
     }
@@ -400,16 +415,16 @@ class EditRequest extends Component
         $apiUrl = 'http://localhost:8000/api/requests/' . $id;
         // dd($apiUrl);
 
-        $http= New Client();
+        $http = new Client();
 
 
         $http->delete($apiUrl);
 
         $this->redirect('/');
-
     }
 
-    public function goToEditAction($item){
+    public function goToEditAction($item)
+    {
         //dd('test');
 
         $temp = $this->findActionById($item);
@@ -419,7 +434,8 @@ class EditRequest extends Component
         $this->redirect('/editactions');
     }
 
-    public function goToShowResponse($item){
+    public function goToShowResponse($item)
+    {
         //dd($this->receivedData);
         $temp = $this->findResponseById($item);
         //dd($temp);
@@ -442,7 +458,8 @@ class EditRequest extends Component
             if ($res['id'] == $id) {
                 return $res;
             }
-        }}
+        }
+    }
 
 
     public function render()
