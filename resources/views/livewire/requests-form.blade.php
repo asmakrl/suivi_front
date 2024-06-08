@@ -97,7 +97,17 @@
 
         <div class="mb-4">
             <label for="file" class="block text-sm font-semibold mb-2">تحميل الملفات:</label>
-            <input name="files[]" type="file" wire:model="files" multiple>
+            <input type="file" wire:model="files" multiple>
+            @if ($files)
+                <div class="mt-2">
+                    <h4 class="font-semibold">الملفات المحددة:</h4>
+                    <ul>
+                        @foreach ($files as $file)
+                            <li>{{ $file->getClientOriginalName() }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
         </div>
 
         <div class="flex items-center justify-center">

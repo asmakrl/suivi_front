@@ -6,6 +6,16 @@
              x-on:livewire-upload-finish="isUploading = false" x-on:livewire-upload-error="isUploading = false"
              x-on:livewire-upload-progress="progress = $event.detail.progress">
             <input type="file" wire:model.defer="fileInputs" multiple>
+                @if ($fileInputs)
+                    <div class="mt-2">
+                        <h4 class="font-semibold">الملفات المحددة:</h4>
+                        <ul>
+                            @foreach ($fileInputs as $file)
+                                <li>{{ $file->getClientOriginalName() }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             <!-- Progress Bar -->
             <div x-show="isUploading">
                 <progress max="100" x-bind:value="progress"></progress>
