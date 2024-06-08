@@ -30,7 +30,7 @@
         </div>
         <div class="col-span-3 mb-4">
             <label for="description" class="block text-sm font-semibold mb-1">الوصف:</label>
-            <textarea "wire:model="description id="description" name="description" rows="4" required
+            <textarea wire:model="description" id="description" name="description" rows="4" required
                 class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500">{{ $description }}</textarea>
         </div>
         <div class="mb-4">
