@@ -113,7 +113,7 @@ class EditRequest extends Component
 
     public function deleteFileRes($index,$id)
     {
-        dd( $index);
+       // dd( $index);
         //dd($item);
         $apiUrl = 'http://localhost:8000/api/files/' . $id;
 
