@@ -111,6 +111,28 @@ class EditRequest extends Component
         $this->response[$this->selectedId][$index]['file'] = $data;
     }
 
+    public function deleteFileRes($index,$id)
+    {
+        //dd( $this->response[$this->selectedId][$index]['id']);
+        //dd($item);
+        $apiUrl = 'http://localhost:8000/api/files/' . $id;
+
+        $http = new Client();
+
+        $http->delete($apiUrl);
+
+        $this->selectedFiles = array_filter($this->selectedFiles, function ($file) use ($id) {
+            return $file['id'] != $id;
+        });
+        $http = new Client();
+
+        $response = $http->get('http://localhost:8000/api/files/' . $this->response[$this->selectedId][$index]['id'] . '/' . 'response');
+        $data = json_decode($response->getBody(), true);
+
+        $this->response[$this->selectedId][$index]['file'] = $this->selectedFiles;
+    }
+
+
 
     public function toggle($id)
     {
@@ -192,16 +214,13 @@ class EditRequest extends Component
         }
     }
 
+
+
     public function editRes($index, $item)
     {
 
         $this->response[$this->selectedId][$index]['response'] = $this->reponse[$item['id']];
         $this->response[$this->selectedId][$index]['response_time'] = $this->response_time[$item['id']];
-
-
-
-
-
         //   dd($item);
         $responseData = [
             'response' => $this->reponse[$item['id']],
@@ -268,76 +287,7 @@ class EditRequest extends Component
             }
         }
     }
-    public function getSender3()
-    {
-        if ($this->category_id && $this->state_id) {
-            $client = new Client();
 
-
-            $response = $client->get('http://localhost:8000/api/senders/category/' . $this->category_id . '/state/' . $this->state_id);
-
-            $senders = json_decode($response->getBody(), true);
-
-            // Check if the request was successful
-            if ($response->getStatusCode() == 200) {
-                $this->senderData = $senders;
-            } else {
-                $this->senderData = [];
-                logger()->error('Failed to fetch senders. Status code: ' . $response->getStatusCode());
-            }
-        }
-    }
-
-    public function getSender1()
-    {
-        $this->senderData = [];
-
-        // Check if the categoryData is not empty
-        if (!empty($this->categoryData)) {
-            // Filter the categoryData to get the specific category with the matching ID
-            $filteredCategories = array_filter($this->categoryData, function ($cat) {
-                return $cat['id'] == $this->category_id;
-            });
-
-            // Check if any category is found
-            if (!empty($filteredCategories)) {
-                // Get the first category (assuming there's only one category with the same ID)
-                $category = reset($filteredCategories);
-                // Check if the sender key exists in the category data
-                if (isset($category['sender'])) {
-                    // Assign sender data to senderData property
-                    $this->senderData = $category['sender'];
-                }
-            }
-        }
-    }
-    public function getSender2($categoryId)
-    {
-        $http = new Client();
-
-        // Make a request to the API endpoint to retrieve all senders
-        $response = $http->get('http://localhost:8000/api/senders');
-
-        // Check if the request was successful
-        if ($response->getStatusCode() == 200) {
-            // Decode the response body
-            $allSenders = json_decode($response->getBody(), true);
-
-            // Filter the sender data based on the category ID
-            $filteredSenders = array_filter($allSenders, function ($sender) use ($categoryId) {
-                return $sender['category_id'] == $categoryId;
-            });
-
-            // Update the senderData property with the filtered senders
-            $this->senderData = array_values($filteredSenders); // Re-index the array
-        } else {
-            // Handle the case where the request fails
-            // You can log an error message or set senderData to an empty array
-            $this->senderData = [];
-            // Log the error if needed
-            logger()->error('Failed to fetch senders. Status code: ' . $response->getStatusCode());
-        }
-    }
     public function getState()
     {
 

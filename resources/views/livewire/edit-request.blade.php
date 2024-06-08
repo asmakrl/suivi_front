@@ -107,7 +107,19 @@
                         <div>{{ $file['title'] }}</div>
                         <button
                             @click="if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) { $wire.deleteFile('{{ $file['id'] }}') }"
-                            class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600">حذف</button>
+                            class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" fill="none" stroke-linecap="round"
+                                 stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M4 7l16 0" />
+                                <path d="M10 11l0 6" />
+                                <path d="M14 11l0 6" />
+                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                            </svg>
+                        </button>
                     </div>
                 @endforeach
             </div>
@@ -223,71 +235,62 @@
                                                     </div>
                                                 </div>
                                                 @if ($isFileDialogOpen)
-                                                    <div class="fixed z-10 inset-0 overflow-y-auto"
-                                                        aria-labelledby="modal-title" role="dialog"
-                                                        aria-modal="true">
-                                                        <div
-                                                            class="flex items-center justify-center min-h-screen px-4 text-center sm:block sm:p-0">
-                                                            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-                                                                aria-hidden="true"></div>
-                                                            <span
-                                                                class="hidden sm:inline-block sm:align-middle sm:h-screen"
-                                                                aria-hidden="true">&#8203;</span>
-                                                            <div
-                                                                class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                                                                <div class="flex justify-center mb-4">
-                                                                    <h3 class="text-lg leading-6 font-medium text-gray-900"
-                                                                        id="modal-title">ملفات الرد</h3>
+                                                    <div class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                                                        <div class="flex items-center justify-center min-h-screen px-4 text-center sm:block sm:p-0">
+                                                            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                                                            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                                                            <div class="inline-block align-bottom bg-white rounded-lg text-right overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                                                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                                                    <div class="sm:flex sm:items-start">
+                                                                        <div class="text-center sm:mt-0 sm:text-left w-full">
+                                                                            <div class="flex justify-center mb-4">
+                                                                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">ملفات الرد</h3>
+                                                                            </div>                                                                            <div class="mt-2 max-h-60 overflow-y-auto">
+                                                                                @if (!empty($selectedFiles))
+                                                                                    <ul class="space-y-2">
+                                                                                        @foreach ($selectedFiles as $file)
+                                                                                            <li class="flex justify-between items-center bg-gray-100 p-2 rounded-md">
+                                                                                                <span class="text-gray-700">{{ $file['title'] }}</span>
+                                                                                                <div class="flex space-x-2">
+                                                                                                    <button wire:click="downloadFile('{{ $file['file_path'] }}')" class="px-3 py-1 bg-blue-500 text-white rounded-md flex items-center hover:bg-blue-600">
+                                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-download">
+                                                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                                                            <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                                                                                                            <path d="M7 11l5 5l5 -5" />
+                                                                                                            <path d="M12 4l0 12" />
+                                                                                                        </svg>
+                                                                                                    </button>
+                                                                                                    <button @click="if (confirm('هل أنت متأكد من حذف هذا الملف؟')) { $wire.deleteFileRes('{{$index}}','{{$file['id']}}') }" class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 flex items-center">
+                                                                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                                                            <path d="M4 7l16 0" />
+                                                                                                            <path d="M10 11l0 6" />
+                                                                                                            <path d="M14 11l0 6" />
+                                                                                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                                                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                                                                        </svg>
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            </li>
+                                                                                        @endforeach
+                                                                                    </ul>
+                                                                                @else
+                                                                                    <p class="text-gray-500">لا توجد ملفات</p>
+                                                                                @endif
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="mt-2 max-h-60 overflow-y-auto">
-                                                                    @if (!empty($selectedFiles))
-                                                                        <ul class="space-y-2">
-                                                                            @foreach ($selectedFiles as $file)
-                                                                                <li
-                                                                                    class="flex justify-between items-center bg-gray-100 p-2 rounded-md">
-                                                                                    <span>{{ $file['title'] }}</span>
-                                                                                    <button
-                                                                                        wire:click="downloadFile('{{ $file['file_path'] }}')"
-                                                                                        class="px-3 py-1 bg-blue-500 text-white rounded-md flex items-center">
-                                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                                            width="24"
-                                                                                            height="24"
-                                                                                            viewBox="0 0 24 24"
-                                                                                            fill="none"
-                                                                                            stroke="currentColor"
-                                                                                            stroke-width="2"
-                                                                                            stroke-linecap="round"
-                                                                                            stroke-linejoin="round"
-                                                                                            class="icon icon-tabler icon-tabler-download">
-                                                                                            <path stroke="none"
-                                                                                                d="M0 0h24v24H0z"
-                                                                                                fill="none" />
-                                                                                            <path
-                                                                                                d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-                                                                                            <path d="M7 11l5 5l5 -5" />
-                                                                                            <path d="M12 4l0 12" />
-                                                                                        </svg>
-                                                                                    </button>
-                                                                                </li>
-                                                                            @endforeach
-                                                                        </ul>
-                                                                    @else
-                                                                        <p class="text-gray-500">لا توجد ملفات</p>
-                                                                    @endif
-                                                                </div>
-                                                                <div
-                                                                    class="bg-gray-50 px-4 py-3 sm:px-6 flex justify-center">
-                                                                    <button wire:click="closeFileDialog"
-                                                                        type="button"
-                                                                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-sm">
+                                                                <div class="bg-gray-50 px-4 py-3 sm:px-6 flex justify-center">
+                                                                    <button wire:click="closeFileDialog" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-sm">
                                                                         إغلاق
                                                                     </button>
                                                                 </div>
-
                                                             </div>
                                                         </div>
                                                     </div>
                                                 @endif
+
                                             </div>
                                             <div class="flex justify-center space-x-4 mt-4">
                                                 <!-- Edit Button -->
