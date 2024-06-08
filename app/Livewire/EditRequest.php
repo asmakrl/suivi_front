@@ -335,7 +335,7 @@ class EditRequest extends Component
         });
     }
 
-    public function deleteRes($index,$id)
+    public function deleteRes($id)
     {
         //dd($id);
         $http = new Client();
@@ -343,7 +343,7 @@ class EditRequest extends Component
         $http->delete('http://localhost:8000/api/responses/' . $id);
 
         // Remove the deleted action from the $this->action array
-        $this->response = array_filter($this->response, function ($res) use ($id) {
+        $this->response[$this->selectedId] = array_filter($this->response[$this->selectedId], function ($res) use ($id) {
             return isset($res['id']) && $res["id"] != $id;
         });
     }
