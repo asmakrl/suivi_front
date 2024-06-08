@@ -308,7 +308,7 @@
 
                                                 <!-- Delete Button -->
                                                 <button
-                                                    @click="if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) { $wire.deleteRes({{ $item['id'] }}) }"
+                                                    @click="if (confirm('هل أنت متأكد من حذف هذا الطلب؟')) { $wire.deleteRes('{{$index}}','{{$item['id']}}') }"
                                                     class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 transition duration-150 ease-in-out"
                                                     aria-label="Delete Response" title="Delete Response">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20"

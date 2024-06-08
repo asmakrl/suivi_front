@@ -113,7 +113,7 @@ class EditRequest extends Component
 
     public function deleteFileRes($index,$id)
     {
-        //dd( $this->response[$this->selectedId][$index]['id']);
+        dd( $index);
         //dd($item);
         $apiUrl = 'http://localhost:8000/api/files/' . $id;
 
@@ -124,10 +124,10 @@ class EditRequest extends Component
         $this->selectedFiles = array_filter($this->selectedFiles, function ($file) use ($id) {
             return $file['id'] != $id;
         });
-        $http = new Client();
+        //$http = new Client();
 
-        $response = $http->get('http://localhost:8000/api/files/' . $this->response[$this->selectedId][$index]['id'] . '/' . 'response');
-        $data = json_decode($response->getBody(), true);
+       // $response = $http->get('http://localhost:8000/api/files/' . $this->response[$this->selectedId][$index]['id'] . '/' . 'response');
+       // $data = json_decode($response->getBody(), true);
 
         $this->response[$this->selectedId][$index]['file'] = $this->selectedFiles;
     }
@@ -335,7 +335,7 @@ class EditRequest extends Component
         });
     }
 
-    public function deleteRes($id)
+    public function deleteRes($index,$id)
     {
         //dd($id);
         $http = new Client();
