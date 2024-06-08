@@ -111,15 +111,6 @@ class EditRequest extends Component
         $this->response[$this->selectedId][$index]['file'] = $data;
     }
 
-    /* public function updateRes(){
-        //error_log("dddddddd");
-        $http = new Client();
-        $response = $http->get('http://localhost:8000/api/responses/'. $this->id);
-
-        $data = json_decode($response->getBody(), true);
-        $this->response = $data;
-
-    }*/
 
     public function toggle($id)
     {
