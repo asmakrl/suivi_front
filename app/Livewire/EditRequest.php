@@ -92,6 +92,11 @@ class EditRequest extends Component
 
         $this->isLoading = false;
     }
+    public function goBack()
+    {
+
+        return redirect()->to('/');
+    }
     public function updateReq($param)
     {
 
@@ -132,7 +137,22 @@ class EditRequest extends Component
         $this->response[$this->selectedId][$index]['file'] = $this->selectedFiles;
     }
 
+    public function downloadFile($file_path)
+    {
+        $remoteFileUrl = 'http://127.0.0.1:8000/' . $file_path;
+        //dd($remoteFileUrl);
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'downloaded_file');
 
+        // Télécharger le fichier localement
+        $fileContent = file_get_contents($remoteFileUrl);
+        file_put_contents($tempFilePath, $fileContent);
+
+        // Obtenir le nom de fichier à partir de l'URL
+        $fileName = basename($remoteFileUrl);
+
+        // Téléchargez le fichier localement en utilisant Laravel Storage
+        return response()->download($tempFilePath, $fileName)->deleteFileAfterSend(true);
+    }
 
     public function toggle($id)
     {

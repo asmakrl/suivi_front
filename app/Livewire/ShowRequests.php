@@ -17,8 +17,8 @@ class ShowRequests extends ModalComponent
     public $state = [];
     public $action;
     public $category;
-    public $actionTime;
-    public $actionType;
+    public $source;
+    public $state_sender;
     public $receivedData;
     public $files = [];
     public $response = [];
@@ -42,6 +42,8 @@ class ShowRequests extends ModalComponent
         $this->sender = $this->receivedData['sender']['name'];
         $this->category = $this->receivedData['sender']['category']['category'];
         $this->state = $this->receivedData['state']['nomAr'];
+        $this->source = $this->receivedData['source'];
+        $this->state_sender = $this->receivedData['sender']['state']['nomAr'];
 
         $this->action = $this->receivedData['action'];
         $this->files = $this->receivedData['file'];
@@ -82,10 +84,12 @@ class ShowRequests extends ModalComponent
 
         $this->redirect('/addresponses');
     }*/
-    public function test()
+    public function goBack()
     {
-        dd(url()->previous());
+
+        return redirect()->to('/');
     }
+
 
     public function downloadFile($file_path)
     {
